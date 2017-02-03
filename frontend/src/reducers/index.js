@@ -1,41 +1,31 @@
 import { combineReducers } from 'redux'
-import {
-  SELECT_REDDIT, INVALIDATE_REDDIT,
-  REQUEST_POSTS, RECEIVE_POSTS
+import { INVALIDATE_MESSAGE,
+  REQUEST_MESSAGE, RECEIVE_MESSAGE
 } from '../actions'
 
-const selectedReddit = (state = 'reactjs', action) => {
-  switch (action.type) {
-    case SELECT_REDDIT:
-      return action.reddit
-    default:
-      return state
-  }
-}
-
-const posts = (state = {
+const message = (state = {
   isFetching: false,
   didInvalidate: false,
-  items: []
+  text: ""
 }, action) => {
   switch (action.type) {
-    case INVALIDATE_REDDIT:
+    case INVALIDATE_MESSAGE:
       return {
         ...state,
         didInvalidate: true
       }
-    case REQUEST_POSTS:
+    case REQUEST_MESSAGE:
       return {
         ...state,
         isFetching: true,
         didInvalidate: false
       }
-    case RECEIVE_POSTS:
+    case RECEIVE_MESSAGE:
       return {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        items: action.posts,
+        text: action.text,
         lastUpdated: action.receivedAt
       }
     default:
@@ -43,23 +33,8 @@ const posts = (state = {
   }
 }
 
-const postsByReddit = (state = { }, action) => {
-  switch (action.type) {
-    case INVALIDATE_REDDIT:
-    case RECEIVE_POSTS:
-    case REQUEST_POSTS:
-      return {
-        ...state,
-        [action.reddit]: posts(state[action.reddit], action)
-      }
-    default:
-      return state
-  }
-}
-
 const rootReducer = combineReducers({
-  postsByReddit,
-  selectedReddit
+  message
 })
 
 export default rootReducer

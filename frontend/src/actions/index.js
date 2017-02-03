@@ -1,50 +1,42 @@
-export const REQUEST_POSTS = 'REQUEST_POSTS'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const SELECT_REDDIT = 'SELECT_REDDIT'
-export const INVALIDATE_REDDIT = 'INVALIDATE_REDDIT'
+export const REQUEST_MESSAGE = 'REQUEST_MESSAGE';
+export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
+export const INVALIDATE_MESSAGE = 'INVALIDATE_MESSAGE';
 
-export const selectReddit = reddit => ({
-  type: SELECT_REDDIT,
-  reddit
+export const invalidateMessage = () => ({
+  type: INVALIDATE_MESSAGE
 })
 
-export const invalidateReddit = reddit => ({
-  type: INVALIDATE_REDDIT,
-  reddit
+export const requestMessage = () => ({
+  type: REQUEST_MESSAGE
 })
 
-export const requestPosts = reddit => ({
-  type: REQUEST_POSTS,
-  reddit
-})
-
-export const receivePosts = (reddit, json) => ({
-  type: RECEIVE_POSTS,
-  reddit,
-  posts: json.data.children.map(child => child.data),
+export const receiveMessage = (json) => ({
+  type: RECEIVE_MESSAGE,
+  text: json.message,
   receivedAt: Date.now()
 })
 
-const fetchPosts = reddit => dispatch => {
-  dispatch(requestPosts(reddit))
-  return fetch(`https://www.reddit.com/r/${reddit}.json`)
+const fetchMessage = () => dispatch => {
+  dispatch(requestMessage())
+  return fetch(`/api/hello`)
     .then(response => response.json())
-    .then(json => dispatch(receivePosts(reddit, json)))
+    .then(json => dispatch(receiveMessage(json)))
 }
 
-const shouldFetchPosts = (state, reddit) => {
-  const posts = state.postsByReddit[reddit]
-  if (!posts) {
+const shouldFetchMessage = (state) => {
+  const message = state.message;
+  if (message.text !== "hello") {
     return true
   }
-  if (posts.isFetching) {
+  if (message.isFetching) {
     return false
   }
-  return posts.didInvalidate
+  return message.didInvalidate
 }
 
-export const fetchPostsIfNeeded = reddit => (dispatch, getState) => {
-  if (shouldFetchPosts(getState(), reddit)) {
-    return dispatch(fetchPosts(reddit))
+export const fetchMessageIfNeeded = () => (dispatch, getState) => {
+  console.log(getState());
+  if (shouldFetchMessage(getState())) {
+    return dispatch(fetchMessage())
   }
 }

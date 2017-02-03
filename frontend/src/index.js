@@ -5,11 +5,11 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import reducer from './reducers'
-import App from './containers/App'
 
 import Projects from './components/Projects';
 import Header from './containers/Header';
 import About from './components/About';
+import ApiTest from './containers/ApiTest';
 
 //router stuff
 import { Router, Route, browserHistory } from 'react-router';
@@ -28,9 +28,9 @@ render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={Header}>
-        <Route path="/App" component={App} />
         <Route path="/Projects" component={Projects} />
         <Route path="/About" component={About} />
+        <Route path="/ApiTest" component={ApiTest} />
       </Route>
     </Router>
   </Provider>,

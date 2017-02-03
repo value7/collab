@@ -9,7 +9,7 @@ export default React.createClass({
         <ul role="nav">
           <li><Link to="/Projects">About</Link></li>
           <li><Link to="/About">Repos</Link></li>
-          <li><Link to="/App">reddit redux async</Link></li>
+          <li><Link to="/ApiTest">Api Test</Link></li>
         </ul>
         {this.props.children}
       </div>
