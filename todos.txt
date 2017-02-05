@@ -1,5 +1,9 @@
+- authentification
+  - frontend (redux-auth-wrapper || redux-auth)
+    - super simple first
+  - backend
+  - login with google...
+
 - add Database
 
 - CRUD Operations
-
-- authentification
