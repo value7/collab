@@ -1,9 +1,12 @@
+- get correct error messages in the frontend
+  - display them with redux-form
+
+- hide routes when unauthenticated
+
 - authentification
   - frontend (redux-auth-wrapper || redux-auth)
     - super simple first
   - backend
   - login with google...
-
-- add Database
 
 - CRUD Operations

@@ -6,10 +6,11 @@ export default React.createClass({
     return (
       <div>
         <h1>React Router Tutorial</h1>
-        <ul role="nav">
+        <ul>
           <li><Link to="/Projects">About</Link></li>
           <li><Link to="/About">Repos</Link></li>
           <li><Link to="/ApiTest">Api Test</Link></li>
+          <li><Link to="/login">login</Link></li>
         </ul>
         {this.props.children}
       </div>

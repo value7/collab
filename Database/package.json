@@ -1,5 +1,5 @@
 {
-  "name": "apiServer",
+  "name": "Database",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,9 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.16.0",
-    "express": "^4.14.1",
-    "jsonwebtoken": "^7.2.1",
     "pg": "^6.1.2"
   }
 }
