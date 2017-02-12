@@ -1,8 +1,13 @@
 import { combineReducers } from 'redux'
 import { reducer as reduxFormReducer } from 'redux-form'
 import { INVALIDATE_MESSAGE,
-  REQUEST_MESSAGE, RECEIVE_MESSAGE
+  REQUEST_MESSAGE, RECEIVE_MESSAGE,
+  INVALIDATE_SECURED_MESSAGE,
+  REQUEST_SECURED_MESSAGE, RECEIVE_SECURED_MESSAGE
 } from '../actions'
+
+import { routerReducer } from 'react-router-redux';
+import cookie from 'react-cookie';
 
 const message = (state = {
   isFetching: false,
@@ -34,14 +39,44 @@ const message = (state = {
   }
 }
 
+const securedMessage = (state = {
+  isFetching: false,
+  didInvalidate: false,
+  text: ""
+}, action) => {
+  switch (action.type) {
+    case INVALIDATE_SECURED_MESSAGE:
+      return {
+        ...state,
+        didInvalidate: true
+      }
+    case REQUEST_SECURED_MESSAGE:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false
+      }
+    case RECEIVE_SECURED_MESSAGE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        text: action.text,
+        lastUpdated: action.receivedAt
+      }
+    default:
+      return state
+  }
+}
+
 import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER} from '../actions';
 
-const user = (state = {
-  token: null,
-  userName: null,
-  isAuthenticated: false,
-  isAuthenticating: false,
-  statusText: null
+const user = (state = { ...cookie.load('user') || null
+  // token: null,
+  // userName: null,
+  // isAuthenticated: false,   //TODO hier schaun ob ma die Daten aus dem cookie bekommt
+  // isAuthenticating: false,
+  // statusText: null
 }, action) => {
   switch (action.type) {
     case LOGIN_USER_REQUEST:
@@ -80,7 +115,9 @@ const user = (state = {
 const rootReducer = combineReducers({
   message,
   form: reduxFormReducer,
-  user
+  user,
+  securedMessage,
+  routing: routerReducer
 })
 
 export default rootReducer

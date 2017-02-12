@@ -1,12 +1,14 @@
+- redux-auth-wrapper
+
+- when logging out i need to destroy the secret content?
+
+- redirects after login
+
+- initialize user state from cookie
+
 - get correct error messages in the frontend
   - display them with redux-form
 
-- hide routes when unauthenticated
-
-- authentification
-  - frontend (redux-auth-wrapper || redux-auth)
-    - super simple first
-  - backend
-  - login with google...
+- login with google...
 
 - CRUD Operations

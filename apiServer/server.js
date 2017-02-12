@@ -6,6 +6,7 @@ var app = express();
 const jwt = require('jsonwebtoken');
 const config = require('./config/constants').config;
 const Pool = require('pg').Pool;
+var cookieParser = require('cookie-parser');
 
 const pool = new Pool({
   user: 'postgres',
@@ -19,6 +20,7 @@ const pool = new Pool({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.set('superSecret', config.secret);
 
@@ -77,6 +79,46 @@ app.post('/authenticate', function(req, res) {
       }
     }
   )
+});
+
+//authentication middleware
+//routes which are declared after this can only be accessed with a valid jwt
+app.use(function(request, response, next) {
+  //check header or url paramaters or post paramaters for token
+  console.log('in authentication middleware');
+  //console.log(request);
+  // console.log(request.cookies);
+  console.log(request.cookies);
+  var token = request.body.token || request.query.token || request.headers['x-access-token'];
+  //console.log(token);
+  if(!token && request.cookies && request.cookies.token) {
+    //console.log('Getting token from cookie');
+    //TODO will probably fail with a cookie without token
+    token = request.cookies.token;
+  }
+  console.log(token);
+  //decode token
+  if(token) {
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+      if(err) {
+        return response.json({ error: true, message: 'Failed to authenticate token.' });
+      } else {
+        request.decoded = decoded;
+        console.log('authenticated');
+        next()
+      }
+    });
+  } else {
+    return response.status(403).send({
+      error: true,
+      message: 'No token provided'
+    });
+  }
+});
+
+app.get("/api/secured", function(req, res) {
+  console.log('/api/secured');
+  res.json({message: "special secret message"});
 });
 
 app.listen(3001, function() {
