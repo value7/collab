@@ -14,7 +14,7 @@ import SecuredApiTest from './containers/SecuredApiTest';
 import Foo from './components/Foo';
 import Admin from './components/Admin';
 
-import Login from './components/Login';
+import LoginState from './components/LoginState';
 
 //router stuff
 import { Router, Route, browserHistory } from 'react-router';
@@ -42,7 +42,7 @@ render(
         <Route path="/About" component={About} />
         <Route path="/ApiTest" component={ApiTest} />
         <Route path="/securedApi" component={SecuredApiTest} />
-        <Route path="/login" component={Login} />
+        <Route path="/login" component={LoginState} />
         <Route path="/foo" component={UserIsAuthenticated(Foo)}/>
         <Route path="/admin" component={UserIsAuthenticated(UserIsAdmin(Admin))}/>
       </Route>
