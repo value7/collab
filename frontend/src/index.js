@@ -15,6 +15,7 @@ import Foo from './components/Foo';
 import Admin from './components/Admin';
 
 import LoginState from './components/LoginState';
+import Login from './components/Login';
 
 //router stuff
 import { Router, Route, browserHistory } from 'react-router';
@@ -42,7 +43,8 @@ render(
         <Route path="/About" component={About} />
         <Route path="/ApiTest" component={ApiTest} />
         <Route path="/securedApi" component={SecuredApiTest} />
-        <Route path="/login" component={LoginState} />
+        <Route path="/loginState" component={LoginState} />
+        <Route path="/login" component={Login} />
         <Route path="/foo" component={UserIsAuthenticated(Foo)}/>
         <Route path="/admin" component={UserIsAuthenticated(UserIsAdmin(Admin))}/>
       </Route>

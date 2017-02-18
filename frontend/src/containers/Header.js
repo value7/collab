@@ -48,6 +48,8 @@ function Header({ children, logout }) {
         {' '}
         <Link to="/login">Login</Link>
         {' '}
+        <Link to="/loginState">Login State</Link>
+        {' '}
         <button onClick={() => logout()}>Logout</button>
       </header>
       <div style={{ marginTop: '1.5em' }}>{children}</div>

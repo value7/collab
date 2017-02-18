@@ -89,7 +89,7 @@ const user = (state = { ...cookie.load('user') || null
           'isAuthenticating': false,
           'isAuthenticated': true,
           'token': action.payload.user.token,
-          'userName': action.payload.user.username,
+          'username': action.payload.user.username,
           'statusText': 'You have been successfully logged in.'
       })
     case LOGIN_USER_FAILURE:
@@ -97,14 +97,14 @@ const user = (state = { ...cookie.load('user') || null
           'isAuthenticating': false,
           'isAuthenticated': false,
           'token': null,
-          'userName': null,
+          'username': null,
           'statusText': `Authentication Error: ${action.payload.status} ${action.payload.statusText}`
       })
     case LOGOUT_USER:
       return Object.assign({}, state, {
           'isAuthenticated': false,
           'token': null,
-          'userName': null,
+          'username': null,
           'statusText': 'You have been successfully logged out.'
       })
     default:

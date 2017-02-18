@@ -1,4 +1,7 @@
 - redux-auth-wrapper
+  - sumbit should be a function in action.js
+
+- kick out redux-form?
 
 - when logging out i need to destroy the secret content?
 

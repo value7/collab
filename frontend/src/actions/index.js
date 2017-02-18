@@ -192,3 +192,39 @@ export function loginUser(username, password, redirect="/") {
             })
     }
 }
+
+import { SubmissionError } from 'redux-form';
+
+export function submit(values) {
+  loginUserRequest();
+  return fetch(`/authenticate`, {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+          body: JSON.stringify({username: values.username, password: values.password})
+      })
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(response => {
+        try {
+          console.log(response);
+          loginUserSuccess(response);
+          push('/');
+        } catch (e) {
+          loginUserFailure({
+            response: {
+              status: 403,
+              statusText: 'Invalid token'
+            }
+          });
+        }
+      })
+      .catch(error => {
+        console.log('AAAAAAAAAAAA');
+        loginUserFailure(error);
+        throw new SubmissionError({ username: 'User does not exist', _error: 'Login Failed'})
+      })
+}
