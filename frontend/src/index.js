@@ -14,20 +14,19 @@ import SecuredApiTest from './containers/SecuredApiTest';
 import Foo from './components/Foo';
 import Admin from './components/Admin';
 
-import LoginState from './components/LoginState';
-import Login from './components/Login';
-
+import SignIn from './containers/SignInFormContainer';
+import SignUp from './containers/SignUpFormContainer';
 //router stuff
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 
 import { UserIsAuthenticated, UserIsAdmin } from './utils/authWrapper'
-
+import promise from 'redux-promise';
 const middleware = [ thunk ]
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
-
+middleware.push(promise);
 middleware.push(routerMiddleware(browserHistory));
 
 const store = createStore(
@@ -43,8 +42,8 @@ render(
         <Route path="/About" component={About} />
         <Route path="/ApiTest" component={ApiTest} />
         <Route path="/securedApi" component={SecuredApiTest} />
-        <Route path="/loginState" component={LoginState} />
-        <Route path="/login" component={Login} />
+        <Route path="/signin" component={SignIn} />
+        <Route path="/signup" component={SignUp} />
         <Route path="/foo" component={UserIsAuthenticated(Foo)}/>
         <Route path="/admin" component={UserIsAuthenticated(UserIsAdmin(Admin))}/>
       </Route>

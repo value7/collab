@@ -8,6 +8,10 @@ const config = require('./config/constants').config;
 const Pool = require('pg').Pool;
 var cookieParser = require('cookie-parser');
 
+//encription
+var bcrypt = require('bcryptjs');
+const saltRounds = 10;
+
 const pool = new Pool({
   user: 'postgres',
   password: config.password,
@@ -36,10 +40,55 @@ app.get("/api/hello", function(req, res) {
   res.json({message: "hello"});
 });
 
+app.post('/users/validateFields', function(req, res) {
+  pool.query(
+    'select * from users where username=$1', [req.body.username], function(err, result) {
+    if(result.rows.length > 0) {
+      return res.status(403).json({err: "err"});
+    } else {
+      return res.json({});
+    }
+  });
+});
+
+app.post('/users/signup', function(req, res) {
+  //save the username and password
+  //encrypt the password
+  var encryptedPassword = bcrypt.hashSync(req.body.password, saltRounds);
+  console.log(encryptedPassword);
+  //check if username is taken
+  //database throws an error because of the username unique constraint
+  pool.query(
+    'insert into users (username, password, isAdmin) VALUES ($1, $2, false)', [req.body.username, encryptedPassword], function(err, result) {
+    console.log(err);
+    console.log(result);
+    if(!err && result.rowCount === 1) {
+      //succesfull insert log the user in
+      var jwtUser = {
+        "name": req.body.username,
+        "scope": "rando"
+      }
+      var token = jwt.sign(jwtUser, app.get('superSecret'), {
+        expiresIn: 1440 //24h
+      });
+      res.json({
+        success: true,
+        message: 'Enjoy your token!',
+        token: token,
+        user: req.body.username,
+        scope: "rando",
+        isAdmin: false
+      });
+    } else {
+      res.status(303).send({username: 'the username is already taken'});
+    }
+  });
+})
+
 //authenication
 app.post('/authenticate', function(req, res) {
   console.log('in authenticate api thingy');
-  console.log(req.body);
+  // console.log(req.body);
   //TODO check that username and password are correctly set
   //find the user
   pool.query(
@@ -50,17 +99,16 @@ app.post('/authenticate', function(req, res) {
       if(result.rowCount === 0) {
         console.log('user not found');
         //TODO send error to raise if error
-        res.status(303).send({statusText: 'User not found'});
+        res.status(303).send({username: 'User not found'});
       } else {
         console.log('user found');
         //check if password is correct
-        if(result.rows[0].password !== req.body.password) {
+        if(!bcrypt.compareSync(req.body.password, result.rows[0].password)) {
           console.log('WRONG PASSWORD');
           //TODO send error to raise if error
-          res.status(303).send({statusText: 'wrong password'});
+          res.status(303).send({password: 'wrong password'});
         } else {
           console.log('password correct');
-          //TODO generate jwt
           var jwtUser = {
             "name": result.rows[0].username,
             "scope": "rando"
@@ -72,8 +120,9 @@ app.post('/authenticate', function(req, res) {
             success: true,
             message: 'Enjoy your token!',
             token: token,
-            username: result.rows[0].username,
-            scope: "rando"
+            user: result.rows[0].username,
+            scope: "rando",
+            isAdmin: result.rows[0].isadmin
           });
         }
       }
@@ -101,7 +150,7 @@ app.use(function(request, response, next) {
   if(token) {
     jwt.verify(token, app.get('superSecret'), function(err, decoded) {
       if(err) {
-        return response.json({ error: true, message: 'Failed to authenticate token.' });
+        return response.status(403).json({ error: true, message: 'Failed to authenticate token.' });
       } else {
         request.decoded = decoded;
         console.log('authenticated');
