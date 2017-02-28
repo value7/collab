@@ -1,4 +1,42 @@
-- CRUD Operations
-  - signup
+////////////////////////////////////////////////////////////////////////////////
+            - mvp definieren
+              /-user mgmt
+                /- sign up
+                /- login
+                /- logout
+              /- create project
+                /- title
+                /- image (imgur link)
+                /- description
+              - view projects
+                - sorted by votes
+                - image and title
+              - vote for project
+                - one vote per user
+                - change vote
+////////////////////////////////////////////////////////////////////////////////
+
+- tables definieren
+  - users
+    - Date
+    - username
+    - password (encrypted)
+  - projects
+    - id
+    - title
+    - imgurLink
+    - description
+    - creator
+    - timestamp
+  - votes
+    - user
+    - timestamp
+    - project
+
+
+
+- aufräumen
+
+- tests
 
 - login with google...

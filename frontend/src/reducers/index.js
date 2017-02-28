@@ -71,11 +71,13 @@ const securedMessage = (state = {
 
 import user from './user';
 import validateUserFields from './validateUserFields';
+import createProject from './createProject';
 
 const rootReducer = combineReducers({
   message,
   form: reduxFormReducer,
   user,
+  createProject,
   validateUserFields,
   securedMessage,
   routing: routerReducer

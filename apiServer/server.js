@@ -12,6 +12,8 @@ var cookieParser = require('cookie-parser');
 var bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
+var pgUtils = require('./utils/postgres');
+
 const pool = new Pool({
   user: 'postgres',
   password: config.password,
@@ -66,7 +68,8 @@ app.post('/users/signup', function(req, res) {
       //succesfull insert log the user in
       var jwtUser = {
         "name": req.body.username,
-        "scope": "rando"
+        "scope": "rando",
+        "id": result.rows[0].id
       }
       var token = jwt.sign(jwtUser, app.get('superSecret'), {
         expiresIn: 1440 //24h
@@ -111,7 +114,8 @@ app.post('/authenticate', function(req, res) {
           console.log('password correct');
           var jwtUser = {
             "name": result.rows[0].username,
-            "scope": "rando"
+            "scope": "rando",
+            "id": result.rows[0].id
           }
           var token = jwt.sign(jwtUser, app.get('superSecret'), {
             expiresIn: 1440 //24h
@@ -137,7 +141,7 @@ app.use(function(request, response, next) {
   console.log('in authentication middleware');
   //console.log(request);
   // console.log(request.cookies);
-  console.log(request.cookies);
+  //console.log(request.cookies);
   var token = request.body.token || request.query.token || request.headers['x-access-token'];
   //console.log(token);
   if(!token && request.cookies && request.cookies.token) {
@@ -145,7 +149,7 @@ app.use(function(request, response, next) {
     //TODO will probably fail with a cookie without token
     token = request.cookies.token;
   }
-  console.log(token);
+  //console.log(token);
   //decode token
   if(token) {
     jwt.verify(token, app.get('superSecret'), function(err, decoded) {
@@ -153,6 +157,7 @@ app.use(function(request, response, next) {
         return response.status(403).json({ error: true, message: 'Failed to authenticate token.' });
       } else {
         request.decoded = decoded;
+        console.log(decoded);
         console.log('authenticated');
         next()
       }
@@ -163,6 +168,26 @@ app.use(function(request, response, next) {
       message: 'No token provided'
     });
   }
+});
+
+app.post('/api/createProject', function(req, res) {
+  //the decoded jwt is in req.decoded
+  console.log('in post createProject');
+  console.log(req.body);
+  console.log(req.body.title, req.body.imgurLink, req.body.description, req.decoded.name);
+  pool.query(
+    'insert into projects(title, imgurLink, date, creator, description) VALUES($1, $2, $3, $4, $5)',
+    [req.body.title, req.body.imgurLink, new Date(), req.decoded.id, req.body.description], function(err, result) {
+      console.log('after db call to save project');
+      console.log('err: ', err);
+      console.log('res: ', result);
+      if(err) {
+        return res.status(403).json({ error: true, message: 'Failed to save Project' });
+      } else {
+        return res.json(result);
+      }
+    }
+  );
 });
 
 app.get("/api/secured", function(req, res) {

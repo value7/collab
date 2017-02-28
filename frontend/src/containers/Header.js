@@ -36,7 +36,7 @@ function Header({ children, dispatch }) {
         {' '}
         <Link to="/Projects">About</Link>
         {' '}
-        <Link to="/About">Repos</Link>
+        <Link to="/createProject">Create Project</Link>
         {' '}
         <Link to="/ApiTest">Api Test</Link>
         {' '}

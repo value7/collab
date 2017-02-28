@@ -16,6 +16,8 @@ import Admin from './components/Admin';
 
 import SignIn from './containers/SignInFormContainer';
 import SignUp from './containers/SignUpFormContainer';
+
+import CreateProject from './containers/CreateProjectContainer';
 //router stuff
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
@@ -44,6 +46,7 @@ render(
         <Route path="/securedApi" component={SecuredApiTest} />
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />
+        <Route path="/createProject" component={CreateProject} />
         <Route path="/foo" component={UserIsAuthenticated(Foo)}/>
         <Route path="/admin" component={UserIsAuthenticated(UserIsAdmin(Admin))}/>
       </Route>
