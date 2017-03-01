@@ -9,5 +9,16 @@ module.exports = {
     var parsed = new Date(date)
 
     return [parsed.getUTCFullYear(), zeroPad(parsed.getMonth() + 1), zeroPad(parsed.getDate()), zeroPad(parsed.getHours()), zeroPad(parsed.getMinutes()), zeroPad(parsed.getSeconds())].join(" ");
+  },
+  arrToObj: function(rows) {
+    var res = {};
+    for(var i = 0; i < rows.length; i++) {
+      res[rows[i].id] = {};
+      var keys = Object.keys(rows[i]);
+      for(var j = 0; j < keys.length; j++) {
+        res[rows[i].id][keys[j]] = rows[i][keys[j]];
+      }
+    }
+    return res;
   }
 }

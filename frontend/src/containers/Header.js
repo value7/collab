@@ -34,7 +34,7 @@ function Header({ children, dispatch }) {
       <header>
         Links:
         {' '}
-        <Link to="/Projects">About</Link>
+        <Link to="/projects">Projects</Link>
         {' '}
         <Link to="/createProject">Create Project</Link>
         {' '}

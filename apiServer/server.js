@@ -53,6 +53,20 @@ app.post('/users/validateFields', function(req, res) {
   });
 });
 
+app.get("/api/getAllProjects", function(req, res) {
+  pool.query(`
+    select p.id, p.title, p.imgurlink, p.description, count(v.*) as votes from projects as p
+  	left join votes as v
+  		on p.id = v.projectID
+  	group by p.id, p.title, p.imgurLink, p.description;
+  `, function(err, result) {
+    console.log(result);
+    //weil ein objekt einfacher is im frontend hier ein objekt draus machen
+
+    res.json(pgUtils.arrToObj(result.rows));
+  })
+})
+
 app.post('/users/signup', function(req, res) {
   //save the username and password
   //encrypt the password
@@ -169,6 +183,23 @@ app.use(function(request, response, next) {
     });
   }
 });
+
+//upvote
+app.post('/projects/upvote', function(req, res) {
+  console.log(req.body);
+  console.log(req.body.projectId);
+  console.log(req.decoded.id);
+  //TODO check if user already upvoted that project
+  pool.query(
+    'insert into votes(userid, projectid, date) VALUES($1, $2, $3)', [req.decoded.id, req.body.projectId, new Date()], function(err, result) {
+      if(err) {
+        return res.status(403).json({ error: true, message: 'Failed to save Upvote' });
+      } else {
+        return res.json({});
+      }
+    }
+  )
+})
 
 app.post('/api/createProject', function(req, res) {
   //the decoded jwt is in req.decoded

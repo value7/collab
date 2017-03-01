@@ -6,13 +6,13 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import reducer from './reducers'
 
-import Projects from './components/Projects';
 import Header from './containers/Header';
 import About from './components/About';
 import ApiTest from './containers/ApiTest';
 import SecuredApiTest from './containers/SecuredApiTest';
 import Foo from './components/Foo';
 import Admin from './components/Admin';
+import Projects from './containers/Projects';
 
 import SignIn from './containers/SignInFormContainer';
 import SignUp from './containers/SignUpFormContainer';
@@ -40,13 +40,13 @@ render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={Header}>
-        <Route path="/Projects" component={Projects} />
         <Route path="/About" component={About} />
         <Route path="/ApiTest" component={ApiTest} />
         <Route path="/securedApi" component={SecuredApiTest} />
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />
         <Route path="/createProject" component={CreateProject} />
+        <Route path="/projects" component={Projects} />
         <Route path="/foo" component={UserIsAuthenticated(Foo)}/>
         <Route path="/admin" component={UserIsAuthenticated(UserIsAdmin(Admin))}/>
       </Route>

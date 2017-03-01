@@ -1,3 +1,11 @@
+- disable upvote button if user already upvoted
+
+- when logging in update the projects with updated
+
+- when logged in user requests all projects set the flag for the upvoted ones
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
             - mvp definieren
               /-user mgmt
@@ -10,11 +18,42 @@
                 /- description
               - view projects
                 - sorted by votes
-                - image and title
+                /- image and title
               - vote for project
                 - one vote per user
                 - change vote
 ////////////////////////////////////////////////////////////////////////////////
+
+user muss die upvotes gespeichert haben
+=> wenn ich mir den user hol (einloggen)
+dann muss ich die votes dazujoinen
+wenn ich upvote dann muss das zum user dazu kommen
+
+!!!!!
+
+wenn ich die liste anzeige dann macht es viel mehr sinn das upvoted (bool)
+bei den projekten is
+das heißt ich muss einmal alle projekte durchgehen und schaun ob es bei der liste dabei is
+
+wenn ein eingeloggter user sich die projekte hohlt bekommt er dazu gejoint ob er sie schon upgevoted hat
+wenn ein uneingeloggter holt bekommt er alle projekte ohne der info
+loggt er sich dann ein bekommt er eine liste aller upgevoteten und im frontend wird gerechnet
+
+im  backend wird immer kontrolliert das er nicht double dippt
+
+wenn man upvoted wird beim projekt einfach upgevoted gesetzt
+wenn ich die projekte als objekt und nciht als array speicher dann muss ich nicht durch loopen
+
+
+wenn ich upvote im frontend dann schreib ich das zum projekt dazu
+=> project reducer sollte upvote haben
+
+UPVOTE_PROJECT (project)
+
+
+REQUEST_UPVOTED (projects) beim einloggen falls projects schon da sind
+
+
 
 - tables definieren
   - users
@@ -26,7 +65,7 @@
     - title
     - imgurLink
     - description
-    - creator
+    - creator   //TODO should be userId
     - timestamp
   - votes
     - user
