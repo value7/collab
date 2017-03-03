@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
 import { createProject, createProjectSuccess, createProjectFailure } from '../actions/createProject';
@@ -36,7 +36,8 @@ const validateAndCreateProject = (values, dispatch) => {
       //If you use localStorage instead of sessionStorage, then this w/ persisted across tabs and new windows.
       //sessionStorage = persisted only in current tab
       //let other components know that everything is fine by updating the redux` state
-      dispatch(createProjectSuccess(result.payload.data)); //ps: this is same as dispatching RESET_USER_FIELDS
+      dispatch(createProjectSuccess(result.payload.data));//ps: this is same as dispatching RESET_USER_FIELDS
+      browserHistory.push("/projects/" + result.payload.data.rows[0].id);
     });
 };
 

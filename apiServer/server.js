@@ -62,10 +62,22 @@ app.get("/api/getAllProjects", function(req, res) {
     order by votes desc;
   `, function(err, result) {
     console.log(result);
-
+    //TODO check for err
     res.json(pgUtils.arrToObj(result.rows));
   })
-})
+});
+
+app.post('/api/getDetails', function(req, res) {
+  console.log('getting details from : ' + req.body.projectId);
+  pool.query(`
+    select *
+      from votes
+      where projectid = $1
+  `, [req.body.projectId], function(err, result) {
+    console.log(result.rows);
+    res.json(result.rows);
+  })
+});
 
 app.post('/users/signup', function(req, res) {
   //save the username and password
@@ -237,7 +249,7 @@ app.post('/api/createProject', function(req, res) {
   console.log(req.body);
   console.log(req.body.title, req.body.imgurLink, req.body.description, req.decoded.name);
   pool.query(
-    'insert into projects(title, imgurLink, date, creator, description) VALUES($1, $2, $3, $4, $5)',
+    'insert into projects(title, imgurLink, date, creator, description) VALUES($1, $2, $3, $4, $5) returning *',
     [req.body.title, req.body.imgurLink, new Date(), req.decoded.id, req.body.description], function(err, result) {
       console.log('after db call to save project');
       console.log('err: ', err);

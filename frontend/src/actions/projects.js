@@ -10,6 +10,8 @@ export const UPVOTE_PROJECT_FAILURE = 'UPVOTE_PROJECT_FAILURE';
 
 export const CANCEL_UPVOTE_PROJECT = 'CANCEL_UPVOTE_PROJECT';
 
+export const GET_DETAILS = 'GET_DETAILS';
+
 const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
 
 export const invalidateProjects = () => ({
@@ -51,6 +53,24 @@ export const fetchProjectsIfNeeded = () => (dispatch, getState) => {
   }
 }
 
+export const fetchProjectDetails = (projectId) => (dispatch) => {
+  console.log(projectId);
+  var postVar = {};
+  postVar.projectId = projectId;
+  const request = axios.post(`${ROOT_URL}/api/getDetails`, postVar)
+  .then((result) => {
+    console.log(result);
+    dispatch(getDetails(result.data, projectId));
+  });
+}
+
+function getDetails(details, projectId) {
+  return {
+    type: GET_DETAILS,
+    details: details,
+    projectId: projectId
+  }
+}
 //TODO UPVOTE IS A USER AND A PROJECT ACTION
 // => votes müssen raus FUCKFUCKFUCKFUCKFUCKFUCKFUCK
 // WIE WANN HOL ICH MIR das

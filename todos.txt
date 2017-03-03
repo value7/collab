@@ -8,6 +8,8 @@ weil ich den cookie nicht update hab ich ein problem auf refresh
 ich glaub ich muss den cookie updaten
   TODO: fühlt sich wie ein pfusch an und sollte wohl anders gelöst werden
 
+schickt man bei jedem upvote an die db oder wartet ma auf componentWillUnmount
+ddos, error meldungen
 
 ////////////////////////////////////////////////////////////////////////////////
             - mvp definieren
@@ -21,19 +23,23 @@ ich glaub ich muss den cookie updaten
                 /- description
               - view projects
                 /- sorted by votes
-                  kein dynamisches neu sortieren though
                 /- image and title
-              - vote for project
-              /  - one vote per user
-              /  - change vote
-              /  - upvoten muss im frontend auch gespeichert werden
-              /  - downvoten natürlich auch
-              /  - ich muss auf refresh die daten holen
-                - ich muss schaun das es funktioniert wenn man eingeloggt die projekte holt
-                - und wenn man einloggt und die projekte schon hat
+              /- vote for project
+                /- one vote per user
+                /- change vote
+                /- upvoten muss im frontend auch gespeichert werden
+                /- downvoten natürlich auch
+                /- ich muss auf refresh die daten holen
+                /- ich muss schaun das es funktioniert wenn man eingeloggt die projekte holt
+                /- und wenn man einloggt und die projekte schon hat
               - view details of project
-                - list of users who liked it
-                - redirect after creation
+                /- list of users who liked it (as an example of getting more details)
+                - get all Project data when deep Linking to the detail view
+                /- redirect after creation
+              - fehlermeldungen
+                - 403
+                - vergebenen title (dasselbe wie beim signup)
+                - wenn einfach irgendwas schiefgeht anzeigen
 ////////////////////////////////////////////////////////////////////////////////
 
 user muss die upvotes gespeichert haben

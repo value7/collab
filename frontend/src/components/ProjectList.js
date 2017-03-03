@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 export default function({projects, upVote, cancelUpVote, upvoted}) {
   console.log(projects);
@@ -20,6 +21,7 @@ export default function({projects, upVote, cancelUpVote, upvoted}) {
           {upvoted.indexOf(projects[key].id) < 0
           ? <button onClick={() => (upVote(projects[key].id))}>up vote</button>
           : <button onClick={() => (cancelUpVote(projects[key].id))}>take back</button>}
+          <Link to={"/projects/" +projects[key].id} >Link to details</Link>
         </div>
       })}
     </div>

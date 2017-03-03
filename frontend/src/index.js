@@ -17,6 +17,8 @@ import Projects from './containers/Projects';
 import SignIn from './containers/SignInFormContainer';
 import SignUp from './containers/SignUpFormContainer';
 
+import ProjectDetails from './containers/ProjectDetails';
+
 import CreateProject from './containers/CreateProjectContainer';
 //router stuff
 import { Router, Route, browserHistory } from 'react-router';
@@ -48,6 +50,7 @@ render(
         <Route path="/createProject" component={CreateProject} />
         <Route path="/projects" component={Projects} />
         <Route path="/foo" component={UserIsAuthenticated(Foo)}/>
+        <Route path="/projects/:projectId" component={ProjectDetails} />
         <Route path="/admin" component={UserIsAuthenticated(UserIsAdmin(Admin))}/>
       </Route>
     </Router>
