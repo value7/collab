@@ -58,10 +58,10 @@ app.get("/api/getAllProjects", function(req, res) {
     select p.id, p.title, p.imgurlink, p.description, count(v.*) as votes from projects as p
   	left join votes as v
   		on p.id = v.projectID
-  	group by p.id, p.title, p.imgurLink, p.description;
+  	group by p.id, p.title, p.imgurLink, p.description
+    order by votes desc;
   `, function(err, result) {
     console.log(result);
-    //weil ein objekt einfacher is im frontend hier ein objekt draus machen
 
     res.json(pgUtils.arrToObj(result.rows));
   })
@@ -109,7 +109,12 @@ app.post('/authenticate', function(req, res) {
   //TODO check that username and password are correctly set
   //find the user
   pool.query(
-    'select * from users where username=$1', [req.body.username], function(err, result) {
+    `
+    select u.*, v.projectid from users as u
+    	left join votes as v
+    		on v.userid = u.id
+    	where u.username = $1
+    `, [req.body.username], function(err, result) {
       if (err) throw err;
       console.log(result);
       //check if user is found
@@ -134,12 +139,20 @@ app.post('/authenticate', function(req, res) {
           var token = jwt.sign(jwtUser, app.get('superSecret'), {
             expiresIn: 1440 //24h
           });
+
+          //TODO send votes as array
+          var votes = [];
+          for(var i = 0; i < result.rows.length; i++) {
+            votes.push(result.rows[i].projectid)
+          }
+
           res.json({
             success: true,
             message: 'Enjoy your token!',
             token: token,
             user: result.rows[0].username,
             scope: "rando",
+            votes: votes,
             isAdmin: result.rows[0].isadmin
           });
         }
@@ -177,6 +190,7 @@ app.use(function(request, response, next) {
       }
     });
   } else {
+    console.log('access denied');
     return response.status(403).send({
       error: true,
       message: 'No token provided'
@@ -194,6 +208,22 @@ app.post('/projects/upvote', function(req, res) {
     'insert into votes(userid, projectid, date) VALUES($1, $2, $3)', [req.decoded.id, req.body.projectId, new Date()], function(err, result) {
       if(err) {
         return res.status(403).json({ error: true, message: 'Failed to save Upvote' });
+      } else {
+        return res.json({});
+      }
+    }
+  )
+})
+
+app.post('/projects/downvote', function(req, res) {
+  console.log(req.body);
+  console.log(req.body.projectId);
+  console.log(req.decoded.id);
+  //TODO check if user already upvoted that project
+  pool.query(
+    'delete from votes where userid=$1 and projectid=$2', [req.decoded.id, req.body.projectId], function(err, result) {
+      if(err) {
+        return res.status(403).json({ error: true, message: 'Failed to delete Upvote' });
       } else {
         return res.json({});
       }

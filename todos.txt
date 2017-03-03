@@ -1,9 +1,12 @@
 - disable upvote button if user already upvoted
 
-- when logging in update the projects with updated
+- when logging in update the projects with upvoted
 
 - when logged in user requests all projects set the flag for the upvoted ones
 
+weil ich den cookie nicht update hab ich ein problem auf refresh
+ich glaub ich muss den cookie updaten
+  TODO: fühlt sich wie ein pfusch an und sollte wohl anders gelöst werden
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17,11 +20,20 @@
                 /- image (imgur link)
                 /- description
               - view projects
-                - sorted by votes
+                /- sorted by votes
+                  kein dynamisches neu sortieren though
                 /- image and title
               - vote for project
-                - one vote per user
-                - change vote
+              /  - one vote per user
+              /  - change vote
+              /  - upvoten muss im frontend auch gespeichert werden
+              /  - downvoten natürlich auch
+              /  - ich muss auf refresh die daten holen
+                - ich muss schaun das es funktioniert wenn man eingeloggt die projekte holt
+                - und wenn man einloggt und die projekte schon hat
+              - view details of project
+                - list of users who liked it
+                - redirect after creation
 ////////////////////////////////////////////////////////////////////////////////
 
 user muss die upvotes gespeichert haben

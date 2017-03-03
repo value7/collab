@@ -1,7 +1,10 @@
 import {
 	SIGNUP_USER, SIGNUP_USER_SUCCESS, SIGNUP_USER_FAILURE, RESET_USER,
-	SIGNIN_USER, SIGNIN_USER_SUCCESS,  SIGNIN_USER_FAILURE,	LOGOUT_USER
+	SIGNIN_USER, SIGNIN_USER_SUCCESS,  SIGNIN_USER_FAILURE,	LOGOUT_USER,
+	ADD_USER_UPVOTED
 } from '../actions/user';
+import { UPVOTE_PROJECT, CANCEL_UPVOTE_PROJECT } from '../actions/projects';
+
 import cookie from 'react-cookie';
 
 //user = userobj,
@@ -20,12 +23,14 @@ var username = null;
 var error = null;
 var loading = false;
 var isAdmin = false;
+var votes = [];
 if(user) {
   status = 'fromCookie';
   username = user.user;
   isAdmin = user.isAdmin;
+	votes = user.votes;
 }
-const INITIAL_STATE = {user: username, status: status, error: error, loading: loading, isAdmin: isAdmin};
+const INITIAL_STATE = {user: username, status: status, error: error, loading: loading, isAdmin: isAdmin, votes: votes};
 
 export default function(state = INITIAL_STATE, action) {
   let error;
@@ -35,7 +40,7 @@ export default function(state = INITIAL_STATE, action) {
     case SIGNUP_USER:// sign up user, set loading = true and status = signup
     return { ...state, user: null, status:'signup', error:null, loading: true, isAdmin: false};
     case SIGNUP_USER_SUCCESS://return user, status = authenticated and make loading = false
-    return { ...state, user: action.payload.user, status:'authenticated', error:null, loading: false, isAdmin: action.payload.isAdmin}; //<-- authenticated
+    return { ...state, user: action.payload.user, votes: action.payload.votes, status:'authenticated', error:null, loading: false, isAdmin: action.payload.isAdmin}; //<-- authenticated
     case SIGNUP_USER_FAILURE:// return error and make loading = false
     error = action.payload.data || {message: action.payload.message};//2nd one is network or server down errors
     return { ...state, user: null, status:'signup', error:error, loading: false, isAdmin: false};
@@ -44,7 +49,7 @@ export default function(state = INITIAL_STATE, action) {
     case SIGNIN_USER:// sign in user,  set loading = true and status = signin
     return { ...state, user: null, status:'signin', error:null, loading: true, isAdmin: false};
     case SIGNIN_USER_SUCCESS://return authenticated user,  make loading = false and status = authenticated
-    return { ...state, user: action.payload.user, status:'authenticated', error:null, loading: false, isAdmin: action.payload.isAdmin}; //<-- authenticated
+    return { ...state, user: action.payload.user, votes: action.payload.votes, status:'authenticated', error:null, loading: false, isAdmin: action.payload.isAdmin}; //<-- authenticated
     case SIGNIN_USER_FAILURE:// return error and make loading = false
     error = action.payload.data || {message: action.payload.message};//2nd one is network or server down errors
     return { ...state, user: null, status:'signin', error:error, loading: false, isAdmin: false};
@@ -55,6 +60,15 @@ export default function(state = INITIAL_STATE, action) {
 
     case RESET_USER:// reset authenticated user to initial state
     return { ...state, user: null, status:null, error:null, loading: false, isAdmin: false};
+
+		case UPVOTE_PROJECT:
+			cookie.remove('user', { path: '/' });
+			cookie.save('user', { ...state, votes: state.votes.concat(action.projectId)}, { path: '/' });
+			return { ...state, votes: state.votes.concat(action.projectId)}
+		case CANCEL_UPVOTE_PROJECT:
+			cookie.remove('user', { path: '/' });
+			cookie.save('user', { ...state, votes: state.votes.filter(vote => action.projectId !== vote)}, { path: '/' });
+			return { ...state, votes: state.votes.filter(vote => action.projectId !== vote)}
 
     default:
     return state;

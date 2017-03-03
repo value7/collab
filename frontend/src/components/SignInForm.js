@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
-import { signInUser, signInUserSuccess, signInUserFailure, resetUserFields } from '../actions/user';
+import { signInUser, signInUserSuccess, signInUserFailure, resetUserFields, addUserUpvoted } from '../actions/user';
 
 //Client side validation
 function validate(values) {
@@ -37,6 +37,7 @@ const validateAndSignInUser = (values, dispatch) => {
       //sessionStorage = persisted only in current tab
 //sessionStorage.setItem('jwtToken', result.payload.data.token);
       //let other components know that everything is fine by updating the redux` state
+
       dispatch(signInUserSuccess(result.payload.data)); //ps: this is same as dispatching RESET_USER_FIELDS
     });
 };
