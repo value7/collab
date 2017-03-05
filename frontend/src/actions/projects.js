@@ -12,6 +12,8 @@ export const CANCEL_UPVOTE_PROJECT = 'CANCEL_UPVOTE_PROJECT';
 
 export const GET_DETAILS = 'GET_DETAILS';
 
+export const GET_PROJECT = 'GET_PROJECT';
+
 const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
 
 export const invalidateProjects = () => ({
@@ -53,15 +55,66 @@ export const fetchProjectsIfNeeded = () => (dispatch, getState) => {
   }
 }
 
-export const fetchProjectDetails = (projectId) => (dispatch) => {
+const shouldFetchProject = (state, projectId) => {
+  const project = state.projects;
+  console.log(state.projects);
+  console.log(project);
+  if(project.projects[projectId]) {
+    console.log('AaAAAAAAAAAaAaAa');
+    console.log('i want to get only details or nothing');
+    return false;
+  } else {
+    console.log('i want to get everything');
+    return true;
+  }
+}
+
+const shouldFetchProjectAll = (state, projectId) => {
+  const projects = state.projects;
+  //TODO check if details are here (currently users is details)
+  console.log(state.projects);
+  console.log(projects.projects.user);
+  if(projects.projects && projects.projects.user) {
+    console.log('i want to get only details or nothing');
+    return false;
+  } else {
+    console.log('i want to get everything');
+    return true;
+  }
+}
+
+function getProject(project, projectId) {
+  return {
+    type: GET_PROJECT,
+    project: project,
+    projectId: projectId
+  }
+}
+
+export const fetchProjectDetailsOrAllIfNeeded = (projectId) => (dispatch, getState) => {
   console.log(projectId);
-  var postVar = {};
-  postVar.projectId = projectId;
-  const request = axios.post(`${ROOT_URL}/api/getDetails`, postVar)
-  .then((result) => {
-    console.log(result);
-    dispatch(getDetails(result.data, projectId));
-  });
+  if(shouldFetchProject(getState(), projectId)) {
+    //getAll
+    console.log('getting everything');
+    var postVar = {};
+    postVar.projectId = projectId;
+    const request = axios.post(`${ROOT_URL}/api/getProject`, postVar)
+    .then((result) => {
+      console.log(result);
+      dispatch(getProject(result.data, projectId));
+    });
+  } else if(shouldFetchProjectAll(getState(), projectId)) {
+    //get only details
+    console.log('getting details');
+    var postVar = {};
+    postVar.projectId = projectId;
+    const request = axios.post(`${ROOT_URL}/api/getDetails`, postVar)
+    .then((result) => {
+      console.log(result);
+      dispatch(getDetails(result.data, projectId));
+    });
+  }
+  //do nothing
 }
 
 function getDetails(details, projectId) {

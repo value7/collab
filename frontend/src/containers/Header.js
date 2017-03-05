@@ -24,9 +24,10 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/user';
-import { VisibleOnlyAdmin } from '../utils/authWrapper';
+import { VisibleOnlyAdmin, VisibleOnlyLoggedIn } from '../utils/authWrapper';
 
 const OnlyAdminLink = VisibleOnlyAdmin(() => <Link to="/admin">{'Admin'}</Link>);
+const CreateProject = VisibleOnlyLoggedIn(() => <Link to="/createProject">{'Create Project'}</Link>);
 
 function Header({ children, dispatch }) {
   return (
@@ -36,13 +37,7 @@ function Header({ children, dispatch }) {
         {' '}
         <Link to="/projects">Projects</Link>
         {' '}
-        <Link to="/createProject">Create Project</Link>
-        {' '}
-        <Link to="/ApiTest">Api Test</Link>
-        {' '}
-        <Link to="/securedApi">secured Api</Link>
-        {' '}
-        <Link to="/foo">{'Foo (Login Required)'}</Link>
+        <CreateProject />
         {' '}
         <OnlyAdminLink />
         {' '}

@@ -25,3 +25,10 @@ export const VisibleOnlyAdmin = UserAuthWrapper({
   predicate: user => user.isAdmin,
   FailureComponent: null
 })
+
+export const VisibleOnlyLoggedIn = UserAuthWrapper({
+  authSelector: state => state.user,
+  wrapperDisplayName: 'VisibleOnlyLoggedIn',
+  predicate: user => user.user,
+  FailureComponent: null
+})

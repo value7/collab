@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { fetchProjectDetails } from '../actions/projects'
+import { fetchProjectDetailsOrAllIfNeeded } from '../actions/projects'
 
 import Details from '../components/Details';
 
@@ -16,14 +16,14 @@ class ProjectDetails extends Component {
     const { dispatch } = this.props;
     console.log(this.props);
     console.log(this.props.params.projectId);
-    dispatch(fetchProjectDetails(this.props.params.projectId));
+    dispatch(fetchProjectDetailsOrAllIfNeeded(this.props.params.projectId));
   }
 
   handleRefreshClick = e => {
     e.preventDefault();
 
     const { dispatch } = this.props;
-    dispatch(fetchProjectDetails(this.props.params.projectId));
+    dispatch(fetchProjectDetailsOrAllIfNeeded(this.props.params.projectId));
   }
 
   render() {

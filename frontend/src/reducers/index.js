@@ -9,65 +9,35 @@ import { INVALIDATE_MESSAGE,
 import { routerReducer } from 'react-router-redux';
 import cookie from 'react-cookie';
 
-const message = (state = {
-  isFetching: false,
-  didInvalidate: false,
-  text: ""
-}, action) => {
-  switch (action.type) {
-    case INVALIDATE_MESSAGE:
-      return {
-        ...state,
-        didInvalidate: true
-      }
-    case REQUEST_MESSAGE:
-      return {
-        ...state,
-        isFetching: true,
-        didInvalidate: false
-      }
-    case RECEIVE_MESSAGE:
-      return {
-        ...state,
-        isFetching: false,
-        didInvalidate: false,
-        text: action.text,
-        lastUpdated: action.receivedAt
-      }
-    default:
-      return state
-  }
-}
-
-const securedMessage = (state = {
-  isFetching: false,
-  didInvalidate: false,
-  text: ""
-}, action) => {
-  switch (action.type) {
-    case INVALIDATE_SECURED_MESSAGE:
-      return {
-        ...state,
-        didInvalidate: true
-      }
-    case REQUEST_SECURED_MESSAGE:
-      return {
-        ...state,
-        isFetching: true,
-        didInvalidate: false
-      }
-    case RECEIVE_SECURED_MESSAGE:
-      return {
-        ...state,
-        isFetching: false,
-        didInvalidate: false,
-        text: action.text,
-        lastUpdated: action.receivedAt
-      }
-    default:
-      return state
-  }
-}
+// const message = (state = {
+//   isFetching: false,
+//   didInvalidate: false,
+//   text: ""
+// }, action) => {
+//   switch (action.type) {
+//     case INVALIDATE_MESSAGE:
+//       return {
+//         ...state,
+//         didInvalidate: true
+//       }
+//     case REQUEST_MESSAGE:
+//       return {
+//         ...state,
+//         isFetching: true,
+//         didInvalidate: false
+//       }
+//     case RECEIVE_MESSAGE:
+//       return {
+//         ...state,
+//         isFetching: false,
+//         didInvalidate: false,
+//         text: action.text,
+//         lastUpdated: action.receivedAt
+//       }
+//     default:
+//       return state
+//   }
+// }
 
 import user from './user';
 import validateUserFields from './validateUserFields';
@@ -75,13 +45,11 @@ import createProject from './createProject';
 import projects from './projects';
 
 const rootReducer = combineReducers({
-  message,
   form: reduxFormReducer,
   user,
   projects,
   createProject,
   validateUserFields,
-  securedMessage,
   routing: routerReducer
 })
 

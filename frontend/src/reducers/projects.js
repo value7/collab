@@ -1,5 +1,6 @@
 import { INVALIDATE_PROJECTS, REQUEST_PROJECTS, RECEIVE_PROJECTS,
-UPVOTE_PROJECT, UPVOTE_PROJECT_SUCCESS, UPVOTE_PROJECT_FAILURE, CANCEL_UPVOTE_PROJECT, GET_DETAILS }
+UPVOTE_PROJECT, UPVOTE_PROJECT_SUCCESS, UPVOTE_PROJECT_FAILURE, CANCEL_UPVOTE_PROJECT, GET_DETAILS,
+GET_PROJECT }
 from '../actions/projects';
 
 const INITIAL_STATE = {isFetching: false, didInvalidate: false, projects: []};
@@ -60,6 +61,16 @@ export default function(state = INITIAL_STATE, action) {
             users: action.details
           }
 
+        }
+      };
+
+    case GET_PROJECT:
+    console.log(action.payload);
+      return {
+        ...state,
+        projects: {
+          ...state.projects,
+          [action.projectId]: action.project
         }
       };
     default:

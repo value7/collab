@@ -70,12 +70,32 @@ app.get("/api/getAllProjects", function(req, res) {
 app.post('/api/getDetails', function(req, res) {
   console.log('getting details from : ' + req.body.projectId);
   pool.query(`
-    select *
-      from votes
-      where projectid = $1
+    select v.date, u.username
+      from votes as v
+      join users as u
+      	on u.id = v.userid
+      where v.projectid = $1
   `, [req.body.projectId], function(err, result) {
     console.log(result.rows);
     res.json(result.rows);
+  })
+});
+
+app.post('/api/getProject', function(req, res) {
+  console.log('getting project with id: ' + req.body.projectId);
+  pool.query(`
+    select count(v.*) as votes, p.id, p.title, p.imgurLink, p.description, u.username as creator, array_agg(member.username) as users from projects as p
+	left join votes as v
+		on v.projectid = p.id
+	join users as u
+		on u.id = p.creator
+	join users as member
+		on member.id = v.userid
+	where p.id = $1
+	group by p.id, p.title, p.imgurLink, p.description, u.username
+  `, [req.body.projectId], function(err, result) {
+    console.log(result.rows);
+    res.json(result.rows[0]);
   })
 });
 
