@@ -17,6 +17,7 @@ ddos, error meldungen
                 /- sign up
                 /- login
                 /- logout
+                - beim startup schaun ob der jwt abgelaufen ist
               /- create project
                 /- title
                 /- image (imgur link)
@@ -37,9 +38,12 @@ ddos, error meldungen
                 - get all Project data when deep Linking to the detail view
                 /- redirect after creation
               - fehlermeldungen
+                - I DONT WANTO
                 - 403
                 - vergebenen title (dasselbe wie beim signup)
                 - wenn einfach irgendwas schiefgeht anzeigen
+                /- create project und alles andere war uneingeloggt nicht machen kann
+                  nicht anzeigen
 ////////////////////////////////////////////////////////////////////////////////
 
 user muss die upvotes gespeichert haben

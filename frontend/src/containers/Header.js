@@ -33,7 +33,6 @@ function Header({ children, dispatch }) {
   return (
     <div>
       <header>
-        Links:
         {' '}
         <Link to="/projects">Projects</Link>
         {' '}

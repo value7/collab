@@ -1,6 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import styled from 'styled-components';
+
+const Image = styled.img`
+  width: 39%;
+  float: right;
+  margin-bottom: 25px;
+`;
+const Wrapper = styled.div`
+  width: 100%;
+  margin-bottom: 50px;
+`;
+
+const Title = styled.div`
+  font-size: 24px;
+  margin-bottom: 25px;
+  width: 50%;
+`;
+
+const TextWrapper = styled.div`
+  width: 60%;
+  float: left;
+`;
+
+const Description = styled.div`
+  margin-bottom: 25px;
+`;
+
+const Divider = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: black;
+  clear: both;
+`;
+
 export default function({projects, upVote, cancelUpVote, upvoted}) {
   console.log(projects);
 
@@ -10,19 +44,23 @@ export default function({projects, upVote, cancelUpVote, upvoted}) {
         var hasImage = !!projects[key].imgurlink;
         console.log(projects[key].imgurlink);
         console.log(hasImage);
-        return <div key={i}>
-          <div>{projects[key].votes}</div>
-          <div>{projects[key].title}</div>
+        return <Wrapper key={i}>
+        <Link to={"/projects/" +projects[key].id} >
+          <TextWrapper>
+            <Title>{projects[key].title}</Title>
+            <div>{projects[key].description}</div>
+            <div>{projects[key].votes} Votes</div>
+            {upvoted.indexOf(projects[key].id) < 0
+            ? <button onClick={() => (upVote(projects[key].id))}>up vote</button>
+            : <button onClick={() => (cancelUpVote(projects[key].id))}>take back</button>}
+          </TextWrapper>
           {
             hasImage &&
-            <img width={150} src={projects[key].imgurlink} />
+            <Image src={projects[key].imgurlink} />
           }
-          <div>{projects[key].description}</div>
-          {upvoted.indexOf(projects[key].id) < 0
-          ? <button onClick={() => (upVote(projects[key].id))}>up vote</button>
-          : <button onClick={() => (cancelUpVote(projects[key].id))}>take back</button>}
-          <Link to={"/projects/" +projects[key].id} >Link to details</Link>
-        </div>
+          </Link>
+          <Divider />
+        </Wrapper>
       })}
     </div>
   )
