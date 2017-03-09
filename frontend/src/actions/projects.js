@@ -39,7 +39,7 @@ const fetchProjects = () => dispatch => {
 
 const shouldFetchProjects = (state) => {
   const projects = state.projects;
-  if (projects.projects.length === 0) {
+  if (projects.projects.length === 0 || !projects.lastUpdated) {
     return true
   }
   if (projects.isFetching) {
@@ -73,7 +73,7 @@ const shouldFetchProjectAll = (state, projectId) => {
   const projects = state.projects;
   //TODO check if details are here (currently users is details)
   console.log(state.projects);
-  console.log(projects.projects.user);
+  console.log(projects.projects[projectId].user);
   if(projects.projects && projects.projects.user) {
     console.log('i want to get only details or nothing');
     return false;

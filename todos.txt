@@ -17,7 +17,11 @@ ddos, error meldungen
                 /- sign up
                 /- login
                 /- logout
-                - beim startup schaun ob der jwt abgelaufen ist
+                /- beim startup schaun ob der jwt abgelaufen ist
+                  /- beziehugnsweise der cookie sollte genauso schnell wie der jwt ablaufen
+                - wenn sich ein user einloggt muss ich mir die votes holen
+                  - wenn ein user vom cookie kommt muss ich beim starten der app die votes holen
+                  -
               /- create project
                 /- title
                 /- image (imgur link)
@@ -25,6 +29,7 @@ ddos, error meldungen
               - view projects
                 /- sorted by votes
                 /- image and title
+                /- after detail site the shouldFetchProjects returns false
               /- vote for project
                 /- one vote per user
                 /- change vote
@@ -33,10 +38,14 @@ ddos, error meldungen
                 /- ich muss auf refresh die daten holen
                 /- ich muss schaun das es funktioniert wenn man eingeloggt die projekte holt
                 /- und wenn man einloggt und die projekte schon hat
-              - view details of project
+              /- view details of project
                 /- list of users who liked it (as an example of getting more details)
-                - get all Project data when deep Linking to the detail view
+                /- get all Project data when deep Linking to the detail view
                 /- redirect after creation
+              - styling
+                - list
+                - forms
+                - details
               - fehlermeldungen
                 - I DONT WANTO
                 - 403

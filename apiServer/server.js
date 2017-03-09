@@ -89,7 +89,7 @@ app.post('/api/getProject', function(req, res) {
 		on v.projectid = p.id
 	join users as u
 		on u.id = p.creator
-	join users as member
+	left join users as member
 		on member.id = v.userid
 	where p.id = $1
 	group by p.id, p.title, p.imgurLink, p.description, u.username
@@ -213,6 +213,7 @@ app.use(function(request, response, next) {
   if(token) {
     jwt.verify(token, app.get('superSecret'), function(err, decoded) {
       if(err) {
+        console.log('failed to authenticate token');
         return response.status(403).json({ error: true, message: 'Failed to authenticate token.' });
       } else {
         request.decoded = decoded;
@@ -282,6 +283,18 @@ app.post('/api/createProject', function(req, res) {
     }
   );
 });
+
+app.get('/api/getUserDetails', function(req, res) {
+  pool.query(
+    'select array_agg(projectid) as votes from votes where userid = $1', [req.decoded.id], function(err, result) {
+      if(err) {
+        return res.status(403).json({ error: true, message: 'Failed to get Projects' });
+      } else {
+        return res.json(result.rows[0]);
+      }
+    }
+  )
+})
 
 app.get("/api/secured", function(req, res) {
   console.log('/api/secured');

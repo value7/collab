@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import reducer from './reducers'
+import cookie from 'react-cookie';
 
 import Header from './containers/Header';
 import About from './components/About';
@@ -21,6 +22,10 @@ import CreateProject from './containers/CreateProjectContainer';
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 
+import { getUserWithToken } from './actions/user';
+
+import './styles/styles.min.css';
+
 import { UserIsAuthenticated, UserIsAdmin } from './utils/authWrapper'
 import promise from 'redux-promise';
 const middleware = [ thunk ]
@@ -34,11 +39,25 @@ const store = createStore(
   reducer,
   applyMiddleware(...middleware)
 )
+
+function onAppInit(dispatch) {
+  return (nextState, replace, next) => {
+    if(cookie.load('user')) {
+      dispatch(getUserWithToken(cookie.load('user')));
+      console.log('whats happening');
+      next();
+    } else {
+      console.log('no fucking clue');
+      next();
+    }
+  };
+}
+
 const history = syncHistoryWithStore(browserHistory, store)
 render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={Header}>
+      <Route path="/" component={Header} onEnter={onAppInit(store.dispatch)}>
         <Route path="/About" component={About} />
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />

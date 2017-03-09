@@ -16,20 +16,20 @@ import cookie from 'react-cookie';
 // 5. 'validate_email' (validating email token)
 // 5. 'authenticated'(after signin)
 // 6. 'logout' (after logout)
-var user = cookie.load('user');
-console.log(user);
+// var user = cookie.load('user');
+// console.log(user);
 var status = null;
 var username = null;
 var error = null;
 var loading = false;
 var isAdmin = false;
 var votes = [];
-if(user) {
-  status = 'fromCookie';
-  username = user.user;
-  isAdmin = user.isAdmin;
-	votes = user.votes;
-}
+// if(user) {
+//   status = 'fromCookie';
+//   username = user.user;
+//   isAdmin = user.isAdmin;
+// 	votes = user.votes;
+// }
 const INITIAL_STATE = {user: username, status: status, error: error, loading: loading, isAdmin: isAdmin, votes: votes};
 
 export default function(state = INITIAL_STATE, action) {
@@ -56,18 +56,22 @@ export default function(state = INITIAL_STATE, action) {
 
     //TODO delete all user data
     case LOGOUT_USER:
-      return {...state, user: null, status:'logout', error:null, loading: false, isAdmin: false};
+      return {...state, user: null, status:'logout', error:null, loading: false, isAdmin: false, votes: []};
 
     case RESET_USER:// reset authenticated user to initial state
     return { ...state, user: null, status:null, error:null, loading: false, isAdmin: false};
 
 		case UPVOTE_PROJECT:
-			cookie.remove('user', { path: '/' });
-			cookie.save('user', { ...state, votes: state.votes.concat(action.projectId)}, { path: '/' });
+		//TODO update the maxAge of the cookie (needs to be the same as the jwt)
+		//could just get it from the cookie but thats to expensive
+		// i shouldnt store that information in the cookie
+		// getting the state from the user has to be a bit more complex :()
+			// cookie.remove('user', { path: '/' });
+			// cookie.save('user', { ...state, votes: state.votes.concat(action.projectId)}, { path: '/' });
 			return { ...state, votes: state.votes.concat(action.projectId)}
 		case CANCEL_UPVOTE_PROJECT:
-			cookie.remove('user', { path: '/' });
-			cookie.save('user', { ...state, votes: state.votes.filter(vote => action.projectId !== vote)}, { path: '/' });
+			// cookie.remove('user', { path: '/' });
+			// cookie.save('user', { ...state, votes: state.votes.filter(vote => action.projectId !== vote)}, { path: '/' });
 			return { ...state, votes: state.votes.filter(vote => action.projectId !== vote)}
 
     default:

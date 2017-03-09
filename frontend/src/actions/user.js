@@ -62,8 +62,8 @@ export function signInUser(formValues) {
 
 export function signInUserSuccess(user) {
   console.log(user);
-  cookie.save('token', user.token, { path: '/' });
-  cookie.save('user', user, { path: '/' });
+  cookie.save('token', user.token, { path: '/', maxAge: 86400 });
+  cookie.save('user', user, { path: '/', maxAge: 86400 });
   return {
     type: SIGNIN_USER_SUCCESS,
     payload: user
@@ -84,4 +84,22 @@ export function logoutUser() {
   return {
     type: LOGOUT_USER
   };
+}
+
+export const getUserWithToken = (user) => (dispatch) => {
+  console.log(user);
+  if(user && user.user) {
+    var status = 'fromCookie';
+    var username = user.user;
+    var isAdmin = user.isAdmin || false;
+    const request = axios.get(`${ROOT_URL}/api/getUserDetails`)
+    .then((result) => {
+      console.log(result);
+      user.votes = result.data.votes || [];
+      console.log(user.votes);
+      dispatch(signInUserSuccess(user));
+    });
+  } else {
+    dispatch(signInUserFailure({error: 'couldnt load details'}));
+  }
 }

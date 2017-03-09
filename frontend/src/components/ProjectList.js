@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const Image = styled.img`
   width: 39%;
-  float: right;
+  display: inline-block;
   margin-bottom: 25px;
 `;
 const Wrapper = styled.div`
@@ -21,7 +21,8 @@ const Title = styled.div`
 
 const TextWrapper = styled.div`
   width: 60%;
-  float: left;
+  display: inline-block;
+  vertical-align: top;
 `;
 
 const Description = styled.div`
