@@ -1,18 +1,35 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
+const DetailImage = styled.img`
+  width: 100%;
+`;
+
+const DetailTitle = styled.h1`
+  font-weight: 600;
+  text-align: center;
+  margin: 45px;
+`;
+
+const DetailDescription = styled.h3`
+  text-align: center;
+  color: #5a5a5a;
+`;
+
 export default function({project}) {
   console.log(project);
   var hasImage = !!project.imgurlink;
   return (
     <div>
-    <div>{project.votes}</div>
-    <div>{project.title}</div>
-    {
-      hasImage ?
-      <img width={150} src={project.imgurlink} /> :
-      <p> sadly there is no image for this project </p>
-    }
-    <div>{project.description}</div>
+      {
+        hasImage ?
+        <DetailImage src={project.imgurlink} /> :
+        <p> sadly there is no image for this project </p>
+      }
+      <DetailTitle>{project.title}</DetailTitle>
+      <DetailDescription>{project.description}</DetailDescription>
+      <div>{project.votes}</div>
     </div>
   )
 };

@@ -1,52 +1,67 @@
-// import React from 'react'
-// import { Link } from 'react-router'
-//
-// export default React.createClass({
-//   render() {
-//     return (
-//       <div>
-//         <h1>React Router Tutorial</h1>
-//         <ul>
-//           <li><Link to="/Projects">About</Link></li>
-//           <li><Link to="/About">Repos</Link></li>
-//           <li><Link to="/ApiTest">Api Test</Link></li>
-//           <li><Link to="/securedApi">secured Api</Link></li>
-//           <li><Link to="/login">login</Link></li>
-//         </ul>
-//         {this.props.children}
-//       </div>
-//     )
-//   }
-// })
-
-
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/user';
 import { VisibleOnlyAdmin, VisibleOnlyLoggedIn } from '../utils/authWrapper';
+import styled from 'styled-components';
 
-const OnlyAdminLink = VisibleOnlyAdmin(() => <Link to="/admin">{'Admin'}</Link>);
-const CreateProject = VisibleOnlyLoggedIn(() => <Link to="/createProject">{'Create Project'}</Link>);
+const Body = styled.div`
+  width: 60%;
+  margin: auto;
+  background-color: #fafafa;
+  height: 100%;
+  @media (max-width: 600px) {
+    width: 95%;
+  }
+`;
+
+const StyledHeader = styled.header`
+  background-color: #fafafa;
+  text-align: right;
+`;
+
+const HeaderLeft = styled.div`
+  float: left;
+  display: inline-block;
+`;
+
+const HeaderRight = styled.div`
+  text-align: right;
+  display: inline-block;
+`;
+
+
+const Margin = styled.div`
+  margin: 15px;
+  display: inline-block;
+  font-size: 24px;
+`;
+
+const OnlyAdminLink = VisibleOnlyAdmin(() => <Margin><Link to="/admin">{'Admin'}</Link></Margin>);
+const CreateProject = VisibleOnlyLoggedIn(() => <Margin><Link to="/createProject">{'Create Project'}</Link></Margin>);
 
 function Header({ children, dispatch }) {
   return (
     <div>
-      <header>
-        {' '}
-        <Link to="/projects">Projects</Link>
-        {' '}
-        <CreateProject />
-        {' '}
-        <OnlyAdminLink />
-        {' '}
-        <Link to="/signin">Sign In</Link>
-        {' '}
-        <Link to="/signup">Sign Up</Link>
-        {' '}
-        <button onClick={() => dispatch(logoutUser())}>Logout</button>
-      </header>
-      <div style={{ marginTop: '1.5em' }}>{children}</div>
+      <StyledHeader>
+        <HeaderLeft>
+          {' '}
+          <Margin><Link to="/projects">Projects</Link></Margin>
+          {' '}
+          <CreateProject />
+          {' '}
+          <OnlyAdminLink />
+        </HeaderLeft>
+        <HeaderRight>
+          {' '}
+          <Margin><Link to="/signin">Sign In</Link></Margin>
+          {' '}
+          <Margin><Link to="/signup">Sign Up</Link></Margin>
+          {' '}
+          <Margin><button onClick={() => dispatch(logoutUser())}>Logout</button></Margin>
+        </HeaderRight>
+      </StyledHeader>
+      <Body>{children}</Body>
     </div>
   )
 }

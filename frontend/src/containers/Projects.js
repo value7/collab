@@ -4,6 +4,13 @@ import { fetchProjectsIfNeeded, invalidateProjects, upvoteProject, cancelUpVote 
 
 import ProjectList from '../components/ProjectList';
 
+import styled from 'styled-components';
+
+const Updated = styled.p`
+  margin: 0;
+  font-size: 11px;
+`;
+
 class Projects extends Component {
   static propTypes = {
     projects: PropTypes.object.isRequired,
@@ -44,7 +51,7 @@ class Projects extends Component {
     const isEmpty = items.length === 0;
     return (
       <div>
-        <p>
+        <Updated>
           {lastUpdated &&
             <span>
               Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
@@ -57,7 +64,7 @@ class Projects extends Component {
               Refresh
             </a>
           }
-        </p>
+        </Updated>
         {isEmpty
           ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>

@@ -25,6 +25,7 @@ import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import { getUserWithToken } from './actions/user';
 
 import './styles/styles.min.css';
+import './styles/index.css';
 
 import { UserIsAuthenticated, UserIsAdmin } from './utils/authWrapper'
 import promise from 'redux-promise';

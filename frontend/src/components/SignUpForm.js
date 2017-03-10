@@ -5,6 +5,38 @@ import renderField from './renderField';
 import { validateUserFields, validateUserFieldsSuccess, validateUserFieldsFailure, resetValidateUserFields } from '../actions/validateUserFields';
 import { signUpUser, signUpUserSuccess, signUpUserFailure, } from '../actions/user';
 
+import styled from 'styled-components';
+
+const Button = styled.button`
+  user-select: none;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 0.3em;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 500;
+  line-height: 2.3em;
+  height: 2.4em;
+  margin-bottom: 0;
+  overflow: hidden;
+  padding: 0 1em;
+  text-align: center;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  -webkit-appearance: none;
+  background-image: -webkit-linear-gradient(top, #fafafa 0%, #eaeaea 100%);
+  background-image: -o-linear-gradient(top, #fafafa 0%, #eaeaea 100%);
+  background-image: linear-gradient(to bottom, #fafafa 0%, #eaeaea 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffafafa', endColorstr='#ffeaeaea', GradientType=0);
+  border: 1px solid #ccc;
+  border-color: #ccc #bdbdbd #adadad;
+  color: #333;
+  text-shadow: 0 1px 0 white;
+  font-size: 1.25rem;
+`;
+
 //Client side validation
 function validate(values) {
   var errors = {};
@@ -107,24 +139,24 @@ class SignUpForm extends Component {
                  name="username"
                  type="text"
                  component={ renderField }
-                 label="@username*" />
+                 label="Username" />
           <Field
                  name="password"
                  type="password"
                  component={ renderField }
-                 label="Password*" />
+                 label="Password" />
           <Field
                  name="confirmPassword"
                  type="password"
                  component={ renderField }
                  label="Confirm Password*" />
           <div>
-            <button
+            <Button
                     type="submit"
                     className="btn btn-primary"
                     disabled={ submitting }>
               Submit
-            </button>
+            </Button>
             <Link
                   to="/"
                   className="btn btn-error"> Cancel
