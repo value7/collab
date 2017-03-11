@@ -66,14 +66,15 @@ export default function({projects, upVote, cancelUpVote, upvoted}) {
         var hasImage = !!projects[key].imgurlink;
         console.log(projects[key].imgurlink);
         console.log(hasImage);
-        return <div>
-        <Wrapper key={i}>
+        return <div key={i}>
+        <Wrapper>
           <Left>
             <Vote>
               <div>{projects[key].votes} Votes</div>
               {upvoted.indexOf(projects[key].id) < 0
               ? <button onClick={() => (upVote(projects[key].id))}>up vote</button>
               : <button onClick={() => (cancelUpVote(projects[key].id))}>take back</button>}
+              <div>Phase: {projects[key].phase}</div>
             </Vote>
             <Text>
               <Link to={"/projects/" +projects[key].id} >

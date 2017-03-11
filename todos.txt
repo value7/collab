@@ -1,3 +1,24 @@
+/- add Phases to Projects
+  /- Phases table
+  /- default State Draft
+  /- move the Project to the next Phase
+  /- only owner can move
+  /- show phase in list
+- add Tasks to Projects
+  - task table
+  - owner can create tasks
+  - members can take tasks
+  - every tasks has an owner
+  - tasks have states
+    - draft | approved | assigned/todo | in progress | done
+- add kanban board
+  - one board per project
+  - owner, state
+
+
+
+
+
 - disable upvote button if user already upvoted
 
 - when logging in update the projects with upvoted
@@ -19,9 +40,8 @@ ddos, error meldungen
                 /- logout
                 /- beim startup schaun ob der jwt abgelaufen ist
                   /- beziehugnsweise der cookie sollte genauso schnell wie der jwt ablaufen
-                - wenn sich ein user einloggt muss ich mir die votes holen
-                  - wenn ein user vom cookie kommt muss ich beim starten der app die votes holen
-                  -
+                /- wenn sich ein user einloggt muss ich mir die votes holen
+                  /- wenn ein user vom cookie kommt muss ich beim starten der app die votes holen
               /- create project
                 /- title
                 /- image (imgur link)
@@ -30,6 +50,9 @@ ddos, error meldungen
                 /- sorted by votes
                 /- image and title
                 /- after detail site the shouldFetchProjects returns false
+                - upvoted project beim user zu halten is retarded
+                - einfach ganz normal bei den projekten speichern wer es upgevoted hat
+                  und dann schaun ob man das selber is
               /- vote for project
                 /- one vote per user
                 /- change vote
@@ -38,14 +61,15 @@ ddos, error meldungen
                 /- ich muss auf refresh die daten holen
                 /- ich muss schaun das es funktioniert wenn man eingeloggt die projekte holt
                 /- und wenn man einloggt und die projekte schon hat
+                - backend checken ob man schon einmal upgevoted hat
               /- view details of project
                 /- list of users who liked it (as an example of getting more details)
                 /- get all Project data when deep Linking to the detail view
                 /- redirect after creation
-              - styling
-                - list
-                - forms
-                - details
+              /- styling
+                /- list
+                /- forms
+                /- details
               - fehlermeldungen
                 - I DONT WANTO
                 - 403

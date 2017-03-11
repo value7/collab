@@ -19,7 +19,7 @@ import ProjectDetails from './containers/ProjectDetails';
 
 import CreateProject from './containers/CreateProjectContainer';
 //router stuff
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 
 import { getUserWithToken } from './actions/user';
@@ -59,7 +59,7 @@ render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={Header} onEnter={onAppInit(store.dispatch)}>
-        <Route path="/About" component={About} />
+        <IndexRoute component={About} />
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />
         <Route path="/createProject" component={UserIsAuthenticated(CreateProject)} />

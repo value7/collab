@@ -1,6 +1,6 @@
 import { INVALIDATE_PROJECTS, REQUEST_PROJECTS, RECEIVE_PROJECTS,
 UPVOTE_PROJECT, UPVOTE_PROJECT_SUCCESS, UPVOTE_PROJECT_FAILURE, CANCEL_UPVOTE_PROJECT, GET_DETAILS,
-GET_PROJECT }
+GET_PROJECT, INCREMENT_STATE }
 from '../actions/projects';
 
 const INITIAL_STATE = {isFetching: false, didInvalidate: false, projects: []};
@@ -73,6 +73,18 @@ export default function(state = INITIAL_STATE, action) {
           [action.projectId]: action.project
         }
       };
+      case INCREMENT_STATE:
+        var phases = ['Draft', 'Planning', 'Execution', 'Completed'];
+        return {
+          ...state,
+          projects: {
+            ...state.projects,
+            [action.projectId]: {
+                ...state.projects[action.projectId],
+                phase: phases[phases.indexOf(state.projects[action.projectId].phase) + 1]
+            }
+          }
+        };
     default:
       return state;
   }

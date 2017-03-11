@@ -17,7 +17,7 @@ const DetailDescription = styled.h3`
   color: #5a5a5a;
 `;
 
-export default function({project}) {
+export default function({project, incrementState}) {
   console.log(project);
   var hasImage = !!project.imgurlink;
   return (
@@ -30,6 +30,8 @@ export default function({project}) {
       <DetailTitle>{project.title}</DetailTitle>
       <DetailDescription>{project.description}</DetailDescription>
       <div>{project.votes}</div>
+      <div>{project.phase}</div>
+      <button onClick={() => (incrementState(project.id))}>move to next state</button>
     </div>
   )
 };

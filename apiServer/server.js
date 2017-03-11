@@ -23,6 +23,22 @@ const pool = new Pool({
   idleTimeoutMillis: 1000
 });
 
+function checkIfOwner(projectId, userId, callback) {
+  pool.query(
+    'select creator from projects where id=$1', [projectId], function(err, result) {
+    if(result.rows.length === 0) {
+      callback(false);
+    } else {
+      if(result.rows[0].creator === userId) {
+        console.log('owner');
+        callback(true);
+      } else {
+        console.log('imposter');
+        callback(false);
+      }
+    }
+  });
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -55,10 +71,12 @@ app.post('/users/validateFields', function(req, res) {
 
 app.get("/api/getAllProjects", function(req, res) {
   pool.query(`
-    select p.id, p.title, p.imgurlink, p.description, count(v.*) as votes from projects as p
+    select p.id, p.title, p.imgurlink, p.description, d.phasename as phase, count(v.*) as votes from projects as p
   	left join votes as v
   		on p.id = v.projectID
-  	group by p.id, p.title, p.imgurLink, p.description
+    left join dim_phases as d
+      on p.phase = d.id
+  	group by p.id, p.title, p.imgurLink, p.description, d.phasename
     order by votes desc;
   `, function(err, result) {
     console.log(result);
@@ -84,15 +102,17 @@ app.post('/api/getDetails', function(req, res) {
 app.post('/api/getProject', function(req, res) {
   console.log('getting project with id: ' + req.body.projectId);
   pool.query(`
-    select count(v.*) as votes, p.id, p.title, p.imgurLink, p.description, u.username as creator, array_agg(member.username) as users from projects as p
+    select count(v.*) as votes, p.id, p.title, p.imgurLink, p.description, d.phasename as phase, u.username as creator, array_agg(member.username) as users from projects as p
 	left join votes as v
 		on v.projectid = p.id
 	join users as u
 		on u.id = p.creator
 	left join users as member
 		on member.id = v.userid
+  left join dim_phases as d
+    on p.phase = d.id
 	where p.id = $1
-	group by p.id, p.title, p.imgurLink, p.description, u.username
+	group by p.id, p.title, p.imgurLink, p.description, d.phasename, u.username
   `, [req.body.projectId], function(err, result) {
     console.log(result.rows);
     res.json(result.rows[0]);
@@ -264,13 +284,33 @@ app.post('/projects/downvote', function(req, res) {
   )
 })
 
+app.post('/projects/incrementState', function(req, res) {
+  //TODO check if Project is already completed
+  checkIfOwner(req.body.projectId, req.decoded.id, function(owner) {
+    if(owner) {
+      pool.query(
+        'update projects set phase = phase + 1 where id = $1', [req.body.projectId], function(err, result) {
+          if(err) {
+            console.log(err);
+            return res.status(403).json({ error: true, message: 'Failed to inc state' });
+          } else {
+            return res.json({});
+          }
+        }
+      )
+    } else {
+      return res.status(403).json({ error: true, message: 'Your are not the owner of the Project' });
+    }
+  })
+})
+
 app.post('/api/createProject', function(req, res) {
   //the decoded jwt is in req.decoded
   console.log('in post createProject');
   console.log(req.body);
   console.log(req.body.title, req.body.imgurLink, req.body.description, req.decoded.name);
   pool.query(
-    'insert into projects(title, imgurLink, date, creator, description) VALUES($1, $2, $3, $4, $5) returning *',
+    'insert into projects(title, imgurLink, date, creator, description, phase) VALUES($1, $2, $3, $4, $5, 1) returning *',
     [req.body.title, req.body.imgurLink, new Date(), req.decoded.id, req.body.description], function(err, result) {
       console.log('after db call to save project');
       console.log('err: ', err);
@@ -300,6 +340,7 @@ app.get("/api/secured", function(req, res) {
   console.log('/api/secured');
   res.json({message: "special secret message"});
 });
+
 
 app.listen(3001, function() {
   console.log("Listening on Port 3001");

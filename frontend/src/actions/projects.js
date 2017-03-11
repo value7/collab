@@ -14,6 +14,8 @@ export const GET_DETAILS = 'GET_DETAILS';
 
 export const GET_PROJECT = 'GET_PROJECT';
 
+export const INCREMENT_STATE = 'INCREMENT_STATE';
+
 const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
 
 export const invalidateProjects = () => ({
@@ -152,6 +154,18 @@ export function cancelUpVote(projectId) {
 
   return {
     type: CANCEL_UPVOTE_PROJECT,
+    projectId: projectId
+  }
+}
+
+export function incrementState(projectId) {
+  console.log(projectId);
+  var postVar = {};
+  postVar.projectId = projectId;
+  const request = axios.post(`${ROOT_URL}/projects/incrementState`, postVar);
+
+  return {
+    type: INCREMENT_STATE,
     projectId: projectId
   }
 }
