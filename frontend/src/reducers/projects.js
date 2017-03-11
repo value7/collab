@@ -58,7 +58,7 @@ export default function(state = INITIAL_STATE, action) {
           ...state.projects,
           [action.projectId]: {
             ...state.projects[action.projectId],
-            users: action.details
+            tasks: action.details
           }
 
         }

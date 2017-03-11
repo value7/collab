@@ -5,8 +5,8 @@
   /- only owner can move
   /- show phase in list
 - add Tasks to Projects
-  - task table
-  - owner can create tasks
+  /- task table
+  - create tasks
   - members can take tasks
   - every tasks has an owner
   - tasks have states
@@ -16,18 +16,13 @@
   - owner, state
 
 
-
-
+- user sollte doch keine votes haben
 
 - disable upvote button if user already upvoted
 
-- when logging in update the projects with upvoted
 
-- when logged in user requests all projects set the flag for the upvoted ones
 
-weil ich den cookie nicht update hab ich ein problem auf refresh
-ich glaub ich muss den cookie updaten
-  TODO: fühlt sich wie ein pfusch an und sollte wohl anders gelöst werden
+
 
 schickt man bei jedem upvote an die db oder wartet ma auf componentWillUnmount
 ddos, error meldungen

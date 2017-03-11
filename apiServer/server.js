@@ -88,11 +88,8 @@ app.get("/api/getAllProjects", function(req, res) {
 app.post('/api/getDetails', function(req, res) {
   console.log('getting details from : ' + req.body.projectId);
   pool.query(`
-    select v.date, u.username
-      from votes as v
-      join users as u
-      	on u.id = v.userid
-      where v.projectid = $1
+    select * from tasks
+    where projectid = $1
   `, [req.body.projectId], function(err, result) {
     console.log(result.rows);
     res.json(result.rows);
