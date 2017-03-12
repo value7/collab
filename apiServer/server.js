@@ -127,7 +127,7 @@ app.post('/users/signup', function(req, res) {
   //check if username is taken
   //database throws an error because of the username unique constraint
   pool.query(
-    'insert into users (username, password, isAdmin) VALUES ($1, $2, false)', [req.body.username, encryptedPassword], function(err, result) {
+    'insert into users (username, password, isAdmin) VALUES ($1, $2, false) returning id', [req.body.username, encryptedPassword], function(err, result) {
     console.log(err);
     console.log(result);
     if(!err && result.rowCount === 1) {

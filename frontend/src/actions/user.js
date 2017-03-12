@@ -16,7 +16,7 @@ export const SIGNIN_USER_FAILURE = 'SIGNIN_USER_FAILURE';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
 
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '/api';
+const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
 
 export function signUpUser(formValues) {
   console.log(formValues);
