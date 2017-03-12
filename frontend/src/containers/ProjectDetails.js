@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { fetchProjectDetailsOrAllIfNeeded, incrementState } from '../actions/projects'
+import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask } from '../actions/projects'
 
 import Details from '../components/Details';
 
@@ -38,6 +38,11 @@ class ProjectDetails extends Component {
     dispatch(incrementState(id));
   }
 
+  addTask = (id) => {
+    const { dispatch } = this.props;
+    dispatch(addTask(id));
+  }
+
   render() {
     const { projects, lastUpdated, isFetching } = this.props;
     console.log(projects);
@@ -64,7 +69,7 @@ class ProjectDetails extends Component {
         {isEmpty
           ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-            <Details incrementState={this.handleIncrementStateClick} project={projects.projects[this.props.params.projectId]} />
+            <Details addTask={this.addTask} incrementState={this.handleIncrementStateClick} project={projects.projects[this.props.params.projectId]} />
             </div>
         }
       </div>

@@ -3,6 +3,8 @@ UPVOTE_PROJECT, UPVOTE_PROJECT_SUCCESS, UPVOTE_PROJECT_FAILURE, CANCEL_UPVOTE_PR
 GET_PROJECT, INCREMENT_STATE }
 from '../actions/projects';
 
+import { ADD_TASK_SUCCESS } from '../actions/addTasks';
+
 const INITIAL_STATE = {isFetching: false, didInvalidate: false, projects: []};
 
 export default function(state = INITIAL_STATE, action) {
@@ -82,6 +84,22 @@ export default function(state = INITIAL_STATE, action) {
             [action.projectId]: {
                 ...state.projects[action.projectId],
                 phase: phases[phases.indexOf(state.projects[action.projectId].phase) + 1]
+            }
+          }
+        };
+      case ADD_TASK_SUCCESS:
+        console.log(action);
+        console.log(state);
+        return {
+          ...state,
+          projects: {
+            ...state.projects,
+            [action.payload.rows[0].projectid]: {
+              ...state.projects[action.payload.rows[0].projectid],
+              tasks: [
+                ...state.projects[action.payload.rows[0].projectid].tasks,
+                action.payload.rows[0]
+              ]
             }
           }
         };

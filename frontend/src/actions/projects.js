@@ -16,6 +16,8 @@ export const GET_PROJECT = 'GET_PROJECT';
 
 export const INCREMENT_STATE = 'INCREMENT_STATE';
 
+export const ADD_TASK = 'ADD_TASK';
+
 const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
 
 export const invalidateProjects = () => ({
@@ -169,6 +171,7 @@ export function incrementState(projectId) {
     projectId: projectId
   }
 }
+
 
 //TODO
 // export function upvoteProjectSuccess(projectId) {

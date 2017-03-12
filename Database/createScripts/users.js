@@ -1,5 +1,6 @@
 const pg = require('pg');
-const connectionString = process.env.DATABASE_URL || 'postgres://postgres:12109872@localhost:5432/collab';
+const config = require('../../apiServer/config/constants');
+const connectionString = process.env.DATABASE_URL || 'postgres://postgres:' + config.config.password + '@localhost:5432/collab';
 
 const client = new pg.Client(connectionString);
 client.connect();

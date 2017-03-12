@@ -18,7 +18,7 @@ const DetailDescription = styled.h3`
   color: #5a5a5a;
 `;
 
-export default function({project, incrementState}) {
+export default function({project, incrementState, addTask}) {
   console.log(project);
   var hasImage = !!project.imgurlink;
   return (
@@ -33,7 +33,7 @@ export default function({project, incrementState}) {
       <div>{project.votes}</div>
       <div>{project.phase}</div>
       <button onClick={() => (incrementState(project.id))}>move to next state</button>
-      <Tasks tasks={project.tasks} />
+      <Tasks tasks={project.tasks} addTask={addTask} projectId={project.id} />
     </div>
   )
 };

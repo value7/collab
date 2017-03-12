@@ -8,11 +8,3 @@ client.connect();
 const query = client.query(
   'CREATE TABLE dim_phases(id SERIAL PRIMARY KEY, phasename varchar(10))');
 query.on('end', () => { client.end(); });
-
-
-var insert = `
-insert into dim_phases values(1, 'Draft');
-insert into dim_phases values(2, 'Planning');
-insert into dim_phases values(3, 'Exection');
-insert into dim_phases values(4, 'Completed');
-`;

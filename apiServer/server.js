@@ -111,8 +111,11 @@ app.post('/api/getProject', function(req, res) {
 	where p.id = $1
 	group by p.id, p.title, p.imgurLink, p.description, d.phasename, u.username
   `, [req.body.projectId], function(err, result) {
-    console.log(result.rows);
-    res.json(result.rows[0]);
+    pool.query('select * from tasks where projectid = $1', [req.body.projectId], function(err, tasks) {
+      result.rows[0].tasks = tasks.rows;
+      console.log(result.rows);
+      res.json(result.rows[0]);
+    })
   })
 });
 
@@ -299,6 +302,19 @@ app.post('/projects/incrementState', function(req, res) {
       return res.status(403).json({ error: true, message: 'Your are not the owner of the Project' });
     }
   })
+})
+
+app.post('/api/projects/addTask', function(req, res) {
+  pool.query('insert into tasks(projectid, title, description, imgurlink, creator) values($1, $2, $3, $4, $5) returning *',
+    [req.body.projectId, req.body.title, req.body.desctiption, req.body.imgurLink, req.decoded.id], function(err, result) {
+      if(err) {
+        console.log('err: ',err);
+        return res.status(403).json({ error: true, message: 'Failed to save Task' });
+      } else {
+        console.log('result: ', result);
+        return res.json(result);
+      }
+    })
 })
 
 app.post('/api/createProject', function(req, res) {
