@@ -1,5 +1,4 @@
 import React from 'react';
-import Tasks from './Tasks';
 
 import styled from 'styled-components';
 
@@ -33,7 +32,6 @@ export default function({project, incrementState, addTask}) {
       <div>{project.votes}</div>
       <div>{project.phase}</div>
       <button onClick={() => (incrementState(project.id))}>move to next state</button>
-      <Tasks tasks={project.tasks} addTask={addTask} projectId={project.id} />
     </div>
   )
 };

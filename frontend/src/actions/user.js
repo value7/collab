@@ -29,6 +29,8 @@ export function signUpUser(formValues) {
 }
 
 export function signUpUserSuccess(user) {
+  cookie.save('token', user.token, { path: '/', maxAge: 86400 });
+  cookie.save('user', user, { path: '/', maxAge: 86400 });
   return {
     type: SIGNUP_USER_SUCCESS,
     payload: user

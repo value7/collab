@@ -12,14 +12,18 @@ import About from './components/About';
 import Admin from './components/Admin';
 import Projects from './containers/Projects';
 
+import Tabs from './components/Tabs';
+
 import SignIn from './containers/SignInFormContainer';
 import SignUp from './containers/SignUpFormContainer';
 
 import ProjectDetails from './containers/ProjectDetails';
+import ProjectTasks from './containers/ProjectTasks';
+import TaskDetails from './containers/TaskDetails';
 
 import CreateProject from './containers/CreateProjectContainer';
 //router stuff
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute, IndexRedirect } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 
 import { getUserWithToken } from './actions/user';
@@ -45,10 +49,10 @@ function onAppInit(dispatch) {
   return (nextState, replace, next) => {
     if(cookie.load('user')) {
       dispatch(getUserWithToken(cookie.load('user')));
-      console.log('whats happening');
+      console.log('logged in from cookie');
       next();
     } else {
-      console.log('no fucking clue');
+      console.log('no cookie no logged in');
       next();
     }
   };
@@ -60,11 +64,16 @@ render(
     <Router history={history}>
       <Route path="/" component={Header} onEnter={onAppInit(store.dispatch)}>
         <IndexRoute component={About} />
-        <Route path="/signin" component={SignIn} />
-        <Route path="/signup" component={SignUp} />
-        <Route path="/createProject" component={UserIsAuthenticated(CreateProject)} />
-        <Route path="/projects" component={Projects} />
-        <Route path="/projects/:projectId" component={ProjectDetails} />
+        <Route path="signin" component={SignIn} />
+        <Route path="signup" component={SignUp} />
+        <Route path="createProject" component={UserIsAuthenticated(CreateProject)} />
+        <Route path="projects" component={Projects} />
+        <Route path="projects/:projectId" component={Tabs}>
+          <IndexRedirect to="overview" />
+          <Route path="tasks" component={ProjectTasks} />
+          <Route path="tasks/:taskId" component={TaskDetails} />
+          <Route path="overview" component={ProjectDetails} />
+        </Route>
         <Route path="/admin" component={UserIsAuthenticated(UserIsAdmin(Admin))}/>
       </Route>
     </Router>

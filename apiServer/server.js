@@ -127,7 +127,7 @@ app.post('/users/signup', function(req, res) {
   //check if username is taken
   //database throws an error because of the username unique constraint
   pool.query(
-    'insert into users (username, password, isAdmin) VALUES ($1, $2, false) returning id', [req.body.username, encryptedPassword], function(err, result) {
+    'insert into users (username, password) VALUES ($1, $2) returning id', [req.body.username, encryptedPassword], function(err, result) {
     console.log(err);
     console.log(result);
     if(!err && result.rowCount === 1) {
@@ -306,7 +306,7 @@ app.post('/projects/incrementState', function(req, res) {
 
 app.post('/api/projects/addTask', function(req, res) {
   pool.query('insert into tasks(projectid, title, description, imgurlink, creator) values($1, $2, $3, $4, $5) returning *',
-    [req.body.projectId, req.body.title, req.body.desctiption, req.body.imgurLink, req.decoded.id], function(err, result) {
+    [req.body.projectId, req.body.title, req.body.description, req.body.imgurLink, req.decoded.id], function(err, result) {
       if(err) {
         console.log('err: ',err);
         return res.status(403).json({ error: true, message: 'Failed to save Task' });
