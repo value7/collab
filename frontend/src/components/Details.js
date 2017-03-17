@@ -2,6 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import ChatContainer from '../containers/ChatContainer';
+
 const DetailImage = styled.img`
   width: 100%;
 `;
@@ -32,6 +34,8 @@ export default function({project, incrementState, addTask}) {
       <div>{project.votes}</div>
       <div>{project.phase}</div>
       <button onClick={() => (incrementState(project.id))}>move to next state</button>
+      {/*}<Chat channel={"/" + project.id + "/"} /> */}
+      <ChatContainer projectId={project.id} taskId={0}/>
     </div>
   )
 };

@@ -8,11 +8,13 @@ import validateUserFields from './validateUserFields';
 import createProject from './createProject';
 import addTasks from './addTasks';
 import projects from './projects';
+import chats from './chats';
 
 const rootReducer = combineReducers({
   form: reduxFormReducer,
   user,
   projects,
+  chats,
   createProject,
   addTasks,
   validateUserFields,

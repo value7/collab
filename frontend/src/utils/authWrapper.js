@@ -26,6 +26,13 @@ export const VisibleOnlyAdmin = UserAuthWrapper({
   FailureComponent: null
 })
 
+// export const VisibleOnlyProjectAdmin = UserAuthWrapper({
+//   authSelector: state => state,
+//   wrapperDisplayName: 'VisibleOnlyProjectAdmin',
+//   predicate: state => state,
+//   FailureComponent: null
+// })
+
 export const VisibleOnlyLoggedIn = UserAuthWrapper({
   authSelector: state => state.user,
   wrapperDisplayName: 'VisibleOnlyLoggedIn',

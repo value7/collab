@@ -6,7 +6,7 @@
   /- show phase in list
 - add Tasks to Projects
   /- task table
-  - create tasks
+  /- create tasks
   - members can take tasks
   - every tasks has an owner
   - tasks have states
@@ -25,7 +25,6 @@
 
 
 schickt man bei jedem upvote an die db oder wartet ma auf componentWillUnmount
-ddos, error meldungen
 
 ////////////////////////////////////////////////////////////////////////////////
             - mvp definieren

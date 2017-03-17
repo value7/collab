@@ -57,9 +57,9 @@ const Desc = styled.div`
   color: #4e4e4e;
 `;
 
-export default function({projects, upVote, cancelUpVote, upvoted}) {
+export default function({projects, upVote, cancelUpVote, canUpvote, upvoted}) {
   console.log(projects);
-
+  console.log(canUpvote);
   return (
     <div>
       {Object.keys(projects).map((key, i) => {
@@ -71,9 +71,11 @@ export default function({projects, upVote, cancelUpVote, upvoted}) {
           <Left>
             <Vote>
               <div>{projects[key].votes} Votes</div>
+              {canUpvote ? <div>
               {upvoted.indexOf(projects[key].id) < 0
               ? <button onClick={() => (upVote(projects[key].id))}>up vote</button>
-              : <button onClick={() => (cancelUpVote(projects[key].id))}>take back</button>}
+              : <button onClick={() => (cancelUpVote(projects[key].id))}>take back</button>} </div>
+              : <div><Link to={"/signin?redirect=projects"} >log in</Link></div>}
               <div>Phase: {projects[key].phase}</div>
             </Vote>
             <Text>

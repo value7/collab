@@ -2,6 +2,23 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
+var http = require('http').Server(app);
+const io = require('socket.io')(http);
+const chat = require('./chat');
+// chat.init(io);
+
+// io.on('connection', function(socket) {
+//   console.log('a user connected');
+// });
+
+
+// (function() {
+//   var timeout = setInterval(function() {
+//     io.send('hello world');
+//     console.log('sent hello word');
+//   }, 5000);
+// })();
+
 //postgres and authentication stuff
 const jwt = require('jsonwebtoken');
 const config = require('./config/constants').config;
@@ -94,6 +111,14 @@ app.post('/api/getDetails', function(req, res) {
     console.log(result.rows);
     res.json(result.rows);
   })
+});
+
+app.post('/api/getChat', function(req, res) {
+  pool.query(`
+    select * from chats where projectId = $1 and taskId = $2
+    `, [req.body.projectId, req.body.taskId], function(err, result) {
+      res.json(result.rows);
+    });
 });
 
 app.post('/api/getProject', function(req, res) {
@@ -251,6 +276,19 @@ app.use(function(request, response, next) {
   }
 });
 
+app.post('/api/addMessage', function(req, res) {
+  pool.query(`
+    insert into chats(projectid, taskid, message, userid, date)
+    values($1, $2, $3, $4, $5)
+    `, [req.body.projectId, req.body.taskId, req.body.message, req.decoded.id, new Date()], function(err, result) {
+      if(err) {
+        return res.status(403).json({ error: true, message: 'Failed to save Upvote' });
+      } else {
+        return res.json({});
+      }
+    })
+})
+
 //upvote
 app.post('/projects/upvote', function(req, res) {
   console.log(req.body);
@@ -355,6 +393,6 @@ app.get("/api/secured", function(req, res) {
 });
 
 
-app.listen(3001, function() {
+http.listen(3001, function() {
   console.log("Listening on Port 3001");
 });

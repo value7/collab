@@ -6,11 +6,14 @@ import AddTask from '../containers/AddTaskContainer';
 
 const Box = styled.div`
   border: 1px solid #bbbbbb;
-  margin: 15px;
-  width: 32%;
+  border-radius: 4px;
+  margin: 3%;
+  width: 27%;
   display: inline-block;
   text-align: center;
-  min-height: 70px;
+  min-height: 80px;
+  padding: 4px;
+  background-color: #eff3f7;
 `;
 const Image = styled.img`
   max-width: 35%;

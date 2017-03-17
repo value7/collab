@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import reducer from './reducers'
 import cookie from 'react-cookie';
+import io from 'socket.io-client';
 
 import Header from './containers/Header';
 import About from './components/About';
@@ -44,6 +45,9 @@ const store = createStore(
   reducer,
   applyMiddleware(...middleware)
 )
+
+const socket = io('http://127.0.0.1:3001');
+socket.on('message', (payload) => console.log(payload));
 
 function onAppInit(dispatch) {
   return (nextState, replace, next) => {

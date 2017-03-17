@@ -68,7 +68,7 @@ class Projects extends Component {
         {isEmpty
           ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <ProjectList projects={items} upvoted={user.votes} cancelUpVote={this.handleCancelUpVoteClick} upVote={this.handleUpVoteClick}/>
+              <ProjectList projects={items} upvoted={user.votes} canUpvote={user.user !== null} cancelUpVote={this.handleCancelUpVoteClick} upVote={this.handleUpVoteClick}/>
             </div>
         }
       </div>
