@@ -105,8 +105,13 @@ app.get("/api/getAllProjects", function(req, res) {
 app.post('/api/getDetails', function(req, res) {
   console.log('getting details from : ' + req.body.projectId);
   pool.query(`
-    select * from tasks
-    where projectid = $1
+    select t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state, array_agg(u.username) as members from tasks as t
+join taskowners as o
+	on t.id = o.taskid
+join users as u
+	on o.userid = u.id
+where t.projectid = $1
+group by t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state
   `, [req.body.projectId], function(err, result) {
     console.log(result.rows);
     res.json(result.rows);
@@ -115,7 +120,10 @@ app.post('/api/getDetails', function(req, res) {
 
 app.post('/api/getChat', function(req, res) {
   pool.query(`
-    select * from chats where projectId = $1 and taskId = $2
+    select c.*, u.username from chats as c
+    join users as u
+    		on c.userid = u.id
+    where c.projectId = $1 and c.taskId = $2
     `, [req.body.projectId, req.body.taskId], function(err, result) {
       res.json(result.rows);
     });
@@ -136,7 +144,13 @@ app.post('/api/getProject', function(req, res) {
 	where p.id = $1
 	group by p.id, p.title, p.imgurLink, p.description, d.phasename, u.username
   `, [req.body.projectId], function(err, result) {
-    pool.query('select * from tasks where projectid = $1', [req.body.projectId], function(err, tasks) {
+    pool.query(`select t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state, array_agg(u.username) as members from tasks as t
+join taskowners as o
+	on t.id = o.taskid
+join users as u
+	on o.userid = u.id
+where t.projectid = $1
+group by t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state`, [req.body.projectId], function(err, tasks) {
       result.rows[0].tasks = tasks.rows;
       console.log(result.rows);
       res.json(result.rows[0]);
@@ -279,12 +293,17 @@ app.use(function(request, response, next) {
 app.post('/api/addMessage', function(req, res) {
   pool.query(`
     insert into chats(projectid, taskid, message, userid, date)
-    values($1, $2, $3, $4, $5)
+    values($1, $2, $3, $4, $5) returning *
     `, [req.body.projectId, req.body.taskId, req.body.message, req.decoded.id, new Date()], function(err, result) {
       if(err) {
         return res.status(403).json({ error: true, message: 'Failed to save Upvote' });
       } else {
-        return res.json({});
+        pool.query(`select c.*, u.username from chats as c
+        join users as u
+        		on c.userid = u.id
+        where c.id = $1`, [result.rows[0].id], function(err, message) {
+          return res.json(message.rows[0]);
+        })
       }
     })
 })
@@ -353,6 +372,23 @@ app.post('/api/projects/addTask', function(req, res) {
         return res.json(result);
       }
     })
+})
+
+app.post('/projects/takeTask', function(req, res) {
+  pool.query('insert into taskowners (userid, taskid, date) values ($1, $2, $3) returning id, taskid', [req.decoded.id, req.body.taskId, new Date()], function(err, result) {
+    if(err) {
+      return res.status(403).json({error: true, message: 'Failed to take task'});
+    } else {
+      pool.query('select username from users where id = $1', [req.decoded.id], function(err, user) {
+        if(err) {
+          return res.status(403).json({error: true, message: 'Failed to get user'});
+        } else {
+          console.log({taskId: result.rows[0].taskid, user: user.rows[0].username});
+          return res.json({taskId: result.rows[0].taskid, user: user.rows[0].username});
+        }
+      })
+    }
+  })
 })
 
 app.post('/api/createProject', function(req, res) {

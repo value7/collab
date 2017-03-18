@@ -42,11 +42,19 @@ class ChatContainer extends Component {
     if(chats.length > 0) {
       var chat = chats.filter((chat) => chat.taskId === taskId && chat.projectId === projectId)[0];
       console.log(chat);
-      isEmpty = false
-      isFetching = chat.isFetching || false;
-      lastUpdated = chat.lastUpdated || null;
+      if(chat) {
+        isEmpty = false
+        isFetching = chat.isFetching || false;
+        lastUpdated = chat.lastUpdated || null;
+      } else {
+        isEmpty = true;
+        isFetching = false;
+        lastUpdated = null;
+      }
     } else {
       isEmpty = true;
+      isFetching = false;
+      lastUpdated = null;
     }
     return (
       <div>

@@ -21,6 +21,7 @@ import SignUp from './containers/SignUpFormContainer';
 import ProjectDetails from './containers/ProjectDetails';
 import ProjectTasks from './containers/ProjectTasks';
 import TaskDetails from './containers/TaskDetails';
+import AddTask from './containers/AddTaskContainer';
 
 import CreateProject from './containers/CreateProjectContainer';
 //router stuff
@@ -46,8 +47,8 @@ const store = createStore(
   applyMiddleware(...middleware)
 )
 
-const socket = io('http://127.0.0.1:3001');
-socket.on('message', (payload) => console.log(payload));
+// const socket = io('http://127.0.0.1:3001');
+// socket.on('message', (payload) => console.log(payload));
 
 function onAppInit(dispatch) {
   return (nextState, replace, next) => {
@@ -77,6 +78,7 @@ render(
           <Route path="tasks" component={ProjectTasks} />
           <Route path="tasks/:taskId" component={TaskDetails} />
           <Route path="overview" component={ProjectDetails} />
+          <Route path="addTask" component={AddTask} />
         </Route>
         <Route path="/admin" component={UserIsAuthenticated(UserIsAdmin(Admin))}/>
       </Route>

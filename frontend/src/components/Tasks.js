@@ -40,7 +40,6 @@ export default function({tasks, projectId}) {
           </Box>
         </Link>
       ): null}
-      <AddTask projectId={projectId}/>
     </div>
   )
 };

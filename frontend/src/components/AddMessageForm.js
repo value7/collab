@@ -31,7 +31,7 @@ const validateAndAddTask = (values, dispatch, props) => {
       // Note: Error's "data" is in result.payload.response.data (inside "response")
       // success's "data" is in result.payload.data
       if (result.payload.response && result.payload.response.status !== 200) {
-        dispatch(addMessageFailure(result.payload.response.data));
+        dispatch(addMessageFailure(result.payload.response.data, props.projectId, props.taskId));
         throw new SubmissionError(result.payload.response.data);
         //TODO this does nothing when the server dies...
       }
@@ -40,7 +40,7 @@ const validateAndAddTask = (values, dispatch, props) => {
       //If you use localStorage instead of sessionStorage, then this w/ persisted across tabs and new windows.
       //sessionStorage = persisted only in current tab
       //let other components know that everything is fine by updating the redux` state
-      dispatch(addMessageSuccess(result.payload.data));//ps: this is same as dispatching RESET_USER_FIELDS
+      dispatch(addMessageSuccess(result.payload.data, props.projectId, props.taskId));//ps: this is same as dispatching RESET_USER_FIELDS
       //browserHistory.push("/projects/" + result.payload.data.rows[0].id);
     });
 };

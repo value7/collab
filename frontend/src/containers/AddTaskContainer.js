@@ -15,8 +15,7 @@ function mapStateToProps(state, ownProps) {
   console.log(state);
   console.log(ownProps);
   return {
-    addTasks: state.addTasks,
-    projectId: ownProps.projectId
+    addTasks: state.addTasks
   };
 }
 

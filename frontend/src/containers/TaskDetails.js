@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask } from '../actions/projects'
+import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask, requestTakeTask } from '../actions/projects';
 
 import TaskDetail from '../components/TaskDetail';
+import ChatContainer from './ChatContainer';
 
 import styled from 'styled-components';
 
@@ -38,27 +39,29 @@ class TaskDetails extends Component {
     dispatch(incrementState(id));
   }
 
+  handleTakeTaskClick = () => {
+    const { dispatch, params } = this.props;
+    dispatch(requestTakeTask(params.taskId));
+  }
+
   addTask = (id) => {
     const { dispatch } = this.props;
     dispatch(addTask(id));
   }
 
   render() {
-    const { projects, lastUpdated, isFetching } = this.props;
-    console.log(projects);
-    console.log(this.props.params.projectId);
-    console.log(this.props.params.taskId);
-    console.log(projects.projects[this.props.params.projectId]);
+    const { projects, user, lastUpdated, isFetching } = this.props;
+    console.log(user);
     var items = projects.projects;
     const isEmpty = items.length === 0;
     var task;
-    if(this.props.params.taskId) {
-      var index = projects.projects[this.props.params.projectId].tasks.findIndex(task =>
-        task.id==this.props.params.taskId
-      );
-      task = projects.projects[this.props.params.projectId].tasks[index];
-      console.log(index);
-      console.log(task);
+    if(!isEmpty) {
+      if(this.props.params.taskId) {
+        var index = projects.projects[this.props.params.projectId].tasks.findIndex(task =>
+          task.id==this.props.params.taskId
+        );
+        task = projects.projects[this.props.params.projectId].tasks[index];
+      }
     }
     return (
       <div>
@@ -79,7 +82,8 @@ class TaskDetails extends Component {
         {isEmpty
           ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-            <TaskDetail task={task} />
+            <TaskDetail task={task} takeTask={this.handleTakeTaskClick} user={user.user}/>
+            <ChatContainer projectId={this.props.params.projectId} taskId={this.props.params.taskId}/>
             </div>
         }
       </div>
@@ -88,7 +92,7 @@ class TaskDetails extends Component {
 }
 
 const mapStateToProps = state => {
-  const { projects } = state
+  const { projects, user } = state
   const {
     isFetching,
     lastUpdated
@@ -98,6 +102,7 @@ const mapStateToProps = state => {
 
   return {
     projects,
+    user,
     isFetching,
     lastUpdated
   }

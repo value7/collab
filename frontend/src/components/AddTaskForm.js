@@ -23,7 +23,7 @@ function validate(values) {
 //For any field errors upon submission (i.e. not instant check)
 const validateAndAddTask = (values, dispatch, props) => {
   console.log(props);
-  values.projectId = props.projectId;
+  values.projectId = props.params.projectId;
   return dispatch(addTask(values))
     .then((result) => {
       console.log(result);

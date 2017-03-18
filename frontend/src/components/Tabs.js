@@ -7,7 +7,7 @@ class Tabs extends Component {
   componentDidMount() {
     console.log(this);
   }
-  
+
   render() {
     return (
       <div>
@@ -15,6 +15,8 @@ class Tabs extends Component {
         <div><Link to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/overview"}>Overview</Link></div>
         {' '}
         <div><Link to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/tasks"}>Tasks</Link></div>
+        {' '}
+        <div><Link to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/addTask"}>Add Task</Link></div>
         {' '}
         <div>{this.props.children}</div>
       </div>

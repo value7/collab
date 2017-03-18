@@ -57,6 +57,7 @@ const fetchChat = (projectId, taskId) => dispatch => {
 
 
 export function addMessage(formValues) {
+  console.log(formValues);
   const request = axios.post(`${ROOT_URL}/api/addMessage`, formValues);
   console.log(request);
   return {
@@ -65,7 +66,7 @@ export function addMessage(formValues) {
   };
 }
 
-export function addMessageSuccess(message) {
+export function addMessageSuccess(message, projectId, taskId) {
 
   return {
     type: ADD_MESSAGE_SUCCESS,
@@ -73,7 +74,7 @@ export function addMessageSuccess(message) {
   };
 }
 
-export function addMessageFailure(error) {
+export function addMessageFailure(error, projectId, taskId) {
   return {
     type: ADD_MESSAGE_FAILURE,
     payload: error

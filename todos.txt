@@ -7,19 +7,54 @@
 - add Tasks to Projects
   /- task table
   /- create tasks
-  - members can take tasks
-  - every tasks has an owner
-  - tasks have states
-    - draft | approved | assigned/todo | in progress | done
+  /- members can take tasks
+  /- get members from server
+  - show if you are a member on frontend
+  /- tasks have states
+    /- draft | approved | assigned/todo | in progress | done
+    - state can be moved by owner
+  - style task details
+/- chat over tcp
+  /- create a chat component
+  /- one per project task and issue
+  /- style a chat component
+- mobile friendly menu
+- edit and delete
+  - edit projects
+  - edit tasks
 - add kanban board
   - one board per project
   - owner, state
+- issues draft
+- graphql
+- chat hn style (answers votes tree style)
+- normalize state
+  - everything as object and not array ?
+- chat with websockets
+  - one chat
+    - list messages
+      - everyone
+      - with username and date
+      - with authentication
+        - just add the token to the message
+    - send message
+    - socket.io
 
+- security
+  - ssl
+  - https cookie
+  - algorithm check for jwt
 
 - user sollte doch keine votes haben
 
 - disable upvote button if user already upvoted
 
+
+taskowners seperate table
+  id
+  taskId
+  userId
+  date
 
 
 

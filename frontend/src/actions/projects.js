@@ -17,6 +17,9 @@ export const GET_PROJECT = 'GET_PROJECT';
 export const INCREMENT_STATE = 'INCREMENT_STATE';
 
 export const ADD_TASK = 'ADD_TASK';
+export const TAKE_TASK = 'TAKE_TASK';
+export const TAKE_TASK_SUCCESS = 'TAKE_TASK_SUCCESS';
+export const TAKE_TASK_FAILURE = 'TAKE_TASK_FAILURE';
 
 const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
 
@@ -171,6 +174,38 @@ export function incrementState(projectId) {
     projectId: projectId
   }
 }
+
+
+export const requestTakeTask = (taskId) => dispatch => {
+  dispatch(takeTask(taskId));
+  var postVar = {};
+  postVar.taskId = taskId;
+  const request = axios.post(`${ROOT_URL}/projects/takeTask`, postVar)
+  .then((result) => {
+      console.log(result);
+      if(result.data && result.data.taskId && result.data.user) {
+        dispatch(takeTaskSuccess(result.data));
+      } else {
+        dispatch(takeTaskFailure(result.statusText));
+      }
+  })
+}
+
+export const takeTask = (taskId) => ({
+  type: TAKE_TASK,
+  taskId: taskId
+})
+
+export const takeTaskSuccess = (json) => ({
+  type: TAKE_TASK_SUCCESS,
+  taskId: json.taskId,
+  user: json.user
+})
+
+export const takeTaskFailure = (error) => ({
+  type: TAKE_TASK_FAILURE,
+  error: error
+});
 
 
 //TODO
