@@ -1,14 +1,25 @@
 import { INVALIDATE_PROJECTS, REQUEST_PROJECTS, RECEIVE_PROJECTS,
 UPVOTE_PROJECT, UPVOTE_PROJECT_SUCCESS, UPVOTE_PROJECT_FAILURE, CANCEL_UPVOTE_PROJECT, GET_DETAILS,
-GET_PROJECT, INCREMENT_STATE }
+GET_PROJECT, INCREMENT_STATE, DELETE_PROJECT_SUCCESS, EDIT_PROJECT_SUCCESS }
 from '../actions/projects';
 
 import { ADD_TASK_SUCCESS } from '../actions/addTasks';
 
+function removeProject(projectId, state) {
+  let copy = Object.assign({}, state);
+  delete copy[projectId];
+  return copy;
+}
+
+function editProject(project, state) {
+  let copy = Object.assign({}, state);
+  copy[project.id] = project;
+  return copy;
+}
+
 const INITIAL_STATE = {isFetching: false, didInvalidate: false, projects: []};
 
 export default function(state = INITIAL_STATE, action) {
-  console.log(action);
   switch(action.type) {
     case INVALIDATE_PROJECTS:
       return { ...state, error:null, didInvalidate: true};
@@ -103,6 +114,18 @@ export default function(state = INITIAL_STATE, action) {
             }
           }
         };
+      case DELETE_PROJECT_SUCCESS:
+        let projects = removeProject(action.projectId, state.projects);
+        return {
+          ...state,
+          projects
+        }
+      case EDIT_PROJECT_SUCCESS:
+        projects = editProject(action.project, state.projects);
+        return {
+          ...state,
+          projects
+        }
     default:
       return state;
   }

@@ -9,19 +9,27 @@
   /- create tasks
   /- members can take tasks
   /- get members from server
-  - show if you are a member on frontend
+  /- show if you are a member on frontend
   /- tasks have states
     /- draft | approved | assigned/todo | in progress | done
     - state can be moved by owner
-  - style task details
+  /- style task details
+/- style tabs
 /- chat over tcp
   /- create a chat component
   /- one per project task and issue
   /- style a chat component
-- mobile friendly menu
+/- mobile friendlierish menu
 - edit and delete
   - edit projects
   - edit tasks
+
+
+
+
+
+
+
 - add kanban board
   - one board per project
   - owner, state

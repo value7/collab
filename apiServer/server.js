@@ -106,9 +106,9 @@ app.post('/api/getDetails', function(req, res) {
   console.log('getting details from : ' + req.body.projectId);
   pool.query(`
     select t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state, array_agg(u.username) as members from tasks as t
-join taskowners as o
+left join taskowners as o
 	on t.id = o.taskid
-join users as u
+left join users as u
 	on o.userid = u.id
 where t.projectid = $1
 group by t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state
@@ -145,9 +145,9 @@ app.post('/api/getProject', function(req, res) {
 	group by p.id, p.title, p.imgurLink, p.description, d.phasename, u.username
   `, [req.body.projectId], function(err, result) {
     pool.query(`select t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state, array_agg(u.username) as members from tasks as t
-join taskowners as o
+left join taskowners as o
 	on t.id = o.taskid
-join users as u
+left join users as u
 	on o.userid = u.id
 where t.projectid = $1
 group by t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state`, [req.body.projectId], function(err, tasks) {
@@ -360,6 +360,48 @@ app.post('/projects/incrementState', function(req, res) {
     }
   })
 })
+
+app.post('/projects/deleteProject', function(req, res) {
+  //TODO check if Project is already completed
+  console.log(req.body);
+  checkIfOwner(req.body.projectId, req.decoded.id, function(owner) {
+    if(owner) {
+      pool.query(
+        'delete from projects where id = $1 returning id', [req.body.projectId], function(err, result) {
+          if(err) {
+            console.log(err);
+            return res.status(403).json({ error: true, message: 'Failed to delete Project' });
+          } else {
+            return res.json({});
+          }
+        }
+      )
+    } else {
+      return res.status(403).json({ error: true, message: 'Your are not the owner of the Project' });
+    }
+  })
+});
+
+app.post('/projects/editProject', function(req, res) {
+  //TODO check if Project is already completed
+  console.log(req.body);
+  checkIfOwner(req.body.projectId, req.decoded.id, function(owner) {
+    if(owner) {
+      pool.query(
+        'UPDATE projects SET title = $1, description = $2, imgurlink = $3 WHERE id = $4 returning *', [req.body.title, req.body.description, req.body.imgurLink, req.body.projectId], function(err, result) {
+          if(err) {
+            console.log(err);
+            return res.status(403).json({ error: true, message: 'Failed to edit Project' });
+          } else {
+            return res.json(result.rows[0]);
+          }
+        }
+      )
+    } else {
+      return res.status(403).json({ error: true, message: 'Your are not the owner of the Project' });
+    }
+  })
+});
 
 app.post('/api/projects/addTask', function(req, res) {
   pool.query('insert into tasks(projectid, title, description, imgurlink, creator) values($1, $2, $3, $4, $5) returning *',

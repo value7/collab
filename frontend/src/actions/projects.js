@@ -21,6 +21,15 @@ export const TAKE_TASK = 'TAKE_TASK';
 export const TAKE_TASK_SUCCESS = 'TAKE_TASK_SUCCESS';
 export const TAKE_TASK_FAILURE = 'TAKE_TASK_FAILURE';
 
+export const DELETE_PROJECT = 'DELETE_PROJECT';
+export const DELETE_PROJECT_SUCCESS = 'DELETE_PROJECT_SUCCESS';
+export const DELETE_PROJECT_FAILURE = 'DELETE_PROJECT_FAILURE';
+
+
+export const EDIT_PROJECT = 'EDIT_PROJECT';
+export const EDIT_PROJECT_SUCCESS = 'EDIT_PROJECT_SUCCESS';
+export const EDIT_PROJECT_FAILURE = 'EDIT_PROJECT_FAILURE';
+
 const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
 
 export const invalidateProjects = () => ({
@@ -207,6 +216,58 @@ export const takeTaskFailure = (error) => ({
   error: error
 });
 
+export const requestDeleteProject = (projectId) => dispatch => {
+  dispatch(deleteProject(projectId));
+  var postVar = {};
+  postVar.projectId = projectId;
+  const request = axios.post(`${ROOT_URL}/projects/deleteProject`, postVar)
+  .then((result) => {
+      console.log(result);
+      if(result.status === 200) {
+        dispatch(deleteProjectSuccess(projectId));
+      } else {
+        dispatch(deleteProjectFailure(result.statusText));
+      }
+  })
+}
+
+export const deleteProject = (projectId) => ({
+  type: DELETE_PROJECT,
+  projectId: projectId
+})
+
+export const deleteProjectSuccess = (projectId) => ({
+  type: DELETE_PROJECT_SUCCESS,
+  projectId: projectId,
+})
+
+export const deleteProjectFailure = (error) => ({
+  type: DELETE_PROJECT_FAILURE,
+  error: error
+});
+
+export function editProject(formValues) {
+  const request = axios.post(`${ROOT_URL}/projects/editProject`, formValues);
+  console.log(request);
+  return {
+    type: EDIT_PROJECT,
+    payload: request
+  };
+}
+
+export function editProjectSuccess(project) {
+  return {
+    type: EDIT_PROJECT_SUCCESS,
+    project: project
+  };
+}
+
+export function editProjectFailure(error) {
+  return {
+    type: EDIT_PROJECT_FAILURE,
+    payload: error
+  };
+}
 
 //TODO
 // export function upvoteProjectSuccess(projectId) {

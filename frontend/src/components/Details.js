@@ -27,14 +27,13 @@ export default function({project, incrementState, addTask}) {
       {
         hasImage ?
         <DetailImage src={project.imgurlink} /> :
-        <p> sadly there is no image for this project </p>
+        null
       }
       <DetailTitle>{project.title}</DetailTitle>
       <DetailDescription>{project.description}</DetailDescription>
       <div>{project.votes}</div>
       <div>{project.phase}</div>
       <button onClick={() => (incrementState(project.id))}>move to next state</button>
-      {/*}<Chat channel={"/" + project.id + "/"} /> */}
       <ChatContainer projectId={project.id} taskId={0}/>
     </div>
   )

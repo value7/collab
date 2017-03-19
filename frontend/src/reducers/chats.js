@@ -51,7 +51,6 @@ function addMessageError(array, action) {
 }
 
 export default function(state = [], action) {
-  console.log(action);
   switch(action.type) {
     case INVALIDATE_CHAT:
       return [...state];  //TODO

@@ -22,6 +22,8 @@ import ProjectDetails from './containers/ProjectDetails';
 import ProjectTasks from './containers/ProjectTasks';
 import TaskDetails from './containers/TaskDetails';
 import AddTask from './containers/AddTaskContainer';
+import EditProject from './containers/EditProjectContainer';
+import DeleteProject from './containers/DeleteProjectContainer';
 
 import CreateProject from './containers/CreateProjectContainer';
 //router stuff
@@ -79,6 +81,8 @@ render(
           <Route path="tasks/:taskId" component={TaskDetails} />
           <Route path="overview" component={ProjectDetails} />
           <Route path="addTask" component={AddTask} />
+          <Route path="deleteProject" component={DeleteProject} />
+          <Route path="editProject" component={EditProject} />
         </Route>
         <Route path="/admin" component={UserIsAuthenticated(UserIsAdmin(Admin))}/>
       </Route>

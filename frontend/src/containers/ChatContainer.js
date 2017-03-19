@@ -9,6 +9,11 @@ import styled from 'styled-components';
 const Updated = styled.p`
   margin: 0;
   font-size: 11px;
+  text-align: right;
+`;
+
+const Margin = styled.div`
+  margin-top: 25px;
 `;
 
 class ChatContainer extends Component {
@@ -57,7 +62,7 @@ class ChatContainer extends Component {
       lastUpdated = null;
     }
     return (
-      <div>
+      <Margin>
         <Updated>
           {lastUpdated &&
             <span>
@@ -78,7 +83,7 @@ class ChatContainer extends Component {
             <Chat chat={chat} />
             </div>
         }
-      </div>
+      </Margin>
     )
   }
 }

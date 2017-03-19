@@ -10,6 +10,7 @@ const Body = styled.div`
   margin: auto;
   background-color: #fafafa;
   height: 100%;
+  margin-top: 25px;
   @media (max-width: 600px) {
     width: 95%;
   }
@@ -18,16 +19,26 @@ const Body = styled.div`
 const StyledHeader = styled.header`
   background-color: #fafafa;
   text-align: right;
+  @media (max-width: 700px) {
+    text-align: center;
+  }
 `;
 
 const HeaderLeft = styled.div`
   float: left;
   display: inline-block;
+  @media (max-width: 700px) {
+    display: block;
+    float: none;
+  }
 `;
 
 const HeaderRight = styled.div`
   text-align: right;
   display: inline-block;
+  @media (max-width: 700px) {
+    display: block;
+  }
 `;
 
 
@@ -35,6 +46,13 @@ const Margin = styled.div`
   margin: 15px;
   display: inline-block;
   font-size: 24px;
+  @media (max-width: 700px) {
+    text-align: center;
+    margin: auto;
+    display: block;
+    padding: 10px;
+    border-bottom: 1px outset #f4f4f4;
+  }
 `;
 
 const OnlyAdminLink = VisibleOnlyAdmin(() => <Margin><Link to="/admin">{'Admin'}</Link></Margin>);

@@ -34,7 +34,6 @@ const INITIAL_STATE = {user: username, status: status, error: error, loading: lo
 
 export default function(state = INITIAL_STATE, action) {
   let error;
-  console.log(action);
   switch(action.type) {
 
     case SIGNUP_USER:// sign up user, set loading = true and status = signup

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
-import { addMessage, addMessageSuccess, addMessageFailure } from '../actions/chats';
+import { editProject, editProjectSuccess, editProjectFailure } from '../actions/projects';
 
 //Client side validation
 function validate(values) {
@@ -10,44 +10,41 @@ function validate(values) {
   var hasErrors = false;
 
   if (!values.title || values.title.trim() === '') {
-    errors.title = 'Enter a Task Title';
+    errors.title = 'Enter a Project Title';
     hasErrors = true;
   }
   if (!values.description || values.description.trim() === '') {
-    errors.description = 'Enter a Description for the Task';
+    errors.description = 'Enter a Description for the Project';
     hasErrors = true;
   }
   return hasErrors && errors;
 }
 
 //For any field errors upon submission (i.e. not instant check)
-const validateAndAddTask = (values, dispatch, props) => {
+const validateAndEditProject = (values, dispatch, props) => {
   console.log(props);
-  values.projectId = props.projectId;
-  values.taskId = props.taskId;
-  return dispatch(addMessage(values))
+  values.projectId = props.params.projectId;
+  return dispatch(editProject(values))
     .then((result) => {
       console.log(result);
       // Note: Error's "data" is in result.payload.response.data (inside "response")
       // success's "data" is in result.payload.data
       if (result.payload.response && result.payload.response.status !== 200) {
-        dispatch(addMessageFailure(result.payload.response.data, props.projectId, props.taskId));
+        dispatch(editProjectFailure(result.payload.response.data));
         throw new SubmissionError(result.payload.response.data);
-        //TODO this does nothing when the server dies...
       }
 
       //Store JWT Token to browser session storage
       //If you use localStorage instead of sessionStorage, then this w/ persisted across tabs and new windows.
       //sessionStorage = persisted only in current tab
       //let other components know that everything is fine by updating the redux` state
-      dispatch(addMessageSuccess(result.payload.data, props.projectId, props.taskId));//ps: this is same as dispatching RESET_USER_FIELDS
-      props.reset('AddMessageForm');
-      //browserHistory.push("/projects/" + result.payload.data.rows[0].id);
+      dispatch(editProjectSuccess(result.payload.data));//ps: this is same as dispatching RESET_USER_FIELDS
+      props.router.push("/projects/" + result.payload.data.id);
     });
 };
 
 
-class AddMessageForm extends Component {
+class EditProjectForm extends Component {
   static contextTypes = {
     router: PropTypes.object
   };
@@ -57,25 +54,36 @@ class AddMessageForm extends Component {
     //always reset that global state back to null when you REMOUNT
     this.props.resetMe();
   }
-
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-    // if ( nextProps.AddMessage.state === 'succeeded') {
-    //   //this.context.router.push('/');
-    //   console.log('successfully added the message');
-    // }
-  }
+  //
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(nextProps);
+  //   if ( nextProps.createProject.state === 'succeeded') {
+  //     this.context.router.push('/');
+  //   }
+  // }
 
   render() {
     console.log(this.props);
+    // TODO ich muss die daten laden wenn ich da herkomm
     const {asyncValidating, handleSubmit, submitting, validate} = this.props;
     return (
       <div className='container'>
-        <form onSubmit={ handleSubmit(validateAndAddTask) }>
+        <form onSubmit={ handleSubmit(validateAndEditProject) }>
           <Field
-                 name="message"
+                 name="title"
                  type="text"
-                 component={ renderField } />
+                 component={ renderField }
+                 label="title" />
+          <Field
+                 name="imgurLink"
+                 type="text"
+                 component={ renderField }
+                 label="imgur Link" />
+          <Field
+                 name="description"
+                 type="text"
+                 component={ renderField }
+                 label="Description" />
           <div>
             <button
                     type="submit"
@@ -95,6 +103,6 @@ class AddMessageForm extends Component {
 }
 
 export default reduxForm({
-  form: 'AddMessageForm', // a unique identifier for this form
+  form: 'EditProjectForm', // a unique identifier for this form
   validate // <--- validation function given to redux-form
-})(AddMessageForm)
+})(EditProjectForm)

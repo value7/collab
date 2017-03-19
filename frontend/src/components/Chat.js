@@ -17,6 +17,7 @@ const UserName = styled.div`
 
 const Text = styled.div`
   background-color: #f4f4f4;
+  padding: 2px;
 `;
 
 export default function({chat}) {

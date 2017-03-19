@@ -9,6 +9,7 @@ import styled from 'styled-components';
 const Updated = styled.p`
   margin: 0;
   font-size: 11px;
+  text-align: right;
 `;
 
 class ProjectDetails extends Component {
