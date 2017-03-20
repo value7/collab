@@ -3,6 +3,8 @@ UPVOTE_PROJECT, UPVOTE_PROJECT_SUCCESS, UPVOTE_PROJECT_FAILURE, CANCEL_UPVOTE_PR
 GET_PROJECT, INCREMENT_STATE, DELETE_PROJECT_SUCCESS, EDIT_PROJECT_SUCCESS }
 from '../actions/projects';
 
+import { CREATE_PROJECT_SUCCESS } from '../actions/createProject';
+
 import { ADD_TASK_SUCCESS } from '../actions/addTasks';
 
 function removeProject(projectId, state) {
@@ -125,6 +127,14 @@ export default function(state = INITIAL_STATE, action) {
         return {
           ...state,
           projects
+        }
+      case CREATE_PROJECT_SUCCESS:
+        return {
+          ...state,
+          projects: {
+            ...state.projects,
+            [action.project.id]: action.project
+          }
         }
     default:
       return state;

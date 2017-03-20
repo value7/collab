@@ -10,7 +10,8 @@ import styled from 'styled-components';
 // `;
 
 const Title = styled.div`
-  font-size: 16px;
+  font-size: 36px;
+  text-align: center;
 `;
 const Description = styled.div`
   font-size: 12px;
@@ -28,12 +29,16 @@ const Creator = styled.div`
 
 export default function({task, takeTask, user}) {
   console.log(task);
-  var assigned = task.assignee ? task.assignee : 'not assigned';
-  var image = task.imgurlink = <Image src={task.imgurlink} />;
-  var member = false;
-  for(var i = 0; i < task.members.length; i++) {
-    if(task.members[i] == user) {
-      member = true;
+  var assigned = '';
+  var image = null;
+  var member = false
+  if(task) {
+    assigned = task.assignee ? task.assignee : 'not assigned';
+    image = task.imgurlink ? <Image src={task.imgurlink} /> : null;
+    for(var i = 0; i < task.members.length; i++) {
+      if(task.members[i] == user) {
+        member = true;
+      }
     }
   }
   // console.log(task.members);
@@ -41,19 +46,19 @@ export default function({task, takeTask, user}) {
   //   console.log(member);
   // }));
   return (<div>
-              <Title>title: {task.title}</Title>
-              <Creator>creator: {task.creator}</Creator>
-              <Description>details: {task.description}</Description>
-              {image}
-              {assigned}
-              members:
-              {task.members.map((member, i) => {
-                return (
-                  <div key={i}>
-                    {member}
-                  </div>
-                )
-              })}
+            {image}
+            <Title>{task ? task.title : null}</Title>
+            <Creator>creator: {task ? task.creator : null}</Creator>
+            <Description>details: {task ? task.description : null}</Description>
+            {assigned}
+            members:
+            {task ? task.members.map((member, i) => {
+              return (
+                <div key={i}>
+                  {member}
+                </div>
+              )
+            }) : null}
             {member ? null : <button onClick={takeTask}>take task</button>}
           </div>
   )

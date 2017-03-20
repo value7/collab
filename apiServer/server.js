@@ -125,7 +125,12 @@ app.post('/api/getChat', function(req, res) {
     		on c.userid = u.id
     where c.projectId = $1 and c.taskId = $2
     `, [req.body.projectId, req.body.taskId], function(err, result) {
-      res.json(result.rows);
+      if(err) {
+        console.log(err);
+        return res.status(403).json({ error: true, message: 'Failed to get Chat' });
+      } else {
+        return res.json(result.rows);
+      }
     });
 });
 

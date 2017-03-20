@@ -14,12 +14,21 @@ const TabLine = styled.div`
   background-color: white;
 `;
 
+const AdminLinks = styled.div`
+  display: inline-block;
+`;
+
 class Tabs extends Component {
   componentDidMount() {
     console.log(this);
   }
 
   render() {
+    var owner
+    if(this.props.projects && this.props.projects.projects && this.props.projects.projects[this.props.params.projectId]) {
+      owner = this.props.projects.projects[this.props.params.projectId].creator === this.props.user.user;
+    }
+    console.log(owner);
     return (
       <div>
         <TabLine>
@@ -30,10 +39,10 @@ class Tabs extends Component {
           {' '}
           <Tab><NavItem to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/addTask"}>Add Task</NavItem></Tab>
           {' '}
+          {owner ? (<AdminLinks>
           <Tab><NavItem to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/editProject"}>Edit Project</NavItem></Tab>
-          {' '}
           <Tab><NavItem to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/deleteProject"}>Delete Project</NavItem></Tab>
-          {' '}
+          </AdminLinks>): null}
         </TabLine>
         <div>{this.props.children}</div>
       </div>
@@ -41,4 +50,11 @@ class Tabs extends Component {
   }
 }
 
-export default connect()(Tabs)
+function mapStateToProps(state, ownProps) {
+  return {
+    user: state.user,
+    projects: state.projects
+  };
+}
+
+export default connect(mapStateToProps)(Tabs)

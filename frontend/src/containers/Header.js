@@ -57,6 +57,7 @@ const Margin = styled.div`
 
 const OnlyAdminLink = VisibleOnlyAdmin(() => <Margin><Link to="/admin">{'Admin'}</Link></Margin>);
 const CreateProject = VisibleOnlyLoggedIn(() => <Margin><Link to="/createProject">{'Create Project'}</Link></Margin>);
+const LogOut = VisibleOnlyLoggedIn(({dispatch}) => <Margin><button onClick={() => dispatch(logoutUser())}>Logout</button></Margin>);
 
 function Header({ children, dispatch }) {
   return (
@@ -76,7 +77,7 @@ function Header({ children, dispatch }) {
           {' '}
           <Margin><Link to="/signup">Sign Up</Link></Margin>
           {' '}
-          <Margin><button onClick={() => dispatch(logoutUser())}>Logout</button></Margin>
+          <LogOut dispatch={dispatch}/>
         </HeaderRight>
       </StyledHeader>
       <Body>{children}</Body>

@@ -45,6 +45,9 @@ const shouldFetchChat = (projectId, taskId, state) => {
 
 const fetchChat = (projectId, taskId) => dispatch => {
   dispatch(requestChat(projectId, taskId));
+  if(taskId == 'overview') {
+    taskId = 0;
+  }
   var postVar = {};
   postVar.projectId = projectId;
   postVar.taskId = taskId;
