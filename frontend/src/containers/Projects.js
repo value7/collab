@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { fetchProjectsIfNeeded, invalidateProjects, upvoteProject, cancelUpVote } from '../actions/projects'
+import { fetchProjectsIfNeeded, invalidateProjects, upvoteProject, cancelUpVote, requestBecomeMember } from '../actions/projects'
 
 import ProjectList from '../components/ProjectList';
 
@@ -43,10 +43,17 @@ class Projects extends Component {
     dispatch(cancelUpVote(id));
   }
 
+  handleBecomeMemberClick = (id) => {
+    const { dispatch } = this.props;
+    dispatch(requestBecomeMember(id));
+  }
+
   render() {
     const { projects, lastUpdated, isFetching, user } = this.props;
     console.log(projects);
     console.log(user.votes);
+    console.log(user);
+    const userName = user && user.user ? user.user : null;
     var items = projects.projects;
     const isEmpty = items.length === 0;
     return (
@@ -68,7 +75,7 @@ class Projects extends Component {
         {isEmpty
           ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <ProjectList projects={items} upvoted={user.votes} canUpvote={user.user !== null} cancelUpVote={this.handleCancelUpVoteClick} upVote={this.handleUpVoteClick}/>
+              <ProjectList userName={userName} projects={items} upvoted={user.votes} canUpvote={user.user !== null} cancelUpVote={this.handleCancelUpVoteClick} upVote={this.handleUpVoteClick} becomeMember={this.handleBecomeMemberClick}/>
             </div>
         }
       </div>

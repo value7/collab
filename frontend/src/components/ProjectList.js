@@ -57,7 +57,12 @@ const Desc = styled.div`
   color: #4e4e4e;
 `;
 
-export default function({projects, upVote, cancelUpVote, canUpvote, upvoted}) {
+const VoteArrow = styled.div`
+  cursor: pointer;
+`;
+
+//TODO reincorporate Phase
+export default function({projects, upVote, cancelUpVote, canUpvote, upvoted, becomeMember, userName}) {
   console.log(projects);
   console.log(canUpvote);
   return (
@@ -73,10 +78,12 @@ export default function({projects, upVote, cancelUpVote, canUpvote, upvoted}) {
               <div>{projects[key].votes} Votes</div>
               {canUpvote ? <div>
               {upvoted.indexOf(projects[key].id) < 0
-              ? <button onClick={() => (upVote(projects[key].id))}>up vote</button>
-              : <button onClick={() => (cancelUpVote(projects[key].id))}>take back</button>} </div>
+              ? <VoteArrow onClick={() => (upVote(projects[key].id))}>▲</VoteArrow>
+              : <VoteArrow onClick={() => (cancelUpVote(projects[key].id))}>▼</VoteArrow>}
+              { projects[key].members.indexOf(userName) < 0 ? <button onClick={() => (becomeMember(projects[key].id))}>become Member</button> : null}
+              </div>
               : <div><Link to={"/signin?redirect=projects"} >log in</Link></div>}
-              <div>Phase: {projects[key].phase}</div>
+
             </Vote>
             <Text>
               <Link to={"/projects/" +projects[key].id} >

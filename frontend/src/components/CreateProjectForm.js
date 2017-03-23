@@ -37,7 +37,7 @@ const validateAndCreateProject = (values, dispatch) => {
       //sessionStorage = persisted only in current tab
       //let other components know that everything is fine by updating the redux` state
       dispatch(createProjectSuccess(result.payload.data));//ps: this is same as dispatching RESET_USER_FIELDS
-      browserHistory.push("/projects/" + result.payload.data.rows[0].id);
+      browserHistory.push("/projects/" + result.payload.data.id);
     });
 };
 

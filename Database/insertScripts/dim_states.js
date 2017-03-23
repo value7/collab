@@ -1,11 +1,10 @@
 const pg = require('pg');
 const config = require('../../apiServer/config/constants');
-console.log(config);
 const connectionString = process.env.DATABASE_URL || 'postgres://postgres:' + config.config.password + '@localhost:5432/collab';
 
 var rows = [{
   id: 1,
-  name: 'draft'
+  name: 'idea'
 },
 {
   id: 2,
@@ -13,14 +12,6 @@ var rows = [{
 },
 {
   id: 3,
-  name: 'assigned'
-},
-{
-  id: 4,
-  name: 'inProgress'
-},
-{
-  id: 5,
   name: 'done'
 }
 ]

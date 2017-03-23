@@ -25,10 +25,13 @@ export const DELETE_PROJECT = 'DELETE_PROJECT';
 export const DELETE_PROJECT_SUCCESS = 'DELETE_PROJECT_SUCCESS';
 export const DELETE_PROJECT_FAILURE = 'DELETE_PROJECT_FAILURE';
 
-
 export const EDIT_PROJECT = 'EDIT_PROJECT';
 export const EDIT_PROJECT_SUCCESS = 'EDIT_PROJECT_SUCCESS';
 export const EDIT_PROJECT_FAILURE = 'EDIT_PROJECT_FAILURE';
+
+export const BECOME_MEMBER = 'BECOME_MEMBER';
+export const BECOME_MEMBER_SUCCESS = 'BECOME_MEMBER_SUCCESS';
+export const BECOME_MEMBER_FAILURE = 'BECOME_MEMBER_FAILURE';
 
 const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
 
@@ -268,6 +271,37 @@ export function editProjectFailure(error) {
     payload: error
   };
 }
+
+export const requestBecomeMember = (projectId) => dispatch => {
+  dispatch(becomeMember(projectId));
+  var postVar = {};
+  postVar.taskId = projectId;
+  const request = axios.post(`${ROOT_URL}/projects/becomeMember`, postVar)
+  .then((result) => {
+      console.log(result);
+      if(result.data && result.data.projectid && result.data.user) {
+        dispatch(becomeMemberSuccess(result.data));
+      } else {
+        dispatch(becomeMemberFailure(result.statusText));
+      }
+  })
+}
+
+export const becomeMember = (projectId) => ({
+  type: BECOME_MEMBER,
+  projectId: projectId
+})
+
+export const becomeMemberSuccess = (json) => ({
+  type: BECOME_MEMBER_SUCCESS,
+  projectId: json.projectid,
+  user: json.user
+})
+
+export const becomeMemberFailure = (error) => ({
+  type: BECOME_MEMBER_FAILURE,
+  error: error
+});
 
 //TODO
 // export function upvoteProjectSuccess(projectId) {

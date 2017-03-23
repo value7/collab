@@ -33,10 +33,10 @@ export default function({task, takeTask, user}) {
   var image = null;
   var member = false
   if(task) {
-    assigned = task.assignee ? task.assignee : 'not assigned';
+    // TODO assigned sollte state sein
     image = task.imgurlink ? <Image src={task.imgurlink} /> : null;
-    for(var i = 0; i < task.members.length; i++) {
-      if(task.members[i] == user) {
+    for(var i = 0; i < task.taskowners.length; i++) {
+      if(task.taskowners[i] == user) {
         member = true;
       }
     }
@@ -50,12 +50,11 @@ export default function({task, takeTask, user}) {
             <Title>{task ? task.title : null}</Title>
             <Creator>creator: {task ? task.creator : null}</Creator>
             <Description>details: {task ? task.description : null}</Description>
-            {assigned}
-            members:
-            {task ? task.members.map((member, i) => {
+            taskOwners:
+            {task ? task.taskowners.map((taskOwner, i) => {
               return (
                 <div key={i}>
-                  {member}
+                  {taskOwner}
                 </div>
               )
             }) : null}

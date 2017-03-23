@@ -1,6 +1,7 @@
 import { INVALIDATE_PROJECTS, REQUEST_PROJECTS, RECEIVE_PROJECTS,
 UPVOTE_PROJECT, UPVOTE_PROJECT_SUCCESS, UPVOTE_PROJECT_FAILURE, CANCEL_UPVOTE_PROJECT, GET_DETAILS,
-GET_PROJECT, INCREMENT_STATE, DELETE_PROJECT_SUCCESS, EDIT_PROJECT_SUCCESS }
+GET_PROJECT, INCREMENT_STATE, DELETE_PROJECT_SUCCESS, EDIT_PROJECT_SUCCESS,
+BECOME_MEMBER, BECOME_MEMBER_SUCCESS, BECOME_MEMBER_FAILURE }
 from '../actions/projects';
 
 import { CREATE_PROJECT_SUCCESS } from '../actions/createProject';
@@ -133,9 +134,21 @@ export default function(state = INITIAL_STATE, action) {
           ...state,
           projects: {
             ...state.projects,
-            [action.project.id]: action.project
+            [action.payload.id]: action.payload
           }
         }
+      case BECOME_MEMBER_SUCCESS: {
+        return {
+          ...state,
+          projects: {
+            ...state.projects,
+            [action.projectId]: {
+              ...state.projects[action.projectId],
+              members: state.projects[action.projectId].members.concat(action.user)
+            }
+          }
+        }
+      }
     default:
       return state;
   }

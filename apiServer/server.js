@@ -88,12 +88,18 @@ app.post('/users/validateFields', function(req, res) {
 
 app.get("/api/getAllProjects", function(req, res) {
   pool.query(`
-    select p.id, p.title, p.imgurlink, p.description, d.phasename as phase, count(v.*) as votes from projects as p
+    select p.id, p.title, p.imgurlink, u.username as creator, p.description, d.phasename as phase, count(v.*) as votes, array_remove(array_agg(mu.username), NULL) as members from projects as p
   	left join votes as v
   		on p.id = v.projectID
     left join dim_phases as d
       on p.phase = d.id
-  	group by p.id, p.title, p.imgurLink, p.description, d.phasename
+    join users as u
+      on u.id = p.creator
+    left join projectmembers as pm
+      on p.id = pm.projectid
+    left join users as mu
+      on pm.userid = mu.id
+    group by p.id, p.title, p.imgurLink, u.username, p.description, d.phasename
     order by votes desc;
   `, function(err, result) {
     console.log(result);
@@ -105,13 +111,18 @@ app.get("/api/getAllProjects", function(req, res) {
 app.post('/api/getDetails', function(req, res) {
   console.log('getting details from : ' + req.body.projectId);
   pool.query(`
-    select t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state, array_agg(u.username) as members from tasks as t
-left join taskowners as o
-	on t.id = o.taskid
-left join users as u
-	on o.userid = u.id
-where t.projectid = $1
-group by t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state
+    select t.id, t.projectid, t.title, t.description, t.imgurlink, c.username as creator, states.statename, array_remove(array_agg(member.username), NULL) as taskOwners
+    from tasks as t
+    join users as c
+    	on c.id = t.creator
+    left join taskowners as m
+    	on m.taskid = t.id
+    left join users as member
+    	on member.id = m.userid
+    left join dim_states as states
+    	on states.id = t.state
+    where t.projectid = $1
+    group by t.id, t.projectid, t.title, t.description, t.imgurlink, c.username, states.statename
   `, [req.body.projectId], function(err, result) {
     console.log(result.rows);
     res.json(result.rows);
@@ -137,7 +148,7 @@ app.post('/api/getChat', function(req, res) {
 app.post('/api/getProject', function(req, res) {
   console.log('getting project with id: ' + req.body.projectId);
   pool.query(`
-    select count(v.*) as votes, p.id, p.title, p.imgurLink, p.description, d.phasename as phase, u.username as creator, array_agg(member.username) as users from projects as p
+    select count(v.*) as votes, p.id, p.title, p.imgurLink, p.description, d.phasename as phase, u.username as creator, array_agg(member.username) as users, array_remove(array_agg(mu.username), NULL) as members from projects as p
 	left join votes as v
 		on v.projectid = p.id
 	join users as u
@@ -146,16 +157,27 @@ app.post('/api/getProject', function(req, res) {
 		on member.id = v.userid
   left join dim_phases as d
     on p.phase = d.id
+       left join projectmembers as pm
+      on p.id = pm.projectid
+    left join users as mu
+      on pm.userid = mu.id
 	where p.id = $1
 	group by p.id, p.title, p.imgurLink, p.description, d.phasename, u.username
   `, [req.body.projectId], function(err, result) {
-    pool.query(`select t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state, array_agg(u.username) as members from tasks as t
-left join taskowners as o
-	on t.id = o.taskid
-left join users as u
-	on o.userid = u.id
-where t.projectid = $1
-group by t.id, t.projectid, t.title, t.description, t.imgurlink, t.creator, t.state`, [req.body.projectId], function(err, tasks) {
+    pool.query(`
+      select t.id, t.projectid, t.title, t.description, t.imgurlink, c.username as creator, states.statename, array_remove(array_agg(member.username), NULL) as taskOwners
+      from tasks as t
+      join users as c
+        on c.id = t.creator
+      left join taskowners as m
+        on m.taskid = t.id
+      left join users as member
+        on member.id = m.userid
+      left join dim_states as states
+        on states.id = t.state
+      where t.projectid = $1
+      group by t.id, t.projectid, t.title, t.description, t.imgurlink, c.username, states.statename
+`, [req.body.projectId], function(err, tasks) {
       result.rows[0].tasks = tasks.rows;
       console.log(result.rows);
       res.json(result.rows[0]);
@@ -296,6 +318,9 @@ app.use(function(request, response, next) {
 });
 
 app.post('/api/addMessage', function(req, res) {
+  if (req.body.message === "") {
+    return res.status(403).json({ error: true, message: 'no empty messages allowed' });
+  }
   pool.query(`
     insert into chats(projectid, taskid, message, userid, date)
     values($1, $2, $3, $4, $5) returning *
@@ -409,7 +434,7 @@ app.post('/projects/editProject', function(req, res) {
 });
 
 app.post('/api/projects/addTask', function(req, res) {
-  pool.query('insert into tasks(projectid, title, description, imgurlink, creator) values($1, $2, $3, $4, $5) returning *',
+  pool.query('insert into tasks(projectid, title, description, imgurlink, creator, state) values($1, $2, $3, $4, $5, 1) returning *',
     [req.body.projectId, req.body.title, req.body.description, req.body.imgurLink, req.decoded.id], function(err, result) {
       if(err) {
         console.log('err: ',err);
@@ -438,6 +463,23 @@ app.post('/projects/takeTask', function(req, res) {
   })
 })
 
+app.post('/projects/becomeMember', function(req, res) {
+  pool.query('insert into projectmembers(userid, projectid, date) values ($1, $2, $3) returning id, projectid', [req.decoded.id, req.body.taskId, new Date()], function(err, result) {
+    if(err) {
+      return res.status(403).json({error: true, message: 'Failed to become member'});
+    } else {
+      pool.query('select username from users where id = $1', [req.decoded.id], function(err, user) {
+        if(err) {
+          return res.status(403).json({error: true, message: 'Failed to get user'});
+        } else {
+          console.log({projectid: result.rows[0].projectid, user: user.rows[0].username});
+          return res.json({projectid: result.rows[0].projectid, user: user.rows[0].username});
+        }
+      })
+    }
+  })
+})
+
 app.post('/api/createProject', function(req, res) {
   //the decoded jwt is in req.decoded
   console.log('in post createProject');
@@ -452,7 +494,7 @@ app.post('/api/createProject', function(req, res) {
       if(err) {
         return res.status(403).json({ error: true, message: 'Failed to save Project' });
       } else {
-        return res.json(result);
+        return res.json(result.rows[0]);
       }
     }
   );

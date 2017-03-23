@@ -1,32 +1,19 @@
-/- add Phases to Projects
-  /- Phases table
-  /- default State Draft
-  /- move the Project to the next Phase
-  /- only owner can move
-  /- show phase in list
-- add Tasks to Projects
-  /- task table
-  /- create tasks
-  /- members can take tasks
-  /- get members from server
-  /- show if you are a member on frontend
-  /- tasks have states
-    /- draft | approved | assigned/todo | in progress | done
-    - state can be moved by owner
-  /- style task details
-/- style tabs
-/- chat over tcp
-  /- create a chat component
-  /- one per project task and issue
-  /- style a chat component
-/- mobile friendlierish menu
+
 - edit and delete
-  - edit projects
-  - edit tasks
+  /- edit & delete projects
+  - edit & delete tasks
+- beitreten
+  /- projectMembers table
+  /- becomeMember action
+  - add members to projects everywhere
+  - becomeMember reducer
 
-
-
-
+- tab admin
+  - edit
+  - delete
+  - move state
+  - accept tasks
+  - approve assignee
 
 
 
@@ -55,7 +42,31 @@
 
 - user sollte doch keine votes haben
 
-- disable upvote button if user already upvoted
+
+/- add Phases to Projects
+  /- Phases table
+  /- default State Draft
+  /- move the Project to the next Phase
+  /- only owner can move
+  /- show phase in list
+- add Tasks to Projects
+  /- task table
+  /- create tasks
+  /- members can take tasks
+  /- get members from server
+  /- show if you are a member on frontend
+  /- tasks have states
+    /- draft | approved | assigned/todo | in progress | done
+    /- state can be moved by owner
+  /- style task details
+/- style tabs
+/- chat over tcp
+  /- create a chat component
+  /- one per project task and issue
+  /- style a chat component
+/- mobile friendlierish menu
+
+/- disable upvote button if user already upvoted
 
 
 taskowners seperate table

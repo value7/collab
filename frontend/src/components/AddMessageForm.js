@@ -8,13 +8,9 @@ import { addMessage, addMessageSuccess, addMessageFailure } from '../actions/cha
 function validate(values) {
   var errors = {};
   var hasErrors = false;
-
-  if (!values.title || values.title.trim() === '') {
-    errors.title = 'Enter a Task Title';
-    hasErrors = true;
-  }
-  if (!values.description || values.description.trim() === '') {
-    errors.description = 'Enter a Description for the Task';
+  console.log(values);
+  if (!values.message || values.message.trim() === '') {
+    errors.message = 'Enter a Message';
     hasErrors = true;
   }
   return hasErrors && errors;

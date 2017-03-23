@@ -33,15 +33,17 @@ class Tabs extends Component {
       <div>
         <TabLine>
           {' '}
-          <Tab><NavItem to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/overview"}>Overview</NavItem></Tab>
+          <Tab><NavItem to={"/projects/" + this.props.params.projectId + "/overview"}>Overview</NavItem></Tab>
           {' '}
-          <Tab><NavItem to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/tasks"}>Tasks</NavItem></Tab>
+          <Tab><NavItem to={"/projects/" + this.props.params.projectId + "/tasks"}>Tasks</NavItem></Tab>
           {' '}
-          <Tab><NavItem to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/addTask"}>Add Task</NavItem></Tab>
+          <Tab><NavItem to={"/projects/" + this.props.params.projectId + "/addTask"}>Add Task</NavItem></Tab>
           {' '}
           {owner ? (<AdminLinks>
-          <Tab><NavItem to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/editProject"}>Edit Project</NavItem></Tab>
-          <Tab><NavItem to={this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/')) + "/deleteProject"}>Delete Project</NavItem></Tab>
+          {' '}
+          <Tab><NavItem to={"/projects/" + this.props.params.projectId + "/editProject"}>Edit Project</NavItem></Tab>
+          {' '}
+          <Tab><NavItem to={"/projects/" + this.props.params.projectId + "/deleteProject"}>Delete Project</NavItem></Tab>
           </AdminLinks>): null}
         </TabLine>
         <div>{this.props.children}</div>
