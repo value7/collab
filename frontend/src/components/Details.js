@@ -19,11 +19,38 @@ const DetailDescription = styled.h3`
   color: #5a5a5a;
 `;
 
+const DetailsWrapper = styled.div`
+  margin-bottom: 40px;
+`;
+
+const Divider = styled.div`
+  background-color: black;
+  height: 1px;
+  width: 45%;
+  margin: auto;
+`;
+
+const ChatHeader = styled.h2`
+  text-align: center;
+  margin-top: 35px;
+`;
+
+const StatsTable = styled.table`
+  width: 60%;
+  margin: auto;
+  margin-top: 25px;
+  margin-bottom: 25px;
+`;
+
+const StatsRow = styled.tr`
+  line-height: 30px;
+`;
+
 export default function({project, incrementState, addTask}) {
   console.log(project);
   var hasImage = !!project.imgurlink;
   return (
-    <div>
+    <DetailsWrapper>
       {
         hasImage ?
         <DetailImage src={project.imgurlink} /> :
@@ -31,16 +58,31 @@ export default function({project, incrementState, addTask}) {
       }
       <DetailTitle>{project.title}</DetailTitle>
       <DetailDescription>{project.description}</DetailDescription>
-      <div>{project.votes} Points</div>
-      <div>{project.phase} Phase</div>
+      <Divider />
+      <StatsTable>
+        <tbody>
+          <StatsRow>
+            <td>Points</td>
+            <td>{project.votes}</td>
+          </StatsRow>
+          <StatsRow>
+            <td>Phase</td>
+            <td>{project.phase}</td>
+          </StatsRow>
+          <StatsRow>
+            <td>Members</td>
+            <td>{project.creator} (Creator)</td>
+          </StatsRow>
+          {project.members.map((member, i) => {
+            return <tr><td></td><td key={i}>{member}</td></tr>
+          })}
+        </tbody>
+      </StatsTable>
       {/* TODO move to admin panel
         <button onClick={() => (incrementState(project.id))}>move to next state</button>*/}
-      <div>Members:
-      {project.members.map((member, i) => {
-        return <div key={i}>{member}</div>
-      })}
-      </div>
+      <Divider />
+      <ChatHeader>Chat</ChatHeader>
       <ChatContainer projectId={project.id} taskId={0}/>
-    </div>
+    </DetailsWrapper>
   )
 };

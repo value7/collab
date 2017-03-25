@@ -6,5 +6,5 @@ const connectionString = process.env.DATABASE_URL || 'postgres://postgres:' + co
 const client = new pg.Client(connectionString);
 client.connect();
 const query = client.query(
-  'CREATE TABLE projects(id SERIAL PRIMARY KEY, userid int, projectid int, date timestamp)');
+  'CREATE TABLE votes(id SERIAL PRIMARY KEY, userid int, projectid int, date timestamp)');
 query.on('end', () => { client.end(); });

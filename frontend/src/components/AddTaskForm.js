@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
-import { addTask, addTaskSuccess, addTaskFailure } from '../actions/addTasks';
+import { addTask, addTaskSuccess, addTaskFailure } from '../actions/tasks';
 
 //Client side validation
 function validate(values) {
@@ -58,7 +58,7 @@ class AddTaskForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
-    if ( nextProps.addTasks.state === 'succeeded') {
+    if ( nextProps.tasks.state === 'succeeded') {
       //this.context.router.push('/');
       console.log('successfully added the task');
     }

@@ -1,12 +1,12 @@
 import { INVALIDATE_PROJECTS, REQUEST_PROJECTS, RECEIVE_PROJECTS,
 UPVOTE_PROJECT, CANCEL_UPVOTE_PROJECT, GET_DETAILS,
 GET_PROJECT, INCREMENT_STATE, DELETE_PROJECT_SUCCESS, EDIT_PROJECT_SUCCESS,
-BECOME_MEMBER_SUCCESS }
+BECOME_MEMBER_SUCCESS, TAKE_TASK_SUCCESS }
 from '../actions/projects';
 
 import { CREATE_PROJECT_SUCCESS } from '../actions/createProject';
 
-import { ADD_TASK_SUCCESS } from '../actions/addTasks';
+import { ADD_TASK_SUCCESS } from '../actions/tasks';
 
 function removeProject(projectId, state) {
   let copy = Object.assign({}, state);
@@ -66,19 +66,19 @@ export default function(state = INITIAL_STATE, action) {
     // case CANCEL_UPVOTE_PROJECT_FAILURE:
     //   return {};
 
-    case GET_DETAILS:
-    console.log(action.payload);
-      return {
-        ...state,
-        projects: {
-          ...state.projects,
-          [action.projectId]: {
-            ...state.projects[action.projectId],
-            tasks: action.details
-          }
-
-        }
-      };
+    // case GET_DETAILS:
+    // console.log(action.payload);
+    //   return {
+    //     ...state,
+    //     projects: {
+    //       ...state.projects,
+    //       [action.projectId]: {
+    //         ...state.projects[action.projectId],
+    //         tasks: action.details
+    //       }
+    //
+    //     }
+    //   };
 
     case GET_PROJECT:
     console.log(action.payload);
@@ -86,7 +86,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         projects: {
           ...state.projects,
-          [action.projectId]: action.project
+          [action.projectId]: action.payload.project
         }
       };
       case INCREMENT_STATE:
@@ -98,22 +98,6 @@ export default function(state = INITIAL_STATE, action) {
             [action.projectId]: {
                 ...state.projects[action.projectId],
                 phase: phases[phases.indexOf(state.projects[action.projectId].phase) + 1]
-            }
-          }
-        };
-      case ADD_TASK_SUCCESS:
-        console.log(action);
-        console.log(state);
-        return {
-          ...state,
-          projects: {
-            ...state.projects,
-            [action.payload.rows[0].projectid]: {
-              ...state.projects[action.payload.rows[0].projectid],
-              tasks: [
-                ...state.projects[action.payload.rows[0].projectid].tasks,
-                action.payload.rows[0]
-              ]
             }
           }
         };

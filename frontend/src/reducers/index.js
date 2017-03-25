@@ -6,7 +6,7 @@ import { routerReducer } from 'react-router-redux';
 import user from './user';
 import validateUserFields from './validateUserFields';
 import createProject from './createProject';
-import addTasks from './addTasks';
+import tasks from './tasks';
 import projects from './projects';
 import chats from './chats';
 
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   projects,
   chats,
   createProject,
-  addTasks,
+  tasks,
   validateUserFields,
   routing: routerReducer
 })

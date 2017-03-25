@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask } from '../actions/projects'
 
+import Details from '../components/Details';
 import Tasks from '../components/Tasks';
 
 import styled from 'styled-components';
@@ -45,24 +46,22 @@ class ProjectTasks extends Component {
   }
 
   render() {
-    console.log(this.props);
-    const { tasks } = this.props;
-    console.log(tasks);
-
-    var items = {};
-    var keys = Object.keys(tasks.tasks);
-    for(var i = 0; i < keys.length; i++) {
-      if(tasks.tasks[keys[i]].projectid === parseInt(this.props.params.projectId, 10)) {
-        items[keys[i]] = tasks.tasks[keys[i]];
-      }
-    }
-
-    console.log(items);
+    const { projects, lastUpdated, isFetching } = this.props;
+    console.log(projects);
+    console.log(this.props.params.projectId);
+    console.log(projects.projects[this.props.params.projectId]);
+    var items = projects.projects;
     const isEmpty = items.length === 0;
     return (
       <div>
         <Updated>
-          {!tasks.loading &&
+          {lastUpdated &&
+            <span>
+              Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
+              {' '}
+            </span>
+          }
+          {!isFetching &&
             <a href="#"
                onClick={this.handleRefreshClick}>
               Refresh
@@ -70,9 +69,9 @@ class ProjectTasks extends Component {
           }
         </Updated>
         {isEmpty
-          ? (tasks.loading ? <h2>Loading...</h2> : <h2>Empty.</h2>)
-          : <div style={{ opacity: tasks.loading ? 0.5 : 1 }}>
-            <Tasks tasks={items} projectId={this.props.params.projectId}/>
+          ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
+          : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+            <Tasks tasks={projects.projects[this.props.params.projectId].tasks} projectId={this.props.params.projectId}/>
             </div>
         }
       </div>
@@ -81,10 +80,18 @@ class ProjectTasks extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tasks } = state
+  const { projects } = state
+  const {
+    isFetching,
+    lastUpdated
+  } = projects || {
+    isFetching: true
+  }
 
   return {
-    tasks
+    projects,
+    isFetching,
+    lastUpdated
   }
 }
 

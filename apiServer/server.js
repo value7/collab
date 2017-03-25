@@ -30,6 +30,7 @@ var bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 var pgUtils = require('./utils/postgres');
+var helpers = require('./utils/helpers');
 
 const pool = new Pool({
   user: 'postgres',
@@ -125,7 +126,7 @@ app.post('/api/getDetails', function(req, res) {
     group by t.id, t.projectid, t.title, t.description, t.imgurlink, c.username, states.statename
   `, [req.body.projectId], function(err, result) {
     console.log(result.rows);
-    res.json(result.rows);
+    res.json({tasks : helpers.arrToObj(result.rows)});
   })
 });
 
@@ -178,9 +179,11 @@ app.post('/api/getProject', function(req, res) {
       where t.projectid = $1
       group by t.id, t.projectid, t.title, t.description, t.imgurlink, c.username, states.statename
 `, [req.body.projectId], function(err, tasks) {
-      result.rows[0].tasks = tasks.rows;
+      //result.rows[0].tasks = tasks.rows;
       console.log(result.rows);
-      res.json(result.rows[0]);
+      //TODO convert task array to object
+
+      res.json({project:result.rows[0], tasks: helpers.arrToObj(tasks.rows)});
     })
   })
 });
@@ -441,7 +444,11 @@ app.post('/api/projects/addTask', function(req, res) {
         return res.status(403).json({ error: true, message: 'Failed to save Task' });
       } else {
         console.log('result: ', result);
-        return res.json(result);
+        if(result.rows.length === 0) {
+          return res.status(403).json({ error: true, message: 'Failed to save Task' });
+        } else {
+          return res.json(result.rows[0]);
+        }
       }
     })
 })

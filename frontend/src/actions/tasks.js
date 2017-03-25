@@ -19,11 +19,11 @@ export function addTask(formValues) {
   };
 }
 
-export function addTaskSuccess(project) {
+export function addTaskSuccess(task) {
 
   return {
     type: ADD_TASK_SUCCESS,
-    payload: project
+    payload: task
   };
 }
 

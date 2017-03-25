@@ -11,7 +11,7 @@ const Box = styled.div`
   text-align: center;
   min-height: 80px;
   padding: 4px;
-  background-color: #eff3f7;
+  ${props => props.state};
 `;
 const Image = styled.img`
   max-width: 35%;
@@ -25,19 +25,36 @@ const Title = styled.div`
   font-weight: 600;
 `;
 
+const LegendWrapper = styled.div`
+  display: block;
+`;
+
 export default function({tasks, projectId}) {
   console.log(tasks);
   console.log(projectId);
+  var stateColors = {
+    "idea": {
+      "background-color": "red",
+      "color": "black"
+    }
+  }
   return (
     <div>
-      {tasks ? tasks.map((task, i) =>
-        <Link key={i} to={"/projects/" + projectId + "/tasks/" + task.id}>
-          <Box>
-            <Title>{task.title}</Title>
-            {task.imgurlink ? <Image src={task.imgurlink} /> : null}
-          </Box>
-        </Link>
-      ): null}
+      <div>
+        {Object.keys(tasks).map((key, i) => {
+          return (
+          <Link key={i} to={"/projects/" + projectId + "/tasks/" + tasks[key].id}>
+            <Box state={stateColors[tasks[key].statename]}>
+              <Title>{tasks[key].title}</Title>
+              {tasks[key].imgurlink ? <Image src={tasks[key].imgurlink} /> : null}
+            </Box>
+          </Link>
+        )
+        })}
+      </div>
+      <LegendWrapper>
+      Erklärung der Farben
+      </LegendWrapper>
     </div>
   )
 };

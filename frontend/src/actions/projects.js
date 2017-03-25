@@ -102,10 +102,10 @@ const shouldFetchProjectAll = (state, projectId) => {
   }
 }
 
-function getProject(project, projectId) {
+function getProject(payload, projectId) {
   return {
     type: GET_PROJECT,
-    project: project,
+    payload: payload,
     projectId: projectId
   }
 }
@@ -135,10 +135,10 @@ export const fetchProjectDetailsOrAllIfNeeded = (projectId) => (dispatch, getSta
   //do nothing
 }
 
-function getDetails(details, projectId) {
+function getDetails(tasks, projectId) {
   return {
     type: GET_DETAILS,
-    details: details,
+    payload: tasks,
     projectId: projectId
   }
 }

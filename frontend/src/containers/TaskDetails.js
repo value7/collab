@@ -51,22 +51,14 @@ class TaskDetails extends Component {
   }
 
   render() {
-    const { projects, user, lastUpdated, isFetching } = this.props;
+    const { tasks, user } = this.props;
     console.log(user);
-    var items = projects.projects;
-    const isEmpty = items.length === 0;
-    var task;
-    if(!isEmpty) {
-      if(this.props.params.taskId) {
-        var index = projects.projects[this.props.params.projectId].tasks.findIndex(task =>
-          task.id === parseInt(this.props.params.taskId, 10)
-        );
-        task = projects.projects[this.props.params.projectId].tasks[index];
-      }
-    }
+    var task = tasks.tasks[this.props.params.taskId];
+    console.log(task);
+    var isEmpty = !task;
     return (
       <div>
-        <Updated>
+        {/*}<Updated>
           {lastUpdated &&
             <span>
               Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
@@ -79,10 +71,10 @@ class TaskDetails extends Component {
               Refresh
             </a>
           }
-        </Updated>
+        </Updated>*/}
         {isEmpty
-          ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
-          : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+          ? (false ? <h2>Loading...</h2> : <h2>Empty.</h2>)
+          : <div style={{ opacity: false ? 0.5 : 1 }}>
             <TaskDetail task={task} takeTask={this.handleTakeTaskClick} user={user.user}/>
             <ChatContainer projectId={this.props.params.projectId} taskId={this.props.params.taskId}/>
             </div>
@@ -93,19 +85,11 @@ class TaskDetails extends Component {
 }
 
 const mapStateToProps = state => {
-  const { projects, user } = state
-  const {
-    isFetching,
-    lastUpdated
-  } = projects || {
-    isFetching: true
-  }
+  const { tasks, user } = state
 
   return {
-    projects,
-    user,
-    isFetching,
-    lastUpdated
+    tasks,
+    user
   }
 }
 
