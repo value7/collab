@@ -24,13 +24,6 @@ export const receiveChat = (json, projectId, taskId) => ({
   taskId
 })
 
-export const fetchChatIfNeeded = (projectId, taskId) => (dispatch, getState) => {
-  console.log(getState());
-  if (shouldFetchChat(projectId, taskId, getState())) {
-    return dispatch(fetchChat(projectId, taskId))
-  }
-}
-
 const shouldFetchChat = (projectId, taskId, state) => {
   const chat = state.chat;
   if (!chat || !chat[projectId] || !chat[projectId][taskId] || !(chat[projectId][taskId].lastUpdated > new Date(0))) {
@@ -45,19 +38,25 @@ const shouldFetchChat = (projectId, taskId, state) => {
 
 const fetchChat = (projectId, taskId) => dispatch => {
   dispatch(requestChat(projectId, taskId));
-  if(taskId == 'overview') {
+  if(taskId === 'overview') {
     taskId = 0;
   }
   var postVar = {};
   postVar.projectId = projectId;
   postVar.taskId = taskId;
-  const request = axios.post(`${ROOT_URL}/api/getChat`, postVar)
+  axios.post(`${ROOT_URL}/api/getChat`, postVar)
   .then((result) => {
       console.log(result);
       dispatch(receiveChat(result.data, projectId, taskId));
   })
 }
 
+export const fetchChatIfNeeded = (projectId, taskId) => (dispatch, getState) => {
+  console.log(getState());
+  if (shouldFetchChat(projectId, taskId, getState())) {
+    return dispatch(fetchChat(projectId, taskId))
+  }
+}
 
 export function addMessage(formValues) {
   console.log(formValues);

@@ -30,10 +30,6 @@ const Left = styled.div`
   margin-top: 25px;
 `;
 
-const DetailLink = styled.div`
-  display:block;
-`;
-
 const Vote = styled.div`
   display: inline-block;
   float: left;
@@ -55,6 +51,9 @@ const Title = styled.div`
 const Desc = styled.div`
   font-size: 12px;
   color: #4e4e4e;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const VoteArrow = styled.div`

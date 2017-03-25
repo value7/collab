@@ -31,9 +31,15 @@ export default function({project, incrementState, addTask}) {
       }
       <DetailTitle>{project.title}</DetailTitle>
       <DetailDescription>{project.description}</DetailDescription>
-      <div>{project.votes}</div>
-      <div>{project.phase}</div>
-      <button onClick={() => (incrementState(project.id))}>move to next state</button>
+      <div>{project.votes} Points</div>
+      <div>{project.phase} Phase</div>
+      {/* TODO move to admin panel
+        <button onClick={() => (incrementState(project.id))}>move to next state</button>*/}
+      <div>Members:
+      {project.members.map((member, i) => {
+        return <div key={i}>{member}</div>
+      })}
+      </div>
       <ChatContainer projectId={project.id} taskId={0}/>
     </div>
   )

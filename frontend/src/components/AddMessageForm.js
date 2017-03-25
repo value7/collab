@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
 import { addMessage, addMessageSuccess, addMessageFailure } from '../actions/chats';
@@ -64,7 +64,7 @@ class AddMessageForm extends Component {
 
   render() {
     console.log(this.props);
-    const {asyncValidating, handleSubmit, submitting, validate} = this.props;
+    const { handleSubmit, submitting} = this.props;
     return (
       <div className='container'>
         <form onSubmit={ handleSubmit(validateAndAddTask) }>

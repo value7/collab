@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchChatIfNeeded } from '../actions/chats'
 
@@ -90,8 +90,6 @@ class ChatContainer extends Component {
 
 const mapStateToProps = state => {
   const { chats } = state || {};
-  const {
-  } = chats || []
 
   return {
     chats

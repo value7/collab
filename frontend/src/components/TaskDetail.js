@@ -29,22 +29,18 @@ const Creator = styled.div`
 
 export default function({task, takeTask, user}) {
   console.log(task);
-  var assigned = '';
   var image = null;
   var member = false
   if(task) {
     // TODO assigned sollte state sein
     image = task.imgurlink ? <Image src={task.imgurlink} /> : null;
     for(var i = 0; i < task.taskowners.length; i++) {
-      if(task.taskowners[i] == user) {
+      if(task.taskowners[i] === user) {
         member = true;
       }
     }
   }
-  // console.log(task.members);
-  // console.log(task.members.map((member, i) => {
-  //   console.log(member);
-  // }));
+
   return (<div>
             {image}
             <Title>{task ? task.title : null}</Title>

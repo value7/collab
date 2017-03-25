@@ -112,12 +112,12 @@ function getProject(project, projectId) {
 
 export const fetchProjectDetailsOrAllIfNeeded = (projectId) => (dispatch, getState) => {
   console.log(projectId);
+  var postVar = {};
   if(shouldFetchProject(getState(), projectId)) {
     //getAll
     console.log('getting everything');
-    var postVar = {};
     postVar.projectId = projectId;
-    const request = axios.post(`${ROOT_URL}/api/getProject`, postVar)
+    axios.post(`${ROOT_URL}/api/getProject`, postVar)
     .then((result) => {
       console.log(result);
       dispatch(getProject(result.data, projectId));
@@ -125,9 +125,8 @@ export const fetchProjectDetailsOrAllIfNeeded = (projectId) => (dispatch, getSta
   } else if(shouldFetchProjectAll(getState(), projectId)) {
     //get only details
     console.log('getting details');
-    var postVar = {};
     postVar.projectId = projectId;
-    const request = axios.post(`${ROOT_URL}/api/getDetails`, postVar)
+    axios.post(`${ROOT_URL}/api/getDetails`, postVar)
     .then((result) => {
       console.log(result);
       dispatch(getDetails(result.data, projectId));
@@ -155,7 +154,7 @@ export function upvoteProject(projectId) {
   console.log(projectId);
   var postVar = {};
   postVar.projectId = projectId;
-  const request = axios.post(`${ROOT_URL}/projects/upvote`, postVar);
+  axios.post(`${ROOT_URL}/projects/upvote`, postVar);
 
   return {
     type: UPVOTE_PROJECT,
@@ -167,7 +166,7 @@ export function cancelUpVote(projectId) {
   console.log(projectId);
   var postVar = {};
   postVar.projectId = projectId;
-  const request = axios.post(`${ROOT_URL}/projects/downvote`, postVar);
+  axios.post(`${ROOT_URL}/projects/downvote`, postVar);
 
   return {
     type: CANCEL_UPVOTE_PROJECT,
@@ -179,7 +178,7 @@ export function incrementState(projectId) {
   console.log(projectId);
   var postVar = {};
   postVar.projectId = projectId;
-  const request = axios.post(`${ROOT_URL}/projects/incrementState`, postVar);
+  axios.post(`${ROOT_URL}/projects/incrementState`, postVar);
 
   return {
     type: INCREMENT_STATE,
@@ -188,20 +187,6 @@ export function incrementState(projectId) {
 }
 
 
-export const requestTakeTask = (taskId) => dispatch => {
-  dispatch(takeTask(taskId));
-  var postVar = {};
-  postVar.taskId = taskId;
-  const request = axios.post(`${ROOT_URL}/projects/takeTask`, postVar)
-  .then((result) => {
-      console.log(result);
-      if(result.data && result.data.taskId && result.data.user) {
-        dispatch(takeTaskSuccess(result.data));
-      } else {
-        dispatch(takeTaskFailure(result.statusText));
-      }
-  })
-}
 
 export const takeTask = (taskId) => ({
   type: TAKE_TASK,
@@ -219,20 +204,22 @@ export const takeTaskFailure = (error) => ({
   error: error
 });
 
-export const requestDeleteProject = (projectId) => dispatch => {
-  dispatch(deleteProject(projectId));
+
+export const requestTakeTask = (taskId) => dispatch => {
+  dispatch(takeTask(taskId));
   var postVar = {};
-  postVar.projectId = projectId;
-  const request = axios.post(`${ROOT_URL}/projects/deleteProject`, postVar)
+  postVar.taskId = taskId;
+  axios.post(`${ROOT_URL}/projects/takeTask`, postVar)
   .then((result) => {
       console.log(result);
-      if(result.status === 200) {
-        dispatch(deleteProjectSuccess(projectId));
+      if(result.data && result.data.taskId && result.data.user) {
+        dispatch(takeTaskSuccess(result.data));
       } else {
-        dispatch(deleteProjectFailure(result.statusText));
+        dispatch(takeTaskFailure(result.statusText));
       }
   })
 }
+
 
 export const deleteProject = (projectId) => ({
   type: DELETE_PROJECT,
@@ -248,6 +235,22 @@ export const deleteProjectFailure = (error) => ({
   type: DELETE_PROJECT_FAILURE,
   error: error
 });
+
+
+export const requestDeleteProject = (projectId) => dispatch => {
+  dispatch(deleteProject(projectId));
+  var postVar = {};
+  postVar.projectId = projectId;
+  axios.post(`${ROOT_URL}/projects/deleteProject`, postVar)
+  .then((result) => {
+      console.log(result);
+      if(result.status === 200) {
+        dispatch(deleteProjectSuccess(projectId));
+      } else {
+        dispatch(deleteProjectFailure(result.statusText));
+      }
+  })
+}
 
 export function editProject(formValues) {
   const request = axios.post(`${ROOT_URL}/projects/editProject`, formValues);
@@ -272,20 +275,6 @@ export function editProjectFailure(error) {
   };
 }
 
-export const requestBecomeMember = (projectId) => dispatch => {
-  dispatch(becomeMember(projectId));
-  var postVar = {};
-  postVar.taskId = projectId;
-  const request = axios.post(`${ROOT_URL}/projects/becomeMember`, postVar)
-  .then((result) => {
-      console.log(result);
-      if(result.data && result.data.projectid && result.data.user) {
-        dispatch(becomeMemberSuccess(result.data));
-      } else {
-        dispatch(becomeMemberFailure(result.statusText));
-      }
-  })
-}
 
 export const becomeMember = (projectId) => ({
   type: BECOME_MEMBER,
@@ -302,6 +291,22 @@ export const becomeMemberFailure = (error) => ({
   type: BECOME_MEMBER_FAILURE,
   error: error
 });
+
+
+export const requestBecomeMember = (projectId) => dispatch => {
+  dispatch(becomeMember(projectId));
+  var postVar = {};
+  postVar.taskId = projectId;
+  axios.post(`${ROOT_URL}/projects/becomeMember`, postVar)
+  .then((result) => {
+      console.log(result);
+      if(result.data && result.data.projectid && result.data.user) {
+        dispatch(becomeMemberSuccess(result.data));
+      } else {
+        dispatch(becomeMemberFailure(result.statusText));
+      }
+  })
+}
 
 //TODO
 // export function upvoteProjectSuccess(projectId) {

@@ -148,7 +148,7 @@ app.post('/api/getChat', function(req, res) {
 app.post('/api/getProject', function(req, res) {
   console.log('getting project with id: ' + req.body.projectId);
   pool.query(`
-    select count(v.*) as votes, p.id, p.title, p.imgurLink, p.description, d.phasename as phase, u.username as creator, array_agg(member.username) as users, array_remove(array_agg(mu.username), NULL) as members from projects as p
+    select count(v.*) as votes, p.id, p.title, p.imgurLink, p.description, d.phasename as phase, u.username as creator, array_remove(array_agg(mu.username), NULL) as members from projects as p
 	left join votes as v
 		on v.projectid = p.id
 	join users as u

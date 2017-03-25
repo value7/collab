@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const StyledInput = styled.input`

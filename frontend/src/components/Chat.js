@@ -2,7 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import ChatContainer from '../containers/ChatContainer';
 import AddMessage from '../containers/AddMessageContainer';
 
 const Message = styled.div`

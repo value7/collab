@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
-import { validateUserFields, validateUserFieldsSuccess, validateUserFieldsFailure, resetValidateUserFields } from '../actions/validateUserFields';
+import { validateUserFields, validateUserFieldsSuccess, validateUserFieldsFailure } from '../actions/validateUserFields';
 import { signUpUser, signUpUserSuccess, signUpUserFailure, } from '../actions/user';
 
 import styled from 'styled-components';
@@ -79,10 +79,11 @@ const asyncValidate = (values, dispatch) => {
       let {data, status} = result.payload.response;
 
       //if status is not 200 or any one of the fields exist, then there is a field error
-      if (status != 200 || data.username || data.email) {
+      if (status !== 200 || data.username || data.email) {
         //let other components know of error by updating the redux` state
         dispatch(validateUserFieldsFailure(data));
-        throw { username: 'That username is taken' };
+        //throw { username: 'That username is taken' };
+        return Promise.reject({ username: 'That username is taken' });
       } else {
         //let other components know that everything is fine by updating the redux` state
         dispatch(validateUserFieldsSuccess(data)); //ps: this is same as dispatching RESET_USER_FIELDS
@@ -131,7 +132,7 @@ class SignUpForm extends Component {
   }
 
   render() {
-    const {asyncValidating, handleSubmit, submitting, asyncValidate, validate} = this.props;
+    const { handleSubmit, submitting } = this.props;
     return (
       <div className='container'>
         <form onSubmit={ handleSubmit(validateAndSignUpUser) }>

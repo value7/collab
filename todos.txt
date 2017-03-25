@@ -1,12 +1,12 @@
-
 - edit and delete
   /- edit & delete projects
   - edit & delete tasks
-- beitreten
-  /- projectMembers table
-  /- becomeMember action
-  - add members to projects everywhere
-  - becomeMember reducer
+
+- styling of project in list
+
+- styling of project details
+  - list of members
+    - creator
 
 - tab admin
   - edit
@@ -15,16 +15,21 @@
   - accept tasks
   - approve assignee
 
+- progress tab?
 
+- normalize state
 
-- add kanban board
-  - one board per project
-  - owner, state
+- reselect
+
 - issues draft
+
 - graphql
+
 - chat hn style (answers votes tree style)
+
 - normalize state
   - everything as object and not array ?
+
 - chat with websockets
   - one chat
     - list messages
@@ -34,6 +39,10 @@
         - just add the token to the message
     - send message
     - socket.io
+
+- add kanban board
+  - one board per project
+  - owner, state
 
 - security
   - ssl
@@ -65,9 +74,12 @@
   /- one per project task and issue
   /- style a chat component
 /- mobile friendlierish menu
-
 /- disable upvote button if user already upvoted
-
+- beitreten
+  /- projectMembers table
+  /- becomeMember action
+  /- add members to projects everywhere
+  /- becomeMember reducer
 
 taskowners seperate table
   id

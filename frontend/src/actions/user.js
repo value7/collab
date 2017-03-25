@@ -91,10 +91,10 @@ export function logoutUser() {
 export const getUserWithToken = (user) => (dispatch) => {
   console.log(user);
   if(user && user.user) {
-    var status = 'fromCookie';
-    var username = user.user;
-    var isAdmin = user.isAdmin || false;
-    const request = axios.get(`${ROOT_URL}/api/getUserDetails`)
+    // var status = 'fromCookie';
+    // var username = user.user;
+    // var isAdmin = user.isAdmin || false;
+    axios.get(`${ROOT_URL}/api/getUserDetails`)
     .then((result) => {
       console.log(result);
       user.votes = result.data.votes || [];

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
-import { signInUser, signInUserSuccess, signInUserFailure, resetUserFields, addUserUpvoted } from '../actions/user';
+import { signInUser, signInUserSuccess, signInUserFailure } from '../actions/user';
 
 //Client side validation
 function validate(values) {
@@ -73,7 +73,7 @@ class SignInForm extends Component {
   }
 
   render() {
-    const {asyncValidating, handleSubmit, submitting} = this.props;
+    const { handleSubmit, submitting } = this.props;
     return (
       <div className="container">
         <form onSubmit={ handleSubmit(validateAndSignInUser) }>

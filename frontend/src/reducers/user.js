@@ -1,11 +1,9 @@
 import {
 	SIGNUP_USER, SIGNUP_USER_SUCCESS, SIGNUP_USER_FAILURE, RESET_USER,
-	SIGNIN_USER, SIGNIN_USER_SUCCESS,  SIGNIN_USER_FAILURE,	LOGOUT_USER,
-	ADD_USER_UPVOTED
+	SIGNIN_USER, SIGNIN_USER_SUCCESS,  SIGNIN_USER_FAILURE,	LOGOUT_USER
 } from '../actions/user';
 import { UPVOTE_PROJECT, CANCEL_UPVOTE_PROJECT } from '../actions/projects';
 
-import cookie from 'react-cookie';
 
 //user = userobj,
 // status can be:

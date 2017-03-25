@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import reducer from './reducers'
 import cookie from 'react-cookie';
-import io from 'socket.io-client';
+//import io from 'socket.io-client';
 
 import Header from './containers/Header';
 import About from './components/About';

@@ -59,7 +59,7 @@ class TaskDetails extends Component {
     if(!isEmpty) {
       if(this.props.params.taskId) {
         var index = projects.projects[this.props.params.projectId].tasks.findIndex(task =>
-          task.id==this.props.params.taskId
+          task.id === parseInt(this.props.params.taskId, 10)
         );
         task = projects.projects[this.props.params.projectId].tasks[index];
       }

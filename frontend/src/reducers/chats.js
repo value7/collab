@@ -1,5 +1,5 @@
 import { REQUEST_CHAT, RECEIVE_CHAT, INVALIDATE_CHAT,
-ADD_MESSAGE, ADD_MESSAGE_SUCCESS, ADD_MESSAGE_FAILURE }
+ADD_MESSAGE_SUCCESS, ADD_MESSAGE_FAILURE }
 from '../actions/chats';
 
 
@@ -17,21 +17,11 @@ function insertChat(array, action) {
   return newArray;
 }
 
-function addMessage(array, action) {
-  var chats = array.filter(function(chat) {
-    if(chat.taskId === action.taskId && chat.projectId === action.projectId) {
-      chat.isFetching = true;
-    }
-    return chat;
-  });
-  return chats;
-}
-
 function addMessageSuccess(array, action) {
   console.log(action);
   var chats = array.filter(function(chat) {
     console.log('checking');
-    if(chat.taskId == action.payload.taskid && chat.projectId == action.payload.projectid) {
+    if(parseInt(chat.taskId, 10) === action.payload.taskid && parseInt(chat.projectId, 10) === action.payload.projectid) {
       console.log('found');
       chat.messages.push(action.payload);
     }

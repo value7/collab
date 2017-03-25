@@ -61,7 +61,7 @@ class CreateProjectForm extends Component {
   }
 
   render() {
-    const {asyncValidating, handleSubmit, submitting, validate} = this.props;
+    const { handleSubmit, submitting } = this.props;
     return (
       <div className='container'>
         <form onSubmit={ handleSubmit(validateAndCreateProject) }>

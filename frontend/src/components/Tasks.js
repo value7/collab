@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router';
 
-import AddTask from '../containers/AddTaskContainer';
-
 const Box = styled.div`
   border: 1px solid #bbbbbb;
   border-radius: 4px;

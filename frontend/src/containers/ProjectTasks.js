@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask } from '../actions/projects'
 
-import Details from '../components/Details';
 import Tasks from '../components/Tasks';
 
 import styled from 'styled-components';

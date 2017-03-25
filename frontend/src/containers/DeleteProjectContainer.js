@@ -1,16 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { requestDeleteProject } from '../actions/projects'
 
 import DeleteProject from '../components/DeleteProject';
 
-import styled from 'styled-components';
-
-const Updated = styled.p`
-  margin: 0;
-  font-size: 11px;
-  text-align: right;
-`;
+//import styled from 'styled-components';
 
 class DeleteProjectContainer extends Component {
   // static propTypes = {
