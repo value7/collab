@@ -109,7 +109,7 @@ app.get("/api/getAllProjects", function(req, res) {
   })
 });
 
-app.post('/api/getDetails', function(req, res) {
+app.post('/api/getTasks', function(req, res) {
   console.log('getting details from : ' + req.body.projectId);
   pool.query(`
     select t.id, t.projectid, t.title, t.description, t.imgurlink, c.username as creator, states.statename, array_remove(array_agg(member.username), NULL) as taskOwners
@@ -436,7 +436,7 @@ app.post('/projects/editProject', function(req, res) {
   })
 });
 
-app.post('/api/projects/addTask', function(req, res) {
+app.post('/projects/addTask', function(req, res) {
   pool.query('insert into tasks(projectid, title, description, imgurlink, creator, state) values($1, $2, $3, $4, $5, 1) returning *',
     [req.body.projectId, req.body.title, req.body.description, req.body.imgurLink, req.decoded.id], function(err, result) {
       if(err) {

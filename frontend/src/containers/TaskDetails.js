@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask, requestTakeTask } from '../actions/projects';
+import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask } from '../actions/projects';
+import { requestTakeTask } from '../actions/tasks';
 
 import TaskDetail from '../components/TaskDetail';
 import ChatContainer from './ChatContainer';

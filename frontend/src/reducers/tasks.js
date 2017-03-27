@@ -1,6 +1,4 @@
-import {
-	ADD_TASK, ADD_TASK_SUCCESS, ADD_TASK_FAILURE
-} from '../actions/tasks';
+import { ADD_TASK, ADD_TASK_SUCCESS, ADD_TASK_FAILURE, TAKE_TASK_SUCCESS } from '../actions/tasks';
 import { GET_PROJECT, GET_DETAILS } from '../actions/projects';
 
 const INITIAL_STATE = {error: null, loading: false, state: null, tasks: {}};
@@ -51,6 +49,19 @@ export default function(state = INITIAL_STATE, action) {
 					...state,
 					tasks: getTasks(state, action)
 				};
+				case TAKE_TASK_SUCCESS: {
+					console.log('asdfsadfasdfsdaf');
+	        return {
+	          ...state,
+	          tasks: {
+	            ...state.tasks,
+	            [action.taskId]: {
+	              ...state.tasks[action.taskId],
+	              taskowners: state.tasks[action.taskId].taskowners.concat(action.user)
+	            }
+	          }
+	        }
+	      }
     default:
     return state;
   }
