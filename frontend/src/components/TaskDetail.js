@@ -112,12 +112,10 @@ export default function({task, takeTask, user, moveTaskState}) {
               </tbody>
             </StatsTable>
             <Divider />
-            {member ?
-            null :
             <TakeWrapper>
-              <TakeButton onClick={takeTask}>take task</TakeButton>
+              {takeTaskButton}
               <Divider />
-            </TakeWrapper>}
+            </TakeWrapper>
 
           </div>
   )

@@ -470,6 +470,24 @@ app.post('/projects/takeTask', function(req, res) {
   })
 })
 
+app.post('/projects/moveTaskState', function(req, res) {
+  pool.query('update tasks set state = state + 1 where id = $1 returning id, state', [req.body.taskId], function(err, result) {
+    if(err) {
+      console.log(err);
+      return res.status(403).json({error: true, message: 'Failed to move task state'});
+    } else {
+      pool.query('select statename from dim_states where id = $1', [result.rows[0].state], function(err, state) {
+        if(err) {
+          return res.status(403).json({error: true, message: 'Failed to get user'});
+        } else {
+          console.log({taskId: result.rows[0].id, statename: state.rows[0].statename});
+          return res.json({taskId: result.rows[0].id, statename: state.rows[0].statename});
+        }
+      })
+    }
+  })
+})
+
 app.post('/projects/becomeMember', function(req, res) {
   pool.query('insert into projectmembers(userid, projectid, date) values ($1, $2, $3) returning id, projectid', [req.decoded.id, req.body.taskId, new Date()], function(err, result) {
     if(err) {

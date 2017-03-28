@@ -1,10 +1,38 @@
-- seperate tasks from projects
-  /- addTask
-  /- getProject
-  /- show tasks
-  /- get details
-- style task state in task list
-  - taskowners can move states
+- color schema
+
+- test every functionality
+  - signup
+  - signin
+  - createProject
+  - chat in Project
+  - become Member
+  - add Task
+  - go to Task
+  - chat in Task
+  - becomeMemberTask
+  - moveTaskState
+  - upvote
+  - movePhase as Admin
+  - routing
+  - check reducer and actions for more functionality
+
+- style all the things
+
+
+
+--------------------------------------  MVP  -------------------------------------------------------
+
+
+- reselect
+
+- edit & delete tasks
+  - only when alone and idea phase
+
+- allow downvotes
+
+- move action imports to containers
+
+- issues draft
 
 - tab admin
   - edit
@@ -13,36 +41,13 @@
   - accept tasks
   - approve assignee
 
-- edit and delete
-  /- edit & delete projects
-  - edit & delete tasks
-
-- styling of project in list
-  - display phase of the project
-- styling of project details
-  - list of members
-    - creator
-
---------------------------------------  MVP  -------------------------------------------------------
-
 - progress tab?
-
-- votign task
-
-- normalize state
-
-- reselect
-
-- allow downvotes
-
-- issues draft
-
-- graphql
 
 - chat hn style (answers votes tree style)
 
-- normalize state
-  - everything as object and not array ?
+- voting task
+
+- graphql
 
 - chat with websockets
   - one chat
@@ -65,7 +70,22 @@
 
 - user sollte doch keine votes haben
 
+/- styling of project details
+  /- list of members
+    /- creator
 
+/- style task state in task list
+  /- taskowners can move states
+
+/- edit and delete projects
+/- edit & delete projects
+  /- one tab for edit and delete
+
+/- seperate tasks from projects
+  /- addTask
+  /- getProject
+  /- show tasks
+  /- get details
 /- add Phases to Projects
   /- Phases table
   /- default State Draft

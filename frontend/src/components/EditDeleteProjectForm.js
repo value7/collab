@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
 import { editProject, editProjectSuccess, editProjectFailure } from '../actions/projects';
+import DeleteProject from './DeleteProject';
 
 //Client side validation
 function validate(values) {
@@ -44,7 +45,7 @@ const validateAndEditProject = (values, dispatch, props) => {
 };
 
 
-class EditProjectForm extends Component {
+class EditDeleteProjectForm extends Component {
   static contextTypes = {
     router: PropTypes.object
   };
@@ -97,12 +98,13 @@ class EditProjectForm extends Component {
             </Link>
           </div>
         </form>
+        <DeleteProject projectId={this.props.params.projectId} deleteTask={this.props.onDeleteProject} />
       </div>
     )
   }
 }
 
 export default reduxForm({
-  form: 'EditProjectForm', // a unique identifier for this form
+  form: 'EditDeleteProjectForm', // a unique identifier for this form
   validate // <--- validation function given to redux-form
-})(EditProjectForm)
+})(EditDeleteProjectForm)

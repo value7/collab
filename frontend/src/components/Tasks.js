@@ -36,6 +36,14 @@ export default function({tasks, projectId}) {
     "idea": {
       "background-color": "red",
       "color": "black"
+    },
+    "approved": {
+      "background-color": "blue",
+      "color": "black"
+    },
+    "done": {
+      "background-color": "green",
+      "color": "black"
     }
   }
   return (

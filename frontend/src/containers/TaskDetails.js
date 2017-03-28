@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask } from '../actions/projects';
-import { requestTakeTask } from '../actions/tasks';
+import { requestTakeTask, requestMoveTaskState } from '../actions/tasks';
 
 import TaskDetail from '../components/TaskDetail';
 import ChatContainer from './ChatContainer';
@@ -51,6 +51,11 @@ class TaskDetails extends Component {
     dispatch(addTask(id));
   }
 
+  handleMoveTaskStateClick = () => {
+    const { dispatch, params } = this.props;
+    dispatch(requestMoveTaskState(params.taskId));
+  }
+
   render() {
     const { tasks, user } = this.props;
     console.log(user);
@@ -76,7 +81,7 @@ class TaskDetails extends Component {
         {isEmpty
           ? (false ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           : <div style={{ opacity: false ? 0.5 : 1 }}>
-            <TaskDetail task={task} takeTask={this.handleTakeTaskClick} user={user.user}/>
+            <TaskDetail task={task} takeTask={this.handleTakeTaskClick} user={user.user} moveTaskState={this.handleMoveTaskStateClick}/>
             <ChatContainer projectId={this.props.params.projectId} taskId={this.props.params.taskId}/>
             </div>
         }

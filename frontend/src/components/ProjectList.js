@@ -82,7 +82,9 @@ export default function({projects, upVote, cancelUpVote, canUpvote, upvoted, bec
               { projects[key].members.indexOf(userName) < 0 ? <button onClick={() => (becomeMember(projects[key].id))}>become Member</button> : null}
               </div>
               : <div><Link to={"/signin?redirect=projects"} >log in</Link></div>}
-
+              <div>
+                {projects[key].phase}
+              </div>
             </Vote>
             <Text>
               <Link to={"/projects/" +projects[key].id} >
