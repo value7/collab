@@ -1,6 +1,6 @@
 import EditDeleteProjectForm from '../components/EditDeleteProjectForm.js';
 import { connect } from 'react-redux';
-import { requestDeleteProject } from '../actions/projects'
+import { requestDeleteProject, incrementState } from '../actions/projects'
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -11,6 +11,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onDeleteProject: (id) => {
       dispatch(requestDeleteProject(id))
+    },
+    moveToNextPhase: (id) => {
+      dispatch(incrementState(id))
     }
   }
 }

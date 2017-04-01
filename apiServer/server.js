@@ -209,12 +209,14 @@ app.post('/users/signup', function(req, res) {
       var token = jwt.sign(jwtUser, app.get('superSecret'), {
         expiresIn: 1440 //24h
       });
+      //signup so empty votes
       res.json({
         success: true,
         message: 'Enjoy your token!',
         token: token,
         user: req.body.username,
         scope: "rando",
+        votes: [],
         isAdmin: false
       });
     } else {
@@ -261,7 +263,7 @@ app.post('/authenticate', function(req, res) {
             expiresIn: 1440 //24h
           });
 
-          //TODO send votes as array
+
           var votes = [];
           for(var i = 0; i < result.rows.length; i++) {
             votes.push(result.rows[i].projectid)
@@ -447,6 +449,7 @@ app.post('/projects/addTask', function(req, res) {
         if(result.rows.length === 0) {
           return res.status(403).json({ error: true, message: 'Failed to save Task' });
         } else {
+          result.rows[0].taskowners = [];
           return res.json(result.rows[0]);
         }
       }
@@ -516,11 +519,16 @@ app.post('/api/createProject', function(req, res) {
       console.log('after db call to save project');
       console.log('err: ', err);
       console.log('res: ', result);
-      if(err) {
-        return res.status(403).json({ error: true, message: 'Failed to save Project' });
-      } else {
-        return res.json(result.rows[0]);
-      }
+      //TODO get username
+      pool.query('select username from users where id = $1', [req.decoded.id], function(userErr, user) {
+        if(err || userErr) {
+          return res.status(403).json({ error: true, message: 'Failed to save Project' });
+        } else {
+          result.rows[0].members = [];
+          result.rows[0].creator = user.rows[0].username;
+          return res.json(result.rows[0]);
+        }
+      })
     }
   );
 });

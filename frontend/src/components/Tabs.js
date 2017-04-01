@@ -40,7 +40,7 @@ class Tabs extends Component {
           {' '}
           {owner ? (<AdminLinks>
           {' '}
-          <Tab><NavItem to={"/projects/" + this.props.params.projectId + "/editdeleteProject"}>Edit/Delete Project</NavItem></Tab>
+          <Tab><NavItem to={"/projects/" + this.props.params.projectId + "/editdeleteProject"}>Admin Stuff</NavItem></Tab>
           </AdminLinks>): null}
         </TabLine>
         <div>{this.props.children}</div>

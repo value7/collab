@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask } from '../actions/projects'
+import { fetchProjectDetailsOrAllIfNeeded, incrementState, addTask, requestBecomeMember } from '../actions/projects'
 
 import Details from '../components/Details';
 
@@ -44,8 +44,13 @@ class ProjectDetails extends Component {
     dispatch(addTask(id));
   }
 
+  handleBecomeMemberClick = (id) => {
+    const { dispatch } = this.props;
+    dispatch(requestBecomeMember(id));
+  }
+
   render() {
-    const { projects, lastUpdated, isFetching } = this.props;
+    const { projects, lastUpdated, isFetching, user } = this.props;
     console.log(projects);
     console.log(this.props.params.projectId);
     console.log(projects.projects[this.props.params.projectId]);
@@ -70,7 +75,7 @@ class ProjectDetails extends Component {
         {isEmpty
           ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-            <Details addTask={this.addTask} incrementState={this.handleIncrementStateClick} project={projects.projects[this.props.params.projectId]} />
+            <Details user={user} addTask={this.addTask} incrementState={this.handleIncrementStateClick} project={projects.projects[this.props.params.projectId]}  becomeMember={this.handleBecomeMemberClick}/>
             </div>
         }
       </div>
@@ -79,7 +84,7 @@ class ProjectDetails extends Component {
 }
 
 const mapStateToProps = state => {
-  const { projects } = state
+  const { projects, user } = state
   const {
     isFetching,
     lastUpdated
@@ -89,6 +94,7 @@ const mapStateToProps = state => {
 
   return {
     projects,
+    user,
     isFetching,
     lastUpdated
   }

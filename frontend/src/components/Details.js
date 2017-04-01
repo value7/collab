@@ -46,9 +46,18 @@ const StatsRow = styled.tr`
   line-height: 30px;
 `;
 
-export default function({project, incrementState, addTask}) {
+export default function({project, incrementState, addTask, becomeMember, user}) {
   console.log(project);
   var hasImage = !!project.imgurlink;
+  var member = false;
+  for(var i = 0; i < project.members.length; i++) {
+    if(project.members[i] === user.user) {
+      member = true;
+    }
+  }
+  if(project.creator == user.user) {
+    member = true;
+  }
   return (
     <DetailsWrapper>
       {
@@ -78,8 +87,9 @@ export default function({project, incrementState, addTask}) {
           })}
         </tbody>
       </StatsTable>
-      {/* TODO move to admin panel
-        <button onClick={() => (incrementState(project.id))}>move to next state</button>*/}
+      <div>
+        {!member ? <button onClick={() => (becomeMember(project.id))}>become member</button> : null}
+      </div>
       <Divider />
       <ChatHeader>Chat</ChatHeader>
       <ChatContainer projectId={project.id} taskId={0}/>

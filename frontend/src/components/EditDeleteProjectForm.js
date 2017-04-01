@@ -66,9 +66,10 @@ class EditDeleteProjectForm extends Component {
   render() {
     console.log(this.props);
     // TODO ich muss die daten laden wenn ich da herkomm
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, submitting, moveToNextPhase } = this.props;
     return (
       <div className='container'>
+        <button onClick={() => (moveToNextPhase(this.props.params.projectId))}>move to next phase</button>
         <form onSubmit={ handleSubmit(validateAndEditProject) }>
           <Field
                  name="title"

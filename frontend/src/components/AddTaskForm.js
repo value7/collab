@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
 import { addTask, addTaskSuccess, addTaskFailure } from '../actions/tasks';
@@ -40,6 +40,7 @@ const validateAndAddTask = (values, dispatch, props) => {
       //sessionStorage = persisted only in current tab
       //let other components know that everything is fine by updating the redux` state
       dispatch(addTaskSuccess(result.payload.data));//ps: this is same as dispatching RESET_USER_FIELDS
+      browserHistory.push("/projects/" + props.params.projectId + "/tasks/" + result.payload.data.id);
       //browserHistory.push("/projects/" + result.payload.data.rows[0].id);
     });
 };

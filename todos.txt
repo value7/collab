@@ -1,20 +1,33 @@
 - color schema
 
-- test every functionality
-  - signup
-  - signin
-  - createProject
-  - chat in Project
-  - become Member
-  - add Task
-  - go to Task
-  - chat in Task
-  - becomeMemberTask
-  - moveTaskState
-  - upvote
-  - movePhase as Admin
-  - routing
-  - check reducer and actions for more functionality
+- do it again:
+  /- test every functionality
+    /- not logged in
+      /- load projects
+      /- goto project details
+        /- coming from projects
+        /- deep linked
+      /- see all tasks
+        /- coming from projects
+        /- deep linked
+      /- see a task detail
+        /- coming from projects
+        /- deep linked
+    /- signup
+      /- automatic sign in after sign up
+    /- signin
+    /- createProject
+    /- chat in Project
+    /- become Member
+    /- add Task
+    /- go to Task
+    /- chat in Task
+    /- upvote
+    /- take task
+    - movePhase as Admin
+    /- routing
+
+
 
 - style all the things
 
@@ -33,6 +46,11 @@
 - move action imports to containers
 
 - issues draft
+
+- chaten sollten nur member dürfen
+
+- tasks should have Bereiche pro state
+  - aufklappbar die description vom Idea state/Planning und danach Result
 
 - tab admin
   - edit
@@ -69,6 +87,10 @@
   - algorithm check for jwt
 
 - user sollte doch keine votes haben
+
+
+/- become Member
+/- addTask should link to the taskDetails
 
 /- styling of project details
   /- list of members
