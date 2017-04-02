@@ -46,6 +46,11 @@ const StatsRow = styled.tr`
   line-height: 30px;
 `;
 
+const BecomeMember = styled.div`
+  margin: 18px;
+  text-align: center;
+`;
+
 export default function({project, incrementState, addTask, becomeMember, user}) {
   console.log(project);
   var hasImage = !!project.imgurlink;
@@ -87,9 +92,7 @@ export default function({project, incrementState, addTask, becomeMember, user}) 
           })}
         </tbody>
       </StatsTable>
-      <div>
-        {!member ? <button onClick={() => (becomeMember(project.id))}>become member</button> : null}
-      </div>
+      {!member ?<div><Divider /><BecomeMember> <button onClick={() => (becomeMember(project.id))}>become member</button></BecomeMember></div> : null}
       <Divider />
       <ChatHeader>Chat</ChatHeader>
       <ChatContainer projectId={project.id} taskId={0}/>

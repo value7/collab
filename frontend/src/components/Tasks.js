@@ -10,7 +10,6 @@ const Box = styled.div`
   display: inline-block;
   text-align: center;
   min-height: 80px;
-  padding: 4px;
   ${props => props.state};
 `;
 const Image = styled.img`
@@ -19,14 +18,39 @@ const Image = styled.img`
   float: right;
 `;
 const Title = styled.div`
-  max-width: 64%;
-  display: inline-block;
   margin-top: 25px;
   font-weight: 600;
+  font-size: 0.9em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
 `;
 
 const LegendWrapper = styled.div`
   display: block;
+  text-align: center;
+  font-height: 18px;
+`;
+
+const LegendBlock = styled.div`
+  width: 100px;
+`;
+
+const Idea = styled.div`
+  background-color: #eca7a7;
+  border-radius: 4px;
+  margin: 4px;
+`;
+const Approved = styled.div`
+  background-color: #7f7fce;
+  border-radius: 4px;
+  margin: 4px;
+`;
+
+const Done = styled.div`
+  background-color: #86d886;
+  border-radius: 4px;
+  margin: 4px;
 `;
 
 export default function({tasks, projectId}) {
@@ -34,15 +58,15 @@ export default function({tasks, projectId}) {
   console.log(projectId);
   var stateColors = {
     "idea": {
-      "background-color": "red",
+      "background-color": "#eca7a7",
       "color": "black"
     },
     "approved": {
-      "background-color": "blue",
+      "background-color": "#7f7fce",
       "color": "black"
     },
     "done": {
-      "background-color": "green",
+      "background-color": "#86d886",
       "color": "black"
     }
   }
@@ -52,16 +76,17 @@ export default function({tasks, projectId}) {
         {Object.keys(tasks).map((key, i) => {
           return (
           <Link key={i} to={"/projects/" + projectId + "/tasks/" + tasks[key].id}>
-            <Box state={stateColors[tasks[key].statename]}>
+            <Box state={stateColors[tasks[key].statename]} >
               <Title>{tasks[key].title}</Title>
-              {tasks[key].imgurlink ? <Image src={tasks[key].imgurlink} /> : null}
             </Box>
           </Link>
         )
         })}
       </div>
       <LegendWrapper>
-      Erklärung der Farben
+        <Idea>Idea <LegendBlock /></Idea>
+        <Approved>Approved <LegendBlock /></Approved>
+        <Done>Done <LegendBlock /></Done>
       </LegendWrapper>
     </div>
   )

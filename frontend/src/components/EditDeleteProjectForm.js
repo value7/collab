@@ -2,8 +2,20 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
-import { editProject, editProjectSuccess, editProjectFailure } from '../actions/projects';
+import { editProject, editProjectSuccess, editProjectFailure, fetchProjectDetailsOrAllIfNeeded } from '../actions/projects';
 import DeleteProject from './DeleteProject';
+import styled from 'styled-components';
+
+const Divider = styled.div`
+  background-color: black;
+  height: 1px;
+  width: 45%;
+  margin: 35px;
+`;
+
+const FirstHeadline = styled.h2`
+  margin-top: 45px;
+`;
 
 //Client side validation
 function validate(values) {
@@ -50,6 +62,11 @@ class EditDeleteProjectForm extends Component {
     router: PropTypes.object
   };
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchProjectDetailsOrAllIfNeeded(this.props.params.projectId));
+  }
+
   componentWillMount() {
     //Important! If your component is navigating based on some global state(from say componentWillReceiveProps)
     //always reset that global state back to null when you REMOUNT
@@ -69,7 +86,10 @@ class EditDeleteProjectForm extends Component {
     const { handleSubmit, submitting, moveToNextPhase } = this.props;
     return (
       <div className='container'>
+        <FirstHeadline>State Management</FirstHeadline>
         <button onClick={() => (moveToNextPhase(this.props.params.projectId))}>move to next phase</button>
+        <Divider />
+        <h2>Edit Project</h2>
         <form onSubmit={ handleSubmit(validateAndEditProject) }>
           <Field
                  name="title"
@@ -99,6 +119,8 @@ class EditDeleteProjectForm extends Component {
             </Link>
           </div>
         </form>
+        <Divider />
+        <h2>Delete Project</h2>
         <DeleteProject projectId={this.props.params.projectId} deleteTask={this.props.onDeleteProject} />
       </div>
     )
