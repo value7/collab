@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "cd client && npm install && npm run build && cd ..",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.14.1",
     "jsonwebtoken": "^7.2.1",
+    "path": "^0.12.7",
     "pg": "^6.1.2",
     "socket.io": "^1.7.3"
   }

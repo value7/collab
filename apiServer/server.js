@@ -24,6 +24,7 @@ const jwt = require('jsonwebtoken');
 const config = require('./config/constants').config;
 const Pool = require('pg').Pool;
 var cookieParser = require('cookie-parser');
+const path = require('path');
 
 //encription
 var bcrypt = require('bcryptjs');
@@ -37,7 +38,7 @@ const pool = new Pool({
   password: config.password,
   host: 'localhost',
   database: 'collab',
-  max: 10,
+  max: 1, //heroku setting
   idleTimeoutMillis: 1000
 });
 
@@ -61,6 +62,7 @@ function checkIfOwner(projectId, userId, callback) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 app.set('superSecret', config.secret);
 
