@@ -559,6 +559,6 @@ app.get("/api/secured", function(req, res) {
 });
 
 
-http.listen(3001, function() {
-  console.log("Listening on Port 3001");
+http.listen(process.env.PORT || 3001, function() {
+  console.log("Listening...");
 });
