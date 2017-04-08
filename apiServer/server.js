@@ -21,10 +21,11 @@ const chat = require('./chat');
 
 //postgres and authentication stuff
 const jwt = require('jsonwebtoken');
-const config = require('./config/constants').config;
+//const config = require('./config/constants').config;
 const Pool = require('pg').Pool;
 var cookieParser = require('cookie-parser');
 const path = require('path');
+const url = require('url');
 
 //encription
 var bcrypt = require('bcryptjs');
@@ -33,14 +34,19 @@ const saltRounds = 10;
 var pgUtils = require('./utils/postgres');
 var helpers = require('./utils/helpers');
 
-const pool = new Pool({
-  user: 'postgres',
-  password: config.password,
-  host: 'localhost',
-  database: 'collab',
-  max: 1, //heroku setting
-  idleTimeoutMillis: 1000
-});
+const params = url.parse(process.env.DATABASE_URL);
+const auth = params.auth.split(':');
+
+const config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
+
+const pool = new Pool(config);
 
 function checkIfOwner(projectId, userId, callback) {
   pool.query(
@@ -64,7 +70,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-app.set('superSecret', config.secret);
+app.set('superSecret', "config.secret");
 
 // app.all('*', function(req, res, next) {
 //   console.log('all *');
