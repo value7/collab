@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "cd frontend && npm install && npm run build && cd ..",
+    "install": "cd frontend && npm install && npm run build && cd .. && cd apiServer && npm install && cd ..",
     "start": "node apiServer/server.js"
   },
   "keywords": [],
