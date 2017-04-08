@@ -2,9 +2,6 @@
   "name": "collab",
   "version": "0.1.0",
   "private": true,
-  "devDependencies": {
-    "redux-logger": "^2.8.1"
-  },
   "dependencies": {
     "axios": "^0.15.3",
     "react": "^15.4.2",
@@ -19,6 +16,7 @@
     "redux": "^3.6.0",
     "redux-auth-wrapper": "^1.0.0",
     "redux-form": "^6.5.0",
+    "redux-logger": "^2.8.1",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0",
     "socket.io-client": "^1.7.3",
