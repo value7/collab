@@ -37,7 +37,6 @@ var helpers = require('./utils/helpers');
 var pool;
 if(process.env.DATABASE_URL) {
   //heroku
-  const config = require('./config/constants').config;
   const params = url.parse(process.env.DATABASE_URL);
   const auth = params.auth.split(':');
 
@@ -52,6 +51,7 @@ if(process.env.DATABASE_URL) {
   pool = new Pool(PostgresConfig);
 } else {
   //local
+  const config = require('./config/constants').config;
   pool = new Pool({
     user: 'postgres',
     password: config.password,
