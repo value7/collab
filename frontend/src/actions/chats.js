@@ -8,7 +8,7 @@ export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const ADD_MESSAGE_SUCCESS = 'ADD_MESSAGE_SUCCESS';
 export const ADD_MESSAGE_FAILURE = 'ADD_MESSAGE_FAILURE';
 
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
+const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
 
 export const requestChat = (projectId, taskId) => ({
   type: REQUEST_CHAT,
@@ -44,7 +44,7 @@ const fetchChat = (projectId, taskId) => dispatch => {
   var postVar = {};
   postVar.projectId = projectId;
   postVar.taskId = taskId;
-  axios.post(`${ROOT_URL}/api/getChat`, postVar)
+  axios.post(`${ROOT_URL}/getChat`, postVar)
   .then((result) => {
       console.log(result);
       dispatch(receiveChat(result.data, projectId, taskId));
@@ -60,7 +60,7 @@ export const fetchChatIfNeeded = (projectId, taskId) => (dispatch, getState) => 
 
 export function addMessage(formValues) {
   console.log(formValues);
-  const request = axios.post(`${ROOT_URL}/api/addMessage`, formValues);
+  const request = axios.post(`${ROOT_URL}/addMessage`, formValues);
   console.log(request);
   return {
     type: ADD_MESSAGE,

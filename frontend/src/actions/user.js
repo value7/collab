@@ -16,7 +16,7 @@ export const SIGNIN_USER_FAILURE = 'SIGNIN_USER_FAILURE';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
 
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
+const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
 
 export function signUpUser(formValues) {
   console.log(formValues);
@@ -54,7 +54,7 @@ export function resetUser() {
 }
 
 export function signInUser(formValues) {
-  const request = axios.post(`/authenticate`, formValues);
+  const request = axios.post(`${ROOT_URL}/authenticate`, formValues);
   console.log(request);
   return {
     type: SIGNIN_USER,
@@ -94,7 +94,7 @@ export const getUserWithToken = (user) => (dispatch) => {
     // var status = 'fromCookie';
     // var username = user.user;
     // var isAdmin = user.isAdmin || false;
-    axios.get(`${ROOT_URL}/api/getUserDetails`)
+    axios.get(`${ROOT_URL}/getUserDetails`)
     .then((result) => {
       console.log(result);
       user.votes = result.data.votes || [];

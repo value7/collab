@@ -30,7 +30,7 @@ export const BECOME_MEMBER = 'BECOME_MEMBER';
 export const BECOME_MEMBER_SUCCESS = 'BECOME_MEMBER_SUCCESS';
 export const BECOME_MEMBER_FAILURE = 'BECOME_MEMBER_FAILURE';
 
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
+const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
 
 export const invalidateProjects = () => ({
   type: INVALIDATE_PROJECTS
@@ -114,7 +114,7 @@ export const fetchProjectDetailsOrAllIfNeeded = (projectId) => (dispatch, getSta
     //getAll
     console.log('getting everything');
     postVar.projectId = projectId;
-    axios.post(`${ROOT_URL}/api/getProject`, postVar)
+    axios.post(`${ROOT_URL}/getProject`, postVar)
     .then((result) => {
       console.log(result);
       dispatch(getProject(result.data, projectId));
@@ -123,7 +123,7 @@ export const fetchProjectDetailsOrAllIfNeeded = (projectId) => (dispatch, getSta
     //get only details
     console.log('getting details');
     postVar.projectId = projectId;
-    axios.post(`${ROOT_URL}/api/getTasks`, postVar)
+    axios.post(`${ROOT_URL}/getTasks`, postVar)
     .then((result) => {
       console.log(result);
       dispatch(getDetails(result.data, projectId));

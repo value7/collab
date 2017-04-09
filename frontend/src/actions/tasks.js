@@ -14,7 +14,7 @@ export const MOVE_TASK_STATE_SUCCESS = 'MOVE_TASK_STATE_SUCCESS';
 export const MOVE_TASK_STATE_FAILURE = 'MOVE_TASK_STATE_FAILURE';
 //Note when running locally, the node server running on localhost:3000 and the dev-server is running on 8080
 //When running on Heroku, we run both on the same port and so just /api is enough.
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
+const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
 
 export function addTask(formValues) {
   const request = axios.post(`${ROOT_URL}/projects/addTask`, formValues);

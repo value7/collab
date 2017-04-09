@@ -11,7 +11,7 @@ export const RESET_VALIDATE_USER_FIELDS = 'RESET_VALIDATE_USER_FIELDS';
 
 //Note when running locally, the node server running on localhost:3000 and the dev-server is running on 8080
 //When running on Heroku, we run both on the same port and so just /api is enough.
-const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000' : '';
+const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
 
 export function validateUserFields(values) {
   //note: we cant have /users/validateFields because it'll match /users/:id path!

@@ -21,7 +21,7 @@ const chat = require('./chat');
 
 //postgres and authentication stuff
 const jwt = require('jsonwebtoken');
-//const config = require('./config/constants').config;
+
 const Pool = require('pg').Pool;
 var cookieParser = require('cookie-parser');
 const path = require('path');
@@ -34,19 +34,38 @@ const saltRounds = 10;
 var pgUtils = require('./utils/postgres');
 var helpers = require('./utils/helpers');
 
-const params = url.parse(process.env.DATABASE_URL);
-const auth = params.auth.split(':');
+var pool;
+if(process.env.DATABASE_URL) {
+  //heroku
+  const config = require('./config/constants').config;
+  const params = url.parse(process.env.DATABASE_URL);
+  const auth = params.auth.split(':');
 
-const config = {
-  user: auth[0],
-  password: auth[1],
-  host: params.hostname,
-  port: params.port,
-  database: params.pathname.split('/')[1],
-  ssl: true
-};
+  const PostgresConfig = {
+    user: auth[0],
+    password: auth[1],
+    host: params.hostname,
+    port: params.port,
+    database: params.pathname.split('/')[1],
+    ssl: true
+  };
+  pool = new Pool(PostgresConfig);
+} else {
+  //local
+  pool = new Pool({
+    user: 'postgres',
+    password: config.password,
+    host: 'localhost',
+    database: 'collab',
+    max: 10,
+    idleTimeoutMillis: 1000
+  });
+}
 
-const pool = new Pool(config);
+
+
+
+
 
 function checkIfOwner(projectId, userId, callback) {
   pool.query(
@@ -84,7 +103,7 @@ app.get("/api/hello", function(req, res) {
   res.json({message: "hello"});
 });
 
-app.post('/users/validateFields', function(req, res) {
+app.post('/api/users/validateFields', function(req, res) {
   pool.query(
     'select * from users where username=$1', [req.body.username], function(err, result) {
     if(result.rows.length > 0) {
@@ -196,7 +215,7 @@ app.post('/api/getProject', function(req, res) {
   })
 });
 
-app.post('/users/signup', function(req, res) {
+app.post('/api/users/signup', function(req, res) {
   //save the username and password
   //encrypt the password
   var encryptedPassword = bcrypt.hashSync(req.body.password, saltRounds);
@@ -234,7 +253,7 @@ app.post('/users/signup', function(req, res) {
 })
 
 //authenication
-app.post('/authenticate', function(req, res) {
+app.post('/api/authenticate', function(req, res) {
   console.log('in authenticate api thingy');
   // console.log(req.body);
   //TODO check that username and password are correctly set
@@ -294,7 +313,7 @@ app.post('/authenticate', function(req, res) {
 
 //authentication middleware
 //routes which are declared after this can only be accessed with a valid jwt
-app.use(function(request, response, next) {
+app.use('/api', function(request, response, next) {
   //check header or url paramaters or post paramaters for token
   console.log('in authentication middleware');
   //console.log(request);
@@ -307,7 +326,7 @@ app.use(function(request, response, next) {
     //TODO will probably fail with a cookie without token
     token = request.cookies.token;
   }
-  //console.log(token);
+  console.log(token);
   //decode token
   if(token) {
     jwt.verify(token, app.get('superSecret'), function(err, decoded) {
@@ -352,7 +371,7 @@ app.post('/api/addMessage', function(req, res) {
 })
 
 //upvote
-app.post('/projects/upvote', function(req, res) {
+app.post('/api/projects/upvote', function(req, res) {
   console.log(req.body);
   console.log(req.body.projectId);
   console.log(req.decoded.id);
@@ -368,7 +387,7 @@ app.post('/projects/upvote', function(req, res) {
   )
 })
 
-app.post('/projects/downvote', function(req, res) {
+app.post('/api/projects/downvote', function(req, res) {
   console.log(req.body);
   console.log(req.body.projectId);
   console.log(req.decoded.id);
@@ -384,7 +403,7 @@ app.post('/projects/downvote', function(req, res) {
   )
 })
 
-app.post('/projects/incrementState', function(req, res) {
+app.post('/api/projects/incrementState', function(req, res) {
   //TODO check if Project is already completed
   checkIfOwner(req.body.projectId, req.decoded.id, function(owner) {
     if(owner) {
@@ -404,7 +423,7 @@ app.post('/projects/incrementState', function(req, res) {
   })
 })
 
-app.post('/projects/deleteProject', function(req, res) {
+app.post('/api/projects/deleteProject', function(req, res) {
   //TODO check if Project is already completed
   console.log(req.body);
   checkIfOwner(req.body.projectId, req.decoded.id, function(owner) {
@@ -425,7 +444,7 @@ app.post('/projects/deleteProject', function(req, res) {
   })
 });
 
-app.post('/projects/editProject', function(req, res) {
+app.post('/api/projects/editProject', function(req, res) {
   //TODO check if Project is already completed
   console.log(req.body);
   checkIfOwner(req.body.projectId, req.decoded.id, function(owner) {
@@ -446,7 +465,7 @@ app.post('/projects/editProject', function(req, res) {
   })
 });
 
-app.post('/projects/addTask', function(req, res) {
+app.post('/api/projects/addTask', function(req, res) {
   pool.query('insert into tasks(projectid, title, description, imgurlink, creator, state) values($1, $2, $3, $4, $5, 1) returning *',
     [req.body.projectId, req.body.title, req.body.description, req.body.imgurLink, req.decoded.id], function(err, result) {
       if(err) {
@@ -464,7 +483,7 @@ app.post('/projects/addTask', function(req, res) {
     })
 })
 
-app.post('/projects/takeTask', function(req, res) {
+app.post('/api/projects/takeTask', function(req, res) {
   pool.query('insert into taskowners (userid, taskid, date) values ($1, $2, $3) returning id, taskid', [req.decoded.id, req.body.taskId, new Date()], function(err, result) {
     if(err) {
       return res.status(403).json({error: true, message: 'Failed to take task'});
@@ -481,7 +500,7 @@ app.post('/projects/takeTask', function(req, res) {
   })
 })
 
-app.post('/projects/moveTaskState', function(req, res) {
+app.post('/api/projects/moveTaskState', function(req, res) {
   pool.query('update tasks set state = state + 1 where id = $1 returning id, state', [req.body.taskId], function(err, result) {
     if(err) {
       console.log(err);
@@ -491,15 +510,15 @@ app.post('/projects/moveTaskState', function(req, res) {
         if(err) {
           return res.status(403).json({error: true, message: 'Failed to get user'});
         } else {
-          console.log({taskId: result.rows[0].id, statename: state.rows[0].statename});
-          return res.json({taskId: result.rows[0].id, statename: state.rows[0].statename});
+          var statename = state.rows[0] ? state.rows[0].statename : "done";
+          return res.json({taskId: result.rows[0].id, statename: statename});
         }
       })
     }
   })
 })
 
-app.post('/projects/becomeMember', function(req, res) {
+app.post('/api/projects/becomeMember', function(req, res) {
   pool.query('insert into projectmembers(userid, projectid, date) values ($1, $2, $3) returning id, projectid', [req.decoded.id, req.body.taskId, new Date()], function(err, result) {
     if(err) {
       return res.status(403).json({error: true, message: 'Failed to become member'});
@@ -558,6 +577,9 @@ app.get("/api/secured", function(req, res) {
   res.json({message: "special secret message"});
 });
 
+app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
 
 http.listen(process.env.PORT || 3001, function() {
   console.log("Listening...");

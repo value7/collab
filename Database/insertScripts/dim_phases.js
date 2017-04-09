@@ -44,3 +44,5 @@ const client = new pg.Client(connectionString);
 client.connect();
 const query = client.query(buildStatement(rows));
 query.on('end', () => { client.end(); });
+
+// insert into dim_phases values (1, 'Draft'), (2, 'Planning'), (3, 'Exection'), (4, 'Completed');

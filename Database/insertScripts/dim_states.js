@@ -39,3 +39,6 @@ const client = new pg.Client(connectionString);
 client.connect();
 const query = client.query(buildStatement(rows));
 query.on('end', () => { client.end(); });
+
+
+// insert into dim_states values (1, 'idea'), (2, 'approved'), (3, 'done');
