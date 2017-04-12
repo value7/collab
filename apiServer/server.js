@@ -139,7 +139,7 @@ app.get("/api/getAllProjects", function(req, res) {
 app.post('/api/getTasks', function(req, res) {
   console.log('getting details from : ' + req.body.projectId);
   pool.query(`
-    select t.id, t.projectid, t.title, t.description, t.imgurlink, c.username as creator, states.statename, array_remove(array_agg(member.username), NULL) as taskOwners
+    select t.id, t.projectid, t.title, t.description, t.imgurlink, c.username as creator, states.statename, array_remove(array_agg(DISTINCT member.username), NULL) as taskOwners
     from tasks as t
     join users as c
     	on c.id = t.creator
