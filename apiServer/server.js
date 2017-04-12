@@ -116,7 +116,7 @@ app.post('/api/users/validateFields', function(req, res) {
 
 app.get("/api/getAllProjects", function(req, res) {
   pool.query(`
-    select p.id, p.title, p.imgurlink, u.username as creator, p.description, d.phasename as phase, count(v.*) as votes, array_remove(array_agg(mu.username), NULL) as members from projects as p
+    select p.id, p.title, p.imgurlink, u.username as creator, p.description, d.phasename as phase, count(v.*) as votes, array_remove(array_agg(DISTINCT mu.username), NULL) as members from projects as p
   	left join votes as v
   		on p.id = v.projectID
     left join dim_phases as d
