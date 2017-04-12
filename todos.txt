@@ -1,7 +1,3 @@
-- remove duplicates on heroku
-
-- order projects by upvotes
-
 - give tasks dueDates
   - specs
   - editable
@@ -96,6 +92,9 @@
 
 - user sollte doch keine votes haben
 
+/- order projects by upvotes
+
+/- remove duplicates on heroku
 
 /- taskstate colors
 /- legend

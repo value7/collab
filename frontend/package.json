@@ -7,6 +7,8 @@
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
     "react-cookie": "^1.0.4",
+    "react-dnd": "^2.3.0",
+    "react-dnd-html5-backend": "^2.3.0",
     "react-dom": "^15.4.2",
     "react-mixin": "^3.0.5",
     "react-redux": "^5.0.2",

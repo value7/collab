@@ -64,12 +64,15 @@ const VoteArrow = styled.div`
 export default function({projects, upVote, cancelUpVote, canUpvote, upvoted, becomeMember, userName}) {
   console.log(projects);
   console.log(canUpvote);
+  var orderedKeys = [];
+  var projectIds = Object.keys(projects).sort(function(a, b) {
+    return parseFloat(projects[b].votes) - parseFloat(projects[a].votes);
+  })
+  console.log(projectIds);
   return (
     <div>
-      {Object.keys(projects).map((key, i) => {
+      {projectIds.map((key, i) => {
         var hasImage = !!projects[key].imgurlink;
-        console.log(projects[key].imgurlink);
-        console.log(hasImage);
         return <div key={i}>
         <Wrapper>
           <Left>
