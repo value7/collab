@@ -10,7 +10,7 @@ const Body = styled.div`
   margin: auto;
   background-color: #fafafa;
   height: 100%;
-  margin-top: 25px;
+  padding-top: 25px;
   @media (max-width: 600px) {
     width: 95%;
   }
