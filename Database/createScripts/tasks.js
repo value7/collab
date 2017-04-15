@@ -12,5 +12,7 @@ const query = client.query(
     imgurLink varchar(100),
     creator integer not null,
     assignee int,
-    state int)`);
+    state int,
+    startdate timestamp,
+    enddate timestamp)`);
 query.on('end', () => { client.end(); });

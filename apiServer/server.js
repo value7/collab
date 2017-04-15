@@ -116,7 +116,8 @@ app.post('/api/users/validateFields', function(req, res) {
 
 app.get("/api/getAllProjects", function(req, res) {
   pool.query(`
-    select p.id, p.title, p.imgurlink, u.username as creator, p.description, d.phasename as phase, count(v.*) as votes, array_remove(array_agg(DISTINCT mu.username), NULL) as members from projects as p
+    select p.id, p.title, p.imgurlink, u.username as creator, p.description, d.phasename as phase, count(v.*) as votes, array_remove(array_agg(DISTINCT mu.username), NULL) as members
+    from projects as p
   	left join votes as v
   		on p.id = v.projectID
     left join dim_phases as d
@@ -139,7 +140,7 @@ app.get("/api/getAllProjects", function(req, res) {
 app.post('/api/getTasks', function(req, res) {
   console.log('getting details from : ' + req.body.projectId);
   pool.query(`
-    select t.id, t.projectid, t.title, t.description, t.imgurlink, c.username as creator, states.statename, array_remove(array_agg(DISTINCT member.username), NULL) as taskOwners
+    select t.id, t.projectid, t.title, t.description, t.imgurlink, t.startDate, t.endDate, c.username as creator, states.statename, array_remove(array_agg(DISTINCT member.username), NULL) as taskOwners
     from tasks as t
     join users as c
     	on c.id = t.creator
@@ -193,7 +194,7 @@ app.post('/api/getProject', function(req, res) {
 	group by p.id, p.title, p.imgurLink, p.description, d.phasename, u.username
   `, [req.body.projectId], function(err, result) {
     pool.query(`
-      select t.id, t.projectid, t.title, t.description, t.imgurlink, c.username as creator, states.statename, array_remove(array_agg(member.username), NULL) as taskOwners
+      select t.id, t.projectid, t.title, t.description, t.imgurlink, t.startDate, t.endDate, c.username as creator, states.statename, array_remove(array_agg(member.username), NULL) as taskOwners
       from tasks as t
       join users as c
         on c.id = t.creator

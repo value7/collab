@@ -1,5 +1,0 @@
- id | projectid |  title   |           description            | imgurlink | creator | statename | taskowners 
-----+-----------+----------+----------------------------------+-----------+---------+-----------+------------
-  1 |         1 | testTask | asdfasdfasdfasdfasf asf asd fsdf |           | value7  | idea      | {value7}
-(1 row)
-

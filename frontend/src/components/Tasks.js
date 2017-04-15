@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router';
 
+import GantChart from './GantChart';
+
 const Box = styled.div`
   border: 1px solid #bbbbbb;
   border-radius: 4px;
@@ -53,6 +55,27 @@ const Done = styled.div`
   margin: 4px;
 `;
 
+//boxen
+/*
+{Object.keys(tasks).map((key, i) => {
+  return (
+  <div>
+  <Link key={i} to={"/projects/" + projectId + "/tasks/" + tasks[key].id}>
+    <Box state={stateColors[tasks[key].statename]} >
+      <Title>{tasks[key].title}</Title>
+    </Box>
+  </Link>
+  </div>
+  <LegendWrapper>
+    <Idea>Idea <LegendBlock /></Idea>
+    <Approved>Approved <LegendBlock /></Approved>
+    <Done>Done <LegendBlock /></Done>
+  </LegendWrapper>
+)
+})}
+
+*/
+
 export default function({tasks, projectId}) {
   console.log(tasks);
   console.log(projectId);
@@ -70,24 +93,17 @@ export default function({tasks, projectId}) {
       "color": "black"
     }
   }
+  let begin = new Date('2017-02-01');
+  let finish = new Date('2017-07-01');
+  console.log(begin, finish);
+  let empty = Object.keys(tasks).length > 0;
   return (
     <div>
       <div>
-        {Object.keys(tasks).map((key, i) => {
-          return (
-          <Link key={i} to={"/projects/" + projectId + "/tasks/" + tasks[key].id}>
-            <Box state={stateColors[tasks[key].statename]} >
-              <Title>{tasks[key].title}</Title>
-            </Box>
-          </Link>
-        )
-        })}
+      {empty ? <GantChart begin={begin} finish={finish} tasks={tasks}/> : null}
+
       </div>
-      <LegendWrapper>
-        <Idea>Idea <LegendBlock /></Idea>
-        <Approved>Approved <LegendBlock /></Approved>
-        <Done>Done <LegendBlock /></Done>
-      </LegendWrapper>
+
     </div>
   )
 };
