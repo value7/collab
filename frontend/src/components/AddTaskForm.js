@@ -3,6 +3,8 @@ import { Link, browserHistory } from 'react-router';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import renderField from './renderField';
 import { addTask, addTaskSuccess, addTaskFailure } from '../actions/tasks';
+import renderDatePicker from './renderDatePicker';
+import moment from 'moment';
 
 //Client side validation
 function validate(values) {
@@ -86,6 +88,16 @@ class AddTaskForm extends Component {
                  type="text"
                  component={ renderField }
                  label="Description" />
+          <Field
+                  name="startDate"
+                  type="date"
+                  component={ renderField }
+                  label="startDate" />
+          <Field
+                  name="endDate"
+                  type="date"
+                  component={ renderField }
+                  label="endDate" />
           <div>
             <button
                     type="submit"

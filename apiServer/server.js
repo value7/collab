@@ -467,8 +467,8 @@ app.post('/api/projects/editProject', function(req, res) {
 });
 
 app.post('/api/projects/addTask', function(req, res) {
-  pool.query('insert into tasks(projectid, title, description, imgurlink, creator, state) values($1, $2, $3, $4, $5, 1) returning *',
-    [req.body.projectId, req.body.title, req.body.description, req.body.imgurLink, req.decoded.id], function(err, result) {
+  pool.query('insert into tasks(projectid, title, description, imgurlink, creator, startdate, enddate, state) values($1, $2, $3, $4, $5, $6, $7, 1) returning *',
+    [req.body.projectId, req.body.title, req.body.description, req.body.imgurLink, req.decoded.id, req.body.startDate, req.body.endDate], function(err, result) {
       if(err) {
         console.log('err: ',err);
         return res.status(403).json({ error: true, message: 'Failed to save Task' });

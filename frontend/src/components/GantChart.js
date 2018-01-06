@@ -1,5 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import 'rc-slider/assets/index.css';
+
+import Slider from 'rc-slider';
+const Range = Slider.Range;
+
 
 const Chart = styled.div`
   width: 100%;
@@ -27,6 +32,15 @@ const Title = styled.div`
   height: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
+  display: inline-block;
+`;
+
+const RangeWrapper = styled.div`
+  display: inline-block;
+  right: 0;
+  width: 60%;
+  position: absolute;
+  padding-right: 50px;
 `;
 
 function dayDiff(begin, end) {
@@ -34,6 +48,10 @@ function dayDiff(begin, end) {
   let timeDiff = Math.abs(new Date(end).getTime() - new Date(begin).getTime());
   let dayRange = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return dayRange;
+}
+
+function log(value) {
+  console.log(value); //eslint-disable-line
 }
 
 export default function({begin, finish, tasks}) {
@@ -47,15 +65,17 @@ export default function({begin, finish, tasks}) {
     <Chart>
       {Object.keys(tasks).map((key, i) => {
         let length = dayDiff(tasks[key].startdate, tasks[key].enddate);
-        let width = ((length / time)*100).toString().slice(0,2) + '%';
+        let width = ((length / time)*100).toString().slice(0,2);
         console.log(begin);
         let startDiff = dayDiff(begin, tasks[key].startdate);
-        let left = ((startDiff / time)*100).toString().slice(0,2) + '%';
+        let left = ((startDiff / time)*100).toString().slice(0,2);
         console.log(left);
         return (
           <ChartRow>
             <Title>{tasks[key].title}</Title>
-            <ChartBar left={left} width={width} />
+            <RangeWrapper>
+              <Range defaultValue={[left, left + width]} onChange={log} />
+            </RangeWrapper>
           </ChartRow>
         )
       })}
