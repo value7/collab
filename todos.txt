@@ -261,3 +261,5 @@ REQUEST_UPVOTED (projects) beim einloggen falls projects schon da sind
 - tests
 
 - login with google...
+
+- make Wolfi a Sandwich
